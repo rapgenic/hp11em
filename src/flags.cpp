@@ -64,6 +64,14 @@ bool Flags::isStackDisabled() const {
     return stackDisabled;
 }
 
+void Flags::setPendingData(bool value) {
+    pendingData = value;
+}
+
+bool Flags::isPendingData() const {
+    return pendingData;
+}
+
 void Flags::setBase(base_t baseval) {
     base = baseval;
 }

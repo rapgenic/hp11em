@@ -54,6 +54,8 @@ public:
         void resNumberDecimal();*/
     void setStackDisabled(bool value);
     bool isStackDisabled() const;
+    void setPendingData(bool value);
+    bool isPendingData() const;
     void setBase(base_t baseval);
     base_t getBase() const;
     void setState(state_t st);
@@ -61,6 +63,7 @@ public:
 
 private:
     bool stackDisabled = false;
+    bool pendingData = false;
     base_t base = B_OCT;
     state_t state = S_RUN; 
     /*    bool numberWriting = false;

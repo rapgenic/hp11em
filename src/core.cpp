@@ -30,6 +30,8 @@ hpDisplay(hpSignals_r, &hpFlags) {
     // Initializing flags
     function_keys = F_NULL;
     hpTempDisp.cursor = 0;
+
+    pending_data_count = 0;
 }
 
 Core::~Core() {
@@ -42,19 +44,27 @@ void Core::keyPressEvent(int key) {
         hpDisplay.printNumberDisplay(hpAMS.get_x());
         return;
     }
-    
+
     // Reads the pressed key and decides what to do
     switch (key) {
         case Keys::K_SDF:
         case Keys::K_GDF:
             f_key_toggle(key);
             break;
+
         case -1:
             // Doesn't do anything, just called when pressing
             // something which isn't a button
             break;
         default:
-            (this->*keys_cb[key][function_keys])();
+            if (hpFlags.isPendingData()) {
+                hpPendingData[pending_data_count].key = key;
+                hpPendingData[pending_data_count].fg = function_keys;
+                pending_data_count++;
+                (this->*pending_data_function)();
+            } else {
+                (this->*keys_cb[key][function_keys])();
+            }
             f_key_set(F_NULL);
 #ifdef DEBUG
             hpSignals->sig_update_register_table_emit(double_approx(hpAMS.get_x()), double_approx(hpAMS.get_y()), double_approx(hpAMS.get_z()), double_approx(hpAMS.get_t()), double_approx(hpAMS.get_lst_x()));

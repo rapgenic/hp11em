@@ -33,6 +33,17 @@ using namespace std;
 #include "flags.h"
 #include "SR.h"
 
+#define KEY_IS_NUMBER(x) (x == Keys::K_NO0 || \
+                            x == Keys::K_NO1 || \
+                            x == Keys::K_NO2 || \
+                            x == Keys::K_NO3 || \
+                            x == Keys::K_NO4 || \
+                            x == Keys::K_NO5 || \
+                            x == Keys::K_NO6 || \
+                            x == Keys::K_NO7 || \
+                            x == Keys::K_NO8 || \
+                            x == Keys::K_NO9)
+
 class Core : public sigc::trackable {
 public:
     Core(Signals *hpsignals_r);
@@ -42,10 +53,7 @@ public:
 
     typedef struct {
         char str[100];
-        // | Example: str = "+123,123.00"; global position == 11
-        // V number position == 6
         int cursor; // global position of the string
-        int n_cursor; // Number position of the string (eg the number of the digits)
     } display_temp;
 
     typedef enum {
@@ -81,6 +89,17 @@ public:
     } error_conditions;
 
 private:
+
+    typedef struct {
+        int key;
+        function_states fg;
+    } pending_data_t;
+
+    pending_data_t hpPendingData[50];
+    int pending_data_count;
+
+    void (Core::*pending_data_function)(void);
+
     Signals *hpSignals;
     AutomaticMemoryStack hpAMS;
     StorageRegister hpSR;
@@ -88,7 +107,7 @@ private:
     Flags hpFlags;
     display_temp hpTempDisp;
 
-    unsigned char function_keys;
+    function_states function_keys;
 
     int f_key_set(unsigned char value);
     int f_key_toggle(int key);
