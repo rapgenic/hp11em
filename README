@@ -1,0 +1,6 @@
+This is the HP11em: a C++, GTK, linux HP11C calculator emulator
+
+It's still in development, and almost only 30% completed.
+
+This emulator is released under GPLv3 license; for more information see the
+COPYING file in the root of the project
