@@ -89,7 +89,7 @@ void Core::kcb_chs() {
     } else {
         if (hpTempDisp.str[0] == '-')
             hpTempDisp.str[0] = '+';
-        else 
+        else
             hpTempDisp.str[0] = '-';
         hpAMS.set_x(hpTempDisp.str, false);
         hpDisplay.printStringDisplay(hpTempDisp.str);
@@ -306,7 +306,9 @@ void Core::kcb_del() {
 void Core::kcb_prefix() {
 }
 
-void Core::kcb_cl_x() {
+void Core::kcb_clx() {
+    hpAMS.set_x(static_cast<cl_R>(0), false);
+    hpDisplay.printNumberDisplay(hpAMS.get_x());
     hpFlags.setStackDisabled(true);
 }
 

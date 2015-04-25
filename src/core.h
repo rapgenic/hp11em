@@ -177,7 +177,7 @@ private:
 
     void kcb_del();
     void kcb_prefix();
-    void kcb_cl_x();
+    void kcb_clx();
 
     void kcb_1();
     void kcb_p_y_x();
@@ -255,7 +255,7 @@ private:
         {&Core::kcb_gsb, &Core::kcb_sum, &Core::kcb_rtn},
         {&Core::kcb_r_dwn, &Core::kcb_prgm, &Core::kcb_r_up},
         {&Core::kcb_x_xcng_y, &Core::kcb_reg, &Core::kcb_rnd},
-        {&Core::kcb_del, &Core::kcb_prefix, &Core::kcb_cl_x},
+        {&Core::kcb_del, &Core::kcb_prefix, &Core::kcb_clx},
         {&Core::kcb_1, &Core::kcb_p_y_x, &Core::kcb_c_y_x},
         {&Core::kcb_2, &Core::kcb_to_hms, &Core::kcb_to_h},
         {&Core::kcb_3, &Core::kcb_to_rad, &Core::kcb_to_deg},
