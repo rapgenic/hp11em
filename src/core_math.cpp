@@ -84,15 +84,20 @@ void Core::kcb_d_percent() {
 
 void Core::kcb_chs() {
     if (hpTempDisp.cursor == 0) {
+        // if it is the result of an operation
         hpAMS.set_x(hpAMS.get_x() * -1, false);
         hpDisplay.printNumberDisplay(hpAMS.get_x());
+        // Enable stack lift
+        hpFlags.setStackDisabled(false);
     } else {
+        // if you're writing
         if (hpTempDisp.str[0] == '-')
             hpTempDisp.str[0] = '+';
         else
             hpTempDisp.str[0] = '-';
         hpAMS.set_x(hpTempDisp.str, false);
         hpDisplay.printStringDisplay(hpTempDisp.str);
+        // Don't change stack lift status: neutral function
     }
 }
 
