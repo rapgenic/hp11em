@@ -31,6 +31,7 @@ using namespace std;
 #include "displaymodule.h"
 #include "AMS.h"
 #include "flags.h"
+#include "SR.h"
 
 class Core : public sigc::trackable {
 public:
@@ -82,6 +83,7 @@ public:
 private:
     Signals *hpSignals;
     AutomaticMemoryStack hpAMS;
+    StorageRegister hpSR;
     DisplayModule hpDisplay;
     Flags hpFlags;
     display_temp hpTempDisp;
