@@ -63,8 +63,8 @@ Signals::d_signal_register_table_t Signals::signal_update_registers_table() {
     return sig_register_table;
 }
 
-void Signals::sig_update_register_table_emit(double x, double y, double z, double t) {
-    sig_register_table.emit(x, y, z, t);
+void Signals::sig_update_register_table_emit(double x, double y, double z, double t, double lstx) {
+    sig_register_table.emit(x, y, z, t, lstx);
 }
 
 /*Signals::d_signal_decimal_t Signals::signal_update_decimal() {

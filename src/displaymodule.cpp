@@ -47,7 +47,13 @@ bool DisplayModule::printNumberDisplay(cl_R numb) {
     display_stream << fixed;
     display_stream << setprecision(4) << float_approx(numb);
     
-    hpSignals->sig_display_emit((numb < 0) ? "-" : "+" + display_stream.str());
+#ifdef DEBUG
+    
+    cout << "printNumberDisplay(): number = " << display_stream.str() << endl;
+    
+#endif
+    
+    hpSignals->sig_display_emit(((numb >= 0) ? "+" : "") + display_stream.str());
 
     return true;
 }

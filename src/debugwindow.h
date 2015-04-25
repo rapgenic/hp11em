@@ -51,15 +51,15 @@ protected:
     Gtk::Frame boxReg/*, boxDec*/;
     Gtk::Grid tableReg, tableDec;
     Gtk::Label lab_reg, lab_val; //_lab_reg, _lab_val;
-    Gtk::Label lab_x, lab_y, lab_z, lab_t;
-    Gtk::Label lab_x_val, lab_y_val, lab_z_val, lab_t_val;
+    Gtk::Label lab_x, lab_y, lab_z, lab_t, lab_lst_x;
+    Gtk::Label lab_x_val, lab_y_val, lab_z_val, lab_t_val, lab_lst_x_val;
     //        Gtk::Label lab_isdec, lab_decount;
     //        Gtk::Label lab_isdec_val, lab_decount_val;
     Gtk::Button quitBtn;
 
     Glib::RefPtr<Gdk::Pixbuf> icon;
 
-    bool update_table_registers(double x, double y, double z, double t);
+    bool update_table_registers(double x, double y, double z, double t, double lstx);
     //        bool update_decimal(bool isdec, int deccount);
 };
 

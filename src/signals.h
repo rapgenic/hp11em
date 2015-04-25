@@ -36,7 +36,7 @@ public:
     typedef sigc::signal<bool, char, bool> signal_alarm_t;
     typedef sigc::signal<bool, string> signal_display_t;
 #ifdef DEBUG
-    typedef sigc::signal<bool, double, double, double, double> d_signal_register_table_t;
+    typedef sigc::signal<bool, double, double, double, double, double> d_signal_register_table_t;
     //        typedef sigc::signal<bool, bool, int> d_signal_decimal_t;
 #endif
 
@@ -56,7 +56,7 @@ public:
 #ifdef DEBUG
 
     d_signal_register_table_t signal_update_registers_table();
-    void sig_update_register_table_emit(double x, double y, double z, double t);
+    void sig_update_register_table_emit(double x, double y, double z, double t, double lstx);
 
     //        d_signal_decimal_t signal_update_decimal();
     //        void sig_update_decimal_emit(bool isDecimal, int decimalCount);

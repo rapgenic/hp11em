@@ -32,10 +32,12 @@ lab_x("X"),
 lab_y("Y"),
 lab_z("Z"),
 lab_t("T"),
+lab_lst_x("LSTx"),
 lab_x_val("0"),
 lab_y_val("0"),
 lab_z_val("0"),
 lab_t_val("0"),
+lab_lst_x_val("0"),
 //lab_isdec("isDecimal"),
 //lab_decount("DecCount"),
 //lab_isdec_val("false"),
@@ -78,10 +80,12 @@ quitBtn("Chiudi") {
     tableReg.attach_next_to(lab_z, lab_t, Gtk::POS_BOTTOM, 1, 1);
     tableReg.attach_next_to(lab_y, lab_z, Gtk::POS_BOTTOM, 1, 1);
     tableReg.attach_next_to(lab_x, lab_y, Gtk::POS_BOTTOM, 1, 1);
+    tableReg.attach_next_to(lab_lst_x, lab_x, Gtk::POS_BOTTOM, 1, 1);
     tableReg.attach_next_to(lab_t_val, lab_val, Gtk::POS_BOTTOM, 1, 1);
     tableReg.attach_next_to(lab_z_val, lab_t_val, Gtk::POS_BOTTOM, 1, 1);
     tableReg.attach_next_to(lab_y_val, lab_z_val, Gtk::POS_BOTTOM, 1, 1);
     tableReg.attach_next_to(lab_x_val, lab_y_val, Gtk::POS_BOTTOM, 1, 1);
+    tableReg.attach_next_to(lab_lst_x_val, lab_x_val, Gtk::POS_BOTTOM, 1, 1);
 
     /*    boxDec.add(tableDec);
 
@@ -100,11 +104,12 @@ quitBtn("Chiudi") {
 DebugWindow::~DebugWindow() {
 }
 
-bool DebugWindow::update_table_registers(double x, double y, double z, double t) {
+bool DebugWindow::update_table_registers(double x, double y, double z, double t, double lstx) {
     lab_x_val.set_label(to_string(x));
     lab_y_val.set_label(to_string(y));
     lab_z_val.set_label(to_string(z));
     lab_t_val.set_label(to_string(t));
+    lab_lst_x_val.set_label(to_string(lstx));
 
     return false;
 }
