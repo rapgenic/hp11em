@@ -58,6 +58,12 @@ bool DisplayModule::printNumberDisplay(cl_R numb) {
     return true;
 }
 
+bool DisplayModule::printErrorDisplay(int x) {
+    hpSignals->sig_display_emit("Error"+to_string(x));
+    
+    return true;
+}
+
 string DisplayModule::to_display(double num) {
     return "ciao";
 }

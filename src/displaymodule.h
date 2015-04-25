@@ -49,6 +49,7 @@ public:
 
     bool printStringDisplay(string disp);
     bool printNumberDisplay(cl_R numb);
+    bool printErrorDisplay(int x);
 
     string to_display(double num);
 private:

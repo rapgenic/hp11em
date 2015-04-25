@@ -36,6 +36,13 @@ Core::~Core() {
 }
 
 void Core::keyPressEvent(int key) {
+    // Error state
+    if (hpFlags.getState() == Flags::S_ERR) {
+        hpFlags.setState(Flags::S_RUN);
+        hpDisplay.printNumberDisplay(hpAMS.get_x());
+        return;
+    }
+    
     // Reads the pressed key and decides what to do
     switch (key) {
         case Keys::K_SDF:

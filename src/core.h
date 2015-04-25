@@ -43,8 +43,8 @@ public:
         char str[100];
         // | Example: str = "+123,123.00"; global position == 11
         // V number position == 6
-        int cursor;     // global position of the string
-        int n_cursor;   // Number position of the string (eg the number of the digits)
+        int cursor; // global position of the string
+        int n_cursor; // Number position of the string (eg the number of the digits)
     } display_temp;
 
     typedef enum {
@@ -66,6 +66,18 @@ public:
         O_MLT,
         O_DIV
     } operators;
+
+    typedef enum {
+        E_IMO = 0,
+        E_SRO,
+        E_ISO,
+        E_IRN,
+        E_ILN,
+        E_SLD,
+        E_IFN,
+        E_SER,
+        E_PRE
+    } error_conditions;
 
 private:
     Signals *hpSignals;

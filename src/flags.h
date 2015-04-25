@@ -30,6 +30,12 @@ public:
         B_DEC = 10,
         B_EXA = 16
     } base_t;
+
+    typedef enum {
+        S_ERR = 0,
+        S_RUN,
+        S_PRG
+    } state_t;
     /*
         typedef enum {
             M_DGT,
@@ -50,10 +56,13 @@ public:
     bool isStackDisabled() const;
     void setBase(base_t baseval);
     base_t getBase() const;
+    void setState(state_t st);
+    state_t getState() const;
 
 private:
     bool stackDisabled = false;
     base_t base = B_OCT;
+    state_t state = S_RUN; 
     /*    bool numberWriting = false;
         bool numberDecimal = false;
         int numberDecCount = 0;

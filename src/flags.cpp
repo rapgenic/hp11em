@@ -71,3 +71,11 @@ void Flags::setBase(base_t baseval) {
 Flags::base_t Flags::getBase() const {
     return base;
 }
+
+void Flags::setState(state_t st) {
+    state = st;
+}
+
+Flags::state_t Flags::getState() const {
+    return state;
+}

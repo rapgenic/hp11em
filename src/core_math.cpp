@@ -505,6 +505,11 @@ void Core::kcb_c_stdopr(operators op) {
             hpAMS.set_x(hpAMS.get_y() * hpAMS.get_x());
             break;
         case O_DIV:
+            if (hpAMS.get_x() == 0) {
+                hpFlags.setState(Flags::S_ERR);
+                hpDisplay.printErrorDisplay(E_IMO);
+                return;
+            }
             hpAMS.set_x(hpAMS.get_y() / hpAMS.get_x());
             break;
     }
