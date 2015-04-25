@@ -1,3 +1,22 @@
+/*
+    Copyright (C) 2015 Giulio Girardi.
+
+    This file is part of HP11em.
+
+    HP11em is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    HP11em is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with HP11em.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifndef CORE_H
 #define CORE_H
 
@@ -22,7 +41,10 @@ public:
 
     typedef struct {
         char str[100];
-        int cursor;
+        // | Example: str = "+123,123.00"; global position == 11
+        // V number position == 6
+        int cursor;     // global position of the string
+        int n_cursor;   // Number position of the string (eg the number of the digits)
     } display_temp;
 
     typedef enum {

@@ -1,8 +1,20 @@
 /*
- * core_math.cpp
- *
- *  Created on: 26/lug/2014
- *      Author: giulio
+    Copyright (C) 2015 Giulio Girardi.
+
+    This file is part of HP11em.
+
+    HP11em is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    HP11em is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with HP11em.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "core.h"
@@ -422,8 +434,7 @@ void Core::kcb_c_number(int n) {
     //if (hpFlags.penEnter())
     //    hpAMS.set_x("0");
 
-//    hpFlags.setDisplayWMode(Flags::M_DGT); /// ???????
-
+//    hpFlags.setDisplayWMode(Flags::M_DGT); /// ???????    
     if (hpTempDisp.cursor == 0) {
         hpTempDisp.str[0] = '+';
         hpTempDisp.cursor++;
@@ -441,6 +452,7 @@ void Core::kcb_c_number(int n) {
     hpTempDisp.str[hpTempDisp.cursor + 1] = '\0';
     hpTempDisp.cursor++;
 
+    // If it is the first digit
     if (hpTempDisp.cursor == 2) {
         if (hpFlags.isStackDisabled() == false) {
             hpAMS.stack_add(hpTempDisp.str);
