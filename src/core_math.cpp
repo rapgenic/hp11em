@@ -83,7 +83,17 @@ void Core::kcb_d_percent() {
 }
 
 void Core::kcb_chs() {
-    hpDisplay.printNumberDisplay(hpAMS.get_x());
+    if (hpTempDisp.cursor == 0) {
+        hpAMS.set_x(hpAMS.get_x() * -1, false);
+        hpDisplay.printNumberDisplay(hpAMS.get_x());
+    } else {
+        if (hpTempDisp.str[0] == '-')
+            hpTempDisp.str[0] = '+';
+        else 
+            hpTempDisp.str[0] = '-';
+        hpAMS.set_x(hpTempDisp.str, false);
+        hpDisplay.printStringDisplay(hpTempDisp.str);
+    }
 }
 
 void Core::kcb_pi() {
@@ -434,7 +444,7 @@ void Core::kcb_c_number(int n) {
     //if (hpFlags.penEnter())
     //    hpAMS.set_x("0");
 
-//    hpFlags.setDisplayWMode(Flags::M_DGT); /// ???????    
+    //    hpFlags.setDisplayWMode(Flags::M_DGT); /// ???????    
     if (hpTempDisp.cursor == 0) {
         hpTempDisp.str[0] = '+';
         hpTempDisp.cursor++;
