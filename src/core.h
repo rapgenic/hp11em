@@ -261,6 +261,7 @@ private:
     //COMMON FUNCTIONS
     void kcb_c_number(int n);
     void kcb_c_stdopr(operators op);
+    void kcb_c_sto_rcl(int storcl);
     void reset_number();
 
     void (Core::*keys_cb[KEY_NUMBER][3])(void) = {

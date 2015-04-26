@@ -362,65 +362,7 @@ void Core::kcb_off() {
 }
 
 void Core::kcb_sto() {
-    static int dot_pressed = 0;
-
-    if (!hpFlags.isPendingData()) {
-        hpFlags.setPendingData(true);
-        pending_data_function = &Core::kcb_sto;
-    } else {
-        if (hpPendingData[pending_data_count - 1].fg == F_NULL && KEY_IS_NUMBER(hpPendingData[pending_data_count - 1].key)) {
-            int loc = -1;
-            switch (hpPendingData[pending_data_count - 1].key) {
-                case Keys::K_NO0:
-                    loc = 0;
-                    break;
-                case Keys::K_NO1:
-                    loc = 1;
-                    break;
-                case Keys::K_NO2:
-                    loc = 2;
-                    break;
-                case Keys::K_NO3:
-                    loc = 3;
-                    break;
-                case Keys::K_NO4:
-                    loc = 4;
-                    break;
-                case Keys::K_NO5:
-                    loc = 5;
-                    break;
-                case Keys::K_NO6:
-                    loc = 6;
-                    break;
-                case Keys::K_NO7:
-                    loc = 7;
-                    break;
-                case Keys::K_NO8:
-                    loc = 8;
-                    break;
-                case Keys::K_NO9:
-                    loc = 9;
-                    break;
-            }
-            if (dot_pressed) {
-                loc += 10;
-                dot_pressed = 0;
-            }
-            hpSR.sr_loc_set(0, hpAMS.get_x());
-            hpFlags.setPendingData(false);
-            pending_data_count = 0;
-        } else if (hpPendingData[0].fg == F_FKEY && hpPendingData[0].key == Keys::K_TAN) {
-            hpSR.sr_loc_set(20, hpAMS.get_x());
-            hpFlags.setPendingData(false);
-            pending_data_count = 0;
-        } else if (hpPendingData[pending_data_count - 1].fg == F_NULL && hpPendingData[pending_data_count - 1].key == Keys::K_DOT) {
-            dot_pressed = 1;
-            return;
-        } else {
-            pending_data_count = 0;
-            hpFlags.setPendingData(false);
-        }
-    }
+    kcb_c_sto_rcl(1);
 }
 
 void Core::kcb_frac() {
@@ -430,65 +372,7 @@ void Core::kcb_int() {
 }
 
 void Core::kcb_rcl() {
-    static int dot_pressed = 0;
-
-    if (!hpFlags.isPendingData()) {
-        hpFlags.setPendingData(true);
-        pending_data_function = &Core::kcb_rcl;
-    } else {
-        if (hpPendingData[pending_data_count - 1].fg == F_NULL && KEY_IS_NUMBER(hpPendingData[pending_data_count - 1].key)) {
-            int loc = -1;
-            switch (hpPendingData[pending_data_count - 1].key) {
-                case Keys::K_NO0:
-                    loc = 0;
-                    break;
-                case Keys::K_NO1:
-                    loc = 1;
-                    break;
-                case Keys::K_NO2:
-                    loc = 2;
-                    break;
-                case Keys::K_NO3:
-                    loc = 3;
-                    break;
-                case Keys::K_NO4:
-                    loc = 4;
-                    break;
-                case Keys::K_NO5:
-                    loc = 5;
-                    break;
-                case Keys::K_NO6:
-                    loc = 6;
-                    break;
-                case Keys::K_NO7:
-                    loc = 7;
-                    break;
-                case Keys::K_NO8:
-                    loc = 8;
-                    break;
-                case Keys::K_NO9:
-                    loc = 9;
-                    break;
-            }
-            if (dot_pressed) {
-                loc += 10;
-                dot_pressed = 0;
-            }
-            hpAMS.stack_add(hpSR.sr_loc_get(loc));
-            pending_data_count = 0;
-            hpFlags.setPendingData(false);
-        } else if (hpPendingData[0].fg == F_FKEY && hpPendingData[0].key == Keys::K_TAN) {
-            hpAMS.stack_add(hpSR.sr_loc_get(20));
-            pending_data_count = 0;
-            hpFlags.setPendingData(false);
-        } else if (hpPendingData[pending_data_count - 1].fg == F_NULL && hpPendingData[pending_data_count - 1].key == Keys::K_DOT) {
-            dot_pressed = 1;
-            return;
-        } else {
-            pending_data_count = 0;
-            hpFlags.setPendingData(false);
-        }
-    }
+    kcb_c_sto_rcl(0);
 }
 
 void Core::kcb_user() {
@@ -638,6 +522,80 @@ void Core::kcb_c_stdopr(operators op) {
 
     reset_number();
     hpFlags.setStackDisabled(false);
+}
+
+void Core::kcb_c_sto_rcl(int storcl) {
+    static int dot_pressed = 0;
+
+    if (!hpFlags.isPendingData()) {
+        hpFlags.setPendingData(true);
+
+        if (storcl)
+            pending_data_function = &Core::kcb_sto;
+        else
+            pending_data_function = &Core::kcb_rcl;
+
+    } else {
+        if (hpPendingData[pending_data_count - 1].fg == F_NULL && KEY_IS_NUMBER(hpPendingData[pending_data_count - 1].key)) {
+            int loc = -1;
+            switch (hpPendingData[pending_data_count - 1].key) {
+                case Keys::K_NO0:
+                    loc = 0;
+                    break;
+                case Keys::K_NO1:
+                    loc = 1;
+                    break;
+                case Keys::K_NO2:
+                    loc = 2;
+                    break;
+                case Keys::K_NO3:
+                    loc = 3;
+                    break;
+                case Keys::K_NO4:
+                    loc = 4;
+                    break;
+                case Keys::K_NO5:
+                    loc = 5;
+                    break;
+                case Keys::K_NO6:
+                    loc = 6;
+                    break;
+                case Keys::K_NO7:
+                    loc = 7;
+                    break;
+                case Keys::K_NO8:
+                    loc = 8;
+                    break;
+                case Keys::K_NO9:
+                    loc = 9;
+                    break;
+            }
+            if (dot_pressed) {
+                loc += 10;
+                dot_pressed = 0;
+            }
+
+            if (storcl)
+                hpSR.sr_loc_set(0, hpAMS.get_x());
+            else
+                hpAMS.stack_add(hpSR.sr_loc_get(loc));
+            hpFlags.setPendingData(false);
+            pending_data_count = 0;
+        } else if (hpPendingData[0].fg == F_FKEY && hpPendingData[0].key == Keys::K_TAN) {
+            if (storcl)
+                hpSR.sr_loc_set(20, hpAMS.get_x());
+            else
+                hpAMS.stack_add(hpSR.sr_loc_get(20));
+            hpFlags.setPendingData(false);
+            pending_data_count = 0;
+        } else if (hpPendingData[pending_data_count - 1].fg == F_NULL && hpPendingData[pending_data_count - 1].key == Keys::K_DOT) {
+            dot_pressed = 1;
+            return;
+        } else {
+            pending_data_count = 0;
+            hpFlags.setPendingData(false);
+        }
+    }
 }
 
 void Core::reset_number() {
