@@ -22,6 +22,9 @@
 
 #include "config.h"
 
+#include <iostream>
+using namespace std;
+
 #include <cln/cln.h>
 using namespace cln;
 

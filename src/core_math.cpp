@@ -526,6 +526,7 @@ void Core::kcb_c_stdopr(operators op) {
 
 void Core::kcb_c_sto_rcl(int storcl) {
     static int dot_pressed = 0;
+    static int operation = -1;
 
     if (!hpFlags.isPendingData()) {
         hpFlags.setPendingData(true);
@@ -536,48 +537,61 @@ void Core::kcb_c_sto_rcl(int storcl) {
             pending_data_function = &Core::kcb_rcl;
 
     } else {
-        if (hpPendingData[pending_data_count - 1].fg == F_NULL && KEY_IS_NUMBER(hpPendingData[pending_data_count - 1].key)) {
+        if ((hpPendingData[pending_data_count - 1].fg == F_NULL && KEY_IS_NUMBER(hpPendingData[pending_data_count - 1].key)) || (hpPendingData[0].fg == F_FKEY && hpPendingData[0].key == Keys::K_TAN)) {
             int loc = -1;
-            switch (hpPendingData[pending_data_count - 1].key) {
-                case Keys::K_NO0:
-                    loc = 0;
-                    break;
-                case Keys::K_NO1:
-                    loc = 1;
-                    break;
-                case Keys::K_NO2:
-                    loc = 2;
-                    break;
-                case Keys::K_NO3:
-                    loc = 3;
-                    break;
-                case Keys::K_NO4:
-                    loc = 4;
-                    break;
-                case Keys::K_NO5:
-                    loc = 5;
-                    break;
-                case Keys::K_NO6:
-                    loc = 6;
-                    break;
-                case Keys::K_NO7:
-                    loc = 7;
-                    break;
-                case Keys::K_NO8:
-                    loc = 8;
-                    break;
-                case Keys::K_NO9:
-                    loc = 9;
-                    break;
-            }
-            if (dot_pressed) {
-                loc += 10;
-                dot_pressed = 0;
-            }
+            if (hpPendingData[pending_data_count - 1].fg == F_NULL) {
+                switch (hpPendingData[pending_data_count - 1].key) {
+                    case Keys::K_NO0:
+                        loc = 0;
+                        break;
+                    case Keys::K_NO1:
+                        loc = 1;
+                        break;
+                    case Keys::K_NO2:
+                        loc = 2;
+                        break;
+                    case Keys::K_NO3:
+                        loc = 3;
+                        break;
+                    case Keys::K_NO4:
+                        loc = 4;
+                        break;
+                    case Keys::K_NO5:
+                        loc = 5;
+                        break;
+                    case Keys::K_NO6:
+                        loc = 6;
+                        break;
+                    case Keys::K_NO7:
+                        loc = 7;
+                        break;
+                    case Keys::K_NO8:
+                        loc = 8;
+                        break;
+                    case Keys::K_NO9:
+                        loc = 9;
+                        break;
+                }
+                if (dot_pressed) {
+                    loc += 10;
+                    dot_pressed = 0;
+                }
+            } else if (hpPendingData[0].fg == F_FKEY && hpPendingData[0].key == Keys::K_TAN)
+                loc = 20;
 
-            if (storcl)
-                hpSR.sr_loc_set(0, hpAMS.get_x());
-            else
+            if (storcl) {
+                if (operation == -1)
+                    hpSR.sr_loc_set(loc, hpAMS.get_x());
+                else if (operation == 0)
+                    hpSR.sr_loc_set(loc, hpSR.sr_loc_get(loc) + hpAMS.get_x());
+                else if (operation == 1)
+                    hpSR.sr_loc_set(loc, hpSR.sr_loc_get(loc) - hpAMS.get_x());
+                else if (operation == 2)
+                    hpSR.sr_loc_set(loc, hpSR.sr_loc_get(loc) * hpAMS.get_x());
+                else if (operation == 3)
+                    hpSR.sr_loc_set(loc, hpSR.sr_loc_get(loc) / hpAMS.get_x());
+                operation == -1;
+            } else
                 hpAMS.stack_add(hpSR.sr_loc_get(loc));
 
             hpDisplay.printNumberDisplay(hpAMS.get_x());
@@ -585,23 +599,20 @@ void Core::kcb_c_sto_rcl(int storcl) {
             hpFlags.setStackDisabled(false);
             hpFlags.setPendingData(false);
             pending_data_count = 0;
-        } else if (hpPendingData[0].fg == F_FKEY && hpPendingData[0].key == Keys::K_TAN) {
-            if (storcl)
-                hpSR.sr_loc_set(20, hpAMS.get_x());
-            else
-                hpAMS.stack_add(hpSR.sr_loc_get(20));
-            
-            hpDisplay.printNumberDisplay(hpAMS.get_x());
-            reset_number();
-            hpFlags.setStackDisabled(false);
-            hpFlags.setPendingData(false);
-            pending_data_count = 0;
         } else if (hpPendingData[pending_data_count - 1].fg == F_NULL && hpPendingData[pending_data_count - 1].key == Keys::K_DOT) {
             dot_pressed = 1;
-            return;
+        } else if (hpPendingData[0].fg == F_NULL && hpPendingData[0].key == Keys::K_PIU) {
+            operation = 0;
+        } else if (hpPendingData[0].fg == F_NULL && hpPendingData[0].key == Keys::K_MEN) {
+            operation = 1;
+        } else if (hpPendingData[0].fg == F_NULL && hpPendingData[0].key == Keys::K_PER) {
+            operation = 2;
+        } else if (hpPendingData[0].fg == F_NULL && hpPendingData[0].key == Keys::K_DIV) {
+            operation = 3;
         } else {
             pending_data_count = 0;
             dot_pressed = 0;
+            operation = -1;
             hpFlags.setPendingData(false);
         }
     }

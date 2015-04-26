@@ -28,6 +28,9 @@ StorageRegister::~StorageRegister() {
 
 bool StorageRegister::sr_loc_set(int loc, cl_R numb) {
     sr[loc] = numb;
+#ifdef DEBUG
+    cout << "STORAGE REGISTER - loc " << loc << " numb " << numb << endl;
+#endif 
     return true;
 }
 
