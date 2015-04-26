@@ -35,6 +35,7 @@ public:
     typedef sigc::signal<void> signal_t;
     typedef sigc::signal<bool, char, bool> signal_alarm_t;
     typedef sigc::signal<bool, string> signal_display_t;
+    typedef sigc::signal<bool, double, double> signal_window_move_t;
 #ifdef DEBUG
     typedef sigc::signal<bool, double, double, double, double, double> d_signal_register_table_t;
     //        typedef sigc::signal<bool, bool, int> d_signal_decimal_t;
@@ -70,6 +71,9 @@ public:
     // GUI to GUI
     signal_t signal_menu();
     void sig_menu_emit();
+    
+    signal_window_move_t signal_window_move();
+    void sig_window_move_emit(double x, double y);
 
 private:
     // Core to GUI
@@ -86,6 +90,7 @@ private:
 
     // GUI to GUI
     signal_t sig_menu;
+    signal_window_move_t sig_window_move;
 };
 
 #endif // SIGNALS_H

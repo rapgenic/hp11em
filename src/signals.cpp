@@ -84,3 +84,11 @@ Signals::signal_t Signals::signal_menu() {
 void Signals::sig_menu_emit() {
     sig_menu.emit();
 }
+
+Signals::signal_window_move_t Signals::signal_window_move() {
+    return sig_window_move;
+}
+
+void Signals::sig_window_move_emit(double x, double y) {
+    sig_window_move.emit(x, y);
+}

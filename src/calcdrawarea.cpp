@@ -27,9 +27,12 @@ CalcDrawArea::CalcDrawArea(Signals *hpsignals_r)
 
     set_events(Gdk::BUTTON_PRESS_MASK);
     add_events(Gdk::BUTTON_RELEASE_MASK);
+    add_events(Gdk::BUTTON_MOTION_MASK);
 
     if (calc_image)
         set_size_request(640, 382);
+
+    last_x = last_y = 0;
 }
 
 CalcDrawArea::~CalcDrawArea() {
@@ -46,8 +49,26 @@ bool CalcDrawArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
     return true;
 }
 
+bool CalcDrawArea::on_motion_notify_event(GdkEventMotion *event) {
+    if (0 <= event->x && event->x <= 640 && 0 <= event->y && event->y <= 100) {
+#ifdef DEBUG
+        cout << "Pressed MOVING AREA" << endl;
+        cout << "MOVE WINDOW TO: (" << event->x_root << "-" << event->x << "),(" << event->y_root << "-" << event->y << ")" << endl;
+#endif
+        hpsignals->sig_window_move_emit(event->x_root - event->x + (event->x_root - last_x), event->y_root - event->y + (event->y_root - last_y));
+        last_x = event->x_root;
+        last_y = event->y_root;
+    }
+}
+
 bool CalcDrawArea::on_button_press_event(GdkEventButton *event) {
+#ifdef DEBUG
+    cout << endl;
+#endif
     int keypressed;
+
+    last_x = event->x_root;
+    last_y = event->y_root;
 
     for (keypressed = 0; keypressed < 39; keypressed++)
         if ((key.key_location[keypressed][0] <= (int) event->x) && (key.key_location[keypressed][2] >= (int) event->x) && (key.key_location[keypressed][1] <= (int) event->y) && (key.key_location[keypressed][3] >= (int) event->y))
