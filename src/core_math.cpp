@@ -579,6 +579,10 @@ void Core::kcb_c_sto_rcl(int storcl) {
                 hpSR.sr_loc_set(0, hpAMS.get_x());
             else
                 hpAMS.stack_add(hpSR.sr_loc_get(loc));
+
+            hpDisplay.printNumberDisplay(hpAMS.get_x());
+            reset_number();
+            hpFlags.setStackDisabled(false);
             hpFlags.setPendingData(false);
             pending_data_count = 0;
         } else if (hpPendingData[0].fg == F_FKEY && hpPendingData[0].key == Keys::K_TAN) {
@@ -586,6 +590,10 @@ void Core::kcb_c_sto_rcl(int storcl) {
                 hpSR.sr_loc_set(20, hpAMS.get_x());
             else
                 hpAMS.stack_add(hpSR.sr_loc_get(20));
+            
+            hpDisplay.printNumberDisplay(hpAMS.get_x());
+            reset_number();
+            hpFlags.setStackDisabled(false);
             hpFlags.setPendingData(false);
             pending_data_count = 0;
         } else if (hpPendingData[pending_data_count - 1].fg == F_NULL && hpPendingData[pending_data_count - 1].key == Keys::K_DOT) {
@@ -593,6 +601,7 @@ void Core::kcb_c_sto_rcl(int storcl) {
             return;
         } else {
             pending_data_count = 0;
+            dot_pressed = 0;
             hpFlags.setPendingData(false);
         }
     }
