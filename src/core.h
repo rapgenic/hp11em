@@ -44,6 +44,8 @@ using namespace std;
                             x == Keys::K_NO8 || \
                             x == Keys::K_NO9)
 
+#define C_PI 3.141592654
+
 class Core : public sigc::trackable {
 public:
     Core(Signals *hpsignals_r);

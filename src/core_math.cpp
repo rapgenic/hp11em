@@ -102,11 +102,21 @@ void Core::kcb_chs() {
 }
 
 void Core::kcb_pi() {
+    if (hpFlags.isStackDisabled()) {
+        hpAMS.set_x(C_PI);
+        hpFlags.setStackDisabled(false);
+    } else {
+        reset_number();
+        hpAMS.stack_add(C_PI);
+    }
     hpDisplay.printNumberDisplay(hpAMS.get_x());
 }
 
 void Core::kcb_abs() {
+    hpAMS.set_x(abs(hpAMS.get_x()));
     hpDisplay.printNumberDisplay(hpAMS.get_x());
+    hpFlags.setStackDisabled(false);
+    reset_number();
 }
 
 void Core::kcb_7() {
