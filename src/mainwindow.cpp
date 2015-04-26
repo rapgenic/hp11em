@@ -20,9 +20,9 @@
 #include "mainwindow.h"
 
 MainWindow::MainWindow(Signals *hpsignals_r)
-: calc(hpsignals_r),
+: calc(hpsignals_r)
 #ifdef DEBUG
-hpDebug(hpsignals_r)
+,hpDebug(hpsignals_r)
 #endif
 {
     // creates the user interface
@@ -52,8 +52,10 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::menu_show() {
+#ifdef DEBUG
     if (hpDebug.is_visible())
         hpDebug.hide();
     else
         hpDebug.show();
+#endif
 }

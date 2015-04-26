@@ -25,6 +25,10 @@ AC_CHECK_HEADER_STDBOOL
 
 # Checks for library functions.
 
+AC_ARG_WITH([debug],
+    AS_HELP_STRING([--with-debug], [Enable debug features]),
+    AC_DEFINE([DEBUG], , ["Debug features enabled"]))
+
 AC_CONFIG_FILES([Makefile])
 
 AC_OUTPUT

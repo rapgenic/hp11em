@@ -11,3 +11,5 @@ To compile it you need to install
 	*autoconf-archive
 
 then you have to run aclocal and autoreconf in the project root
+
+to have debug information run configure with --with-debug option
