@@ -50,7 +50,8 @@ bool CalcDrawArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
 }
 
 bool CalcDrawArea::on_motion_notify_event(GdkEventMotion *event) {
-    if (0 <= event->x && event->x <= 640 && 0 <= event->y && event->y <= 100) {
+//    if (0 <= event->x && event->x <= 640 && 0 <= event->y && event->y <= 100 && event->x < MENU_XS && event->x > MENU_XE && event->y < MENU_YS && event->y > MENU_YE) {
+    if (((event->x >= 0 && event->x < MENU_XS) || (event->x > MENU_XE && event->x <= 640)) && ((event->y >= 0 && event->y < MENU_YS) || (event->y > MENU_YE && event->y <= 100))) {
 #ifdef DEBUG
         cout << "Pressed MOVING AREA" << endl;
         cout << "MOVE WINDOW TO: (" << event->x_root << "-" << event->x << "),(" << event->y_root << "-" << event->y << ")" << endl;
