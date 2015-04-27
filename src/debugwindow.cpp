@@ -104,12 +104,31 @@ quitBtn("Chiudi") {
 DebugWindow::~DebugWindow() {
 }
 
-bool DebugWindow::update_table_registers(double x, double y, double z, double t, double lstx) {
-    lab_x_val.set_label(to_string(x));
-    lab_y_val.set_label(to_string(y));
-    lab_z_val.set_label(to_string(z));
-    lab_t_val.set_label(to_string(t));
-    lab_lst_x_val.set_label(to_string(lstx));
+bool DebugWindow::update_table_registers(cl_R x, cl_R y, cl_R z, cl_R t, cl_R lstx) {
+    ostringstream tempstreamstring;
+
+    tempstreamstring << x;
+    lab_x_val.set_label(tempstreamstring.str());
+    tempstreamstring.~ostringstream();
+    new (&tempstreamstring) ostringstream();
+
+    tempstreamstring << y;
+    lab_y_val.set_label(tempstreamstring.str());
+    tempstreamstring.~ostringstream();
+    new (&tempstreamstring) ostringstream();
+    
+    tempstreamstring << z;
+    lab_z_val.set_label(tempstreamstring.str());
+    tempstreamstring.~ostringstream();
+    new (&tempstreamstring) ostringstream();
+    
+    tempstreamstring << t;
+    lab_t_val.set_label(tempstreamstring.str());
+    tempstreamstring.~ostringstream();
+    new (&tempstreamstring) ostringstream();
+    
+    tempstreamstring << lstx;
+    lab_lst_x_val.set_label(tempstreamstring.str());
 
     return false;
 }

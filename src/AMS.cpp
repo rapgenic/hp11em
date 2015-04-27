@@ -20,8 +20,12 @@
 #include "AMS.h"
 
 AutomaticMemoryStack::AutomaticMemoryStack() {
+    x = y = z = t = "1L-99_10";
+    x = y = z = t = "9.999999999L99_10";
     x = y = z = t = 0;
-
+#ifdef DEBUG
+    cout << "X VALUE: " << x << endl;
+#endif
     flags.lsyntax = lsyntax_all;
     flags.syntax = syntax_real;
     flags.rational_base = 10;

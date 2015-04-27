@@ -63,7 +63,7 @@ Signals::d_signal_register_table_t Signals::signal_update_registers_table() {
     return sig_register_table;
 }
 
-void Signals::sig_update_register_table_emit(double x, double y, double z, double t, double lstx) {
+void Signals::sig_update_register_table_emit(cl_R x, cl_R y, cl_R z, cl_R t, cl_R lstx) {
     sig_register_table.emit(x, y, z, t, lstx);
 }
 
