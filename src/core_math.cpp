@@ -20,6 +20,7 @@
 #include "core.h"
 
 void Core::kcb_sqrt() {
+    hpAMS.set_x(sqrt(hpAMS.get_x()));
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
@@ -33,7 +34,6 @@ void Core::kcb_alpha_a() {
 
 void Core::kcb_x_2() {
     hpAMS.set_x(square(hpAMS.get_x()));
-
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
@@ -94,6 +94,7 @@ void Core::kcb_percent() {
 }
 
 void Core::kcb_1_x() {
+    hpAMS.set_x(1/hpAMS.get_x());
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
@@ -560,12 +561,14 @@ void Core::kcb_sto() {
 }
 
 void Core::kcb_frac() {
+    hpAMS.set_x(hpAMS.get_x() - floor1(hpAMS.get_x()));
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
 }
 
 void Core::kcb_int() {
+    hpAMS.set_x(floor1(hpAMS.get_x()));
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
@@ -819,7 +822,6 @@ void Core::kcb_c_sto_rcl(int storcl) {
                     hpSR.sr_loc_set(loc, hpSR.sr_loc_get(loc) * hpAMS.get_x());
                 else if (operation == 3)
                     hpSR.sr_loc_set(loc, hpSR.sr_loc_get(loc) / hpAMS.get_x());
-                operation == -1;
             } else
                 hpAMS.stack_add(hpSR.sr_loc_get(loc));
 
@@ -828,6 +830,7 @@ void Core::kcb_c_sto_rcl(int storcl) {
             hpFlags.setStackDisabled(false);
             hpFlags.setPendingData(false);
             pending_data_count = 0;
+            operation == -1;
         } else if (hpPendingData[pending_data_count - 1].fg == F_NULL && hpPendingData[pending_data_count - 1].key == Keys::K_DOT) {
             dot_pressed = 1;
         } else if (hpPendingData[0].fg == F_NULL && hpPendingData[0].key == Keys::K_PIU) {
