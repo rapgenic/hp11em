@@ -52,12 +52,15 @@ void Core::kcb_alpha_b() {
 }
 
 void Core::kcb_ln() {
+    hpAMS.set_x(ln(hpAMS.get_x()));
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
 }
 
 void Core::kcb_10_x() {
+    // expt requires exponent to be INTEGER, but we wanto to use even decimals
+    hpAMS.set_x(expt(static_cast<cl_R>(10), floor1(hpAMS.get_x())));    
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
@@ -70,6 +73,7 @@ void Core::kcb_alpha_c() {
 }
 
 void Core::kcb_log() {
+    hpAMS.set_x(log(hpAMS.get_x(), 10));
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
