@@ -80,7 +80,8 @@ void Core::kcb_log() {
 }
 
 void Core::kcb_y_x() {
-    hpDisplay.printNumberDisplay(hpAMS.get_x());
+    // expt requires exponent to be INTEGER, but we wanto to use even decimals
+    hpDisplay.printNumberDisplay(expt(hpAMS.get_y(), floor1(hpAMS.get_x())));
     reset_number();
     hpFlags.setStackDisabled(false);
 }
