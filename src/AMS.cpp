@@ -20,12 +20,15 @@
 #include "AMS.h"
 
 AutomaticMemoryStack::AutomaticMemoryStack() {
-    x = y = z = t = "1L-99_10";
-    x = y = z = t = "9.999999999L99_10";
-    x = y = z = t = 0;
+    lst_x = x = y = z = t = hlimit = "9.999999999L99_10";
+    lst_x = x = y = z = t = llimit = "1L-99_10";
+    lst_x = x = y = z = t = 0;
+
 #ifdef DEBUG
-    cout << "X VALUE: " << x << endl;
+    cout << "MAX_NUMBER: " << hlimit << endl;
+    cout << "MIN_NUMBER: " << llimit << endl;
 #endif
+
     flags.lsyntax = lsyntax_all;
     flags.syntax = syntax_real;
     flags.rational_base = 10;
@@ -75,13 +78,13 @@ void AutomaticMemoryStack::set_x(char* num, bool using_lst_x) {
     //cnum = read_real(flags, num, NULL, &eop);
     cnum = num;
 
-    if ((cnum / 1000000000) < 10) {
-        if (using_lst_x) {
-            lst_x = x;
-            x = cnum;
-        } else {
-            x = cnum;
-        }
+    round_to_limits(cnum);
+
+    if (using_lst_x) {
+        lst_x = x;
+        x = cnum;
+    } else {
+        x = cnum;
     }
 }
 
@@ -91,10 +94,9 @@ void AutomaticMemoryStack::set_y(char* num) {
     cl_R cnum;
     //cnum = read_real(flags, num, NULL, &eop);
     cnum = num;
+    round_to_limits(cnum);
 
-    if ((cnum / 1000000000) < 10) {
-        y = cnum;
-    }
+    y = cnum;
 }
 
 void AutomaticMemoryStack::set_z(char* num) {
@@ -103,10 +105,10 @@ void AutomaticMemoryStack::set_z(char* num) {
     cl_R cnum;
     //cnum = read_real(flags, num, NULL, &eop);
     cnum = num;
+    round_to_limits(cnum);
 
-    if ((cnum / 1000000000) < 10) {
-        z = cnum;
-    }
+    z = cnum;
+
 }
 
 void AutomaticMemoryStack::set_t(char* num) {
@@ -115,10 +117,9 @@ void AutomaticMemoryStack::set_t(char* num) {
     cl_R cnum;
     //cnum = read_real(flags, num, NULL, &eop);
     cnum = num;
+    round_to_limits(cnum);
 
-    if ((cnum / 1000000000) < 10) {
-        t = cnum;
-    }
+    t = cnum;
 }
 
 void AutomaticMemoryStack::set_lst_x(char* num) {
@@ -127,39 +128,51 @@ void AutomaticMemoryStack::set_lst_x(char* num) {
     cl_R cnum;
     //cnum = read_real(flags, num, NULL, &eop);
     cnum = num;
+    round_to_limits(cnum);
 
-    if ((cnum / 1000000000) < 10) {
-        lst_x = cnum;
-    }
+    lst_x = cnum;
 }
 
 void AutomaticMemoryStack::set_lst_x(cl_R num) {
-    if ((num / 1000000000) < 10)
-        lst_x = num;
+    round_to_limits(num);
+    lst_x = num;
 }
 
 void AutomaticMemoryStack::set_x(cl_R num, bool using_lst_x) {
-    if ((num / 1000000000) < 10) {
-        if (using_lst_x) {
-            lst_x = x;
-            x = num;
-        } else {
-            x = num;
-        }
+    round_to_limits(num);
+    if (using_lst_x) {
+        lst_x = x;
+        x = num;
+    } else {
+        x = num;
     }
 }
 
 void AutomaticMemoryStack::set_y(cl_R num) {
-    if ((num / 1000000000) < 10)
-        y = num;
+    round_to_limits(num);
+    y = num;
 }
 
 void AutomaticMemoryStack::set_z(cl_R num) {
-    if ((num / 1000000000) < 10)
-        z = num;
+    round_to_limits(num);
+    z = num;
 }
 
 void AutomaticMemoryStack::set_t(cl_R num) {
-    if ((num / 1000000000) < 10)
-        t = num;
-} 
+    round_to_limits(num);
+    t = num;
+}
+
+void AutomaticMemoryStack::round_to_limits(cl_R& num) {
+    if (num > hlimit) {
+#ifdef DEBUG
+        cout << "NUMBER EXCEEDED MAXIMUM VALUE" << endl;
+#endif
+        num = hlimit;
+    } else if (num < llimit) {
+#ifdef DEBUG
+        cout << "NUMBER EXCEEDED MINIMUM VALUE" << endl;
+#endif
+        num = llimit;
+    }
+}
