@@ -68,7 +68,7 @@ void Core::keyPressEvent(int key) {
             }
             f_key_set(F_NULL);
 #ifdef DEBUG
-            hpSignals->sig_update_register_table_emit(double_approx(hpAMS.get_x()), double_approx(hpAMS.get_y()), double_approx(hpAMS.get_z()), double_approx(hpAMS.get_t()), double_approx(hpAMS.get_lst_x()));
+            hpSignals->sig_update_register_table_emit(hpAMS.get_x(), hpAMS.get_y(), hpAMS.get_z(), hpAMS.get_t(), hpAMS.get_lst_x());
             //            hpsignals->sig_update_decimal_emit(hpFlags.isDecimal(), hpFlags.getDecimalCount());
             cerr << KBLU << "Pressed Key Number: " << key << KRST << endl;
 #endif

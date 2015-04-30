@@ -42,14 +42,14 @@ void AutomaticMemoryStack::stack_add(cl_R number) {
     t = z;
     z = y;
     y = x;
-    x = number;
+    x = round_to_limits(number);
 }
 
 void AutomaticMemoryStack::stack_add(char* num) {
     t = z;
     z = y;
     y = x;
-    x = num;
+    x = round_to_limits(num);
 }
 
 cl_R AutomaticMemoryStack::get_x() {
@@ -75,11 +75,7 @@ cl_R AutomaticMemoryStack::get_lst_x() {
 void AutomaticMemoryStack::set_x(char* num, bool using_lst_x) {
     //const char* eop;
 
-    cl_R cnum;
-    //cnum = read_real(flags, num, NULL, &eop);
-    cnum = num;
-
-    round_to_limits(cnum);
+    cl_R cnum = round_to_limits(num);
 
     if (using_lst_x) {
         lst_x = x;
@@ -92,10 +88,7 @@ void AutomaticMemoryStack::set_x(char* num, bool using_lst_x) {
 void AutomaticMemoryStack::set_y(char* num) {
     //const char* eop;
 
-    cl_R cnum;
-    //cnum = read_real(flags, num, NULL, &eop);
-    cnum = num;
-    round_to_limits(cnum);
+    cl_R cnum = round_to_limits(num);
 
     y = cnum;
 }
@@ -103,10 +96,7 @@ void AutomaticMemoryStack::set_y(char* num) {
 void AutomaticMemoryStack::set_z(char* num) {
     //const char* eop;
 
-    cl_R cnum;
-    //cnum = read_real(flags, num, NULL, &eop);
-    cnum = num;
-    round_to_limits(cnum);
+    cl_R cnum = round_to_limits(num);
 
     z = cnum;
 
@@ -115,10 +105,7 @@ void AutomaticMemoryStack::set_z(char* num) {
 void AutomaticMemoryStack::set_t(char* num) {
     //const char* eop;
 
-    cl_R cnum;
-    //cnum = read_real(flags, num, NULL, &eop);
-    cnum = num;
-    round_to_limits(cnum);
+    cl_R cnum = round_to_limits(num);
 
     t = cnum;
 }
@@ -126,21 +113,17 @@ void AutomaticMemoryStack::set_t(char* num) {
 void AutomaticMemoryStack::set_lst_x(char* num) {
     //const char* eop;
 
-    cl_R cnum;
-    //cnum = read_real(flags, num, NULL, &eop);
-    cnum = num;
-    round_to_limits(cnum);
+    cl_R cnum = round_to_limits(num);
 
     lst_x = cnum;
 }
 
 void AutomaticMemoryStack::set_lst_x(cl_R num) {
-    round_to_limits(num);
-    lst_x = num;
+    lst_x = round_to_limits(num);;
 }
 
 void AutomaticMemoryStack::set_x(cl_R num, bool using_lst_x) {
-    round_to_limits(num);
+    num = round_to_limits(num);
     if (using_lst_x) {
         lst_x = x;
         x = num;
@@ -150,30 +133,34 @@ void AutomaticMemoryStack::set_x(cl_R num, bool using_lst_x) {
 }
 
 void AutomaticMemoryStack::set_y(cl_R num) {
-    round_to_limits(num);
-    y = num;
+    y = round_to_limits(num);;
 }
 
 void AutomaticMemoryStack::set_z(cl_R num) {
-    round_to_limits(num);
-    z = num;
+    z = round_to_limits(num);;
 }
 
 void AutomaticMemoryStack::set_t(cl_R num) {
-    round_to_limits(num);
-    t = num;
+    t = round_to_limits(num);;
 }
 
-void AutomaticMemoryStack::round_to_limits(cl_R& num) {
+cl_R AutomaticMemoryStack::round_to_limits(cl_R num) {
+/*
     if (num > hlimit) {
 #ifdef DEBUG
         cerr << KYEL << "NUMBER EXCEEDED MAXIMUM VALUE" << KRST << endl;
 #endif
-        num = hlimit;
+        return hlimit;
     } else if (num < llimit) {
 #ifdef DEBUG
         cerr << KYEL << "NUMBER EXCEEDED MINIMUM VALUE" << KRST << endl;
 #endif
-        num = llimit;
+        return llimit;
     }
+*/
+
+#ifdef DEBUG
+    cerr << KYEL << "Warning: internal registers limit NOT SUPPORTED YET" << KRST << endl;
+#endif     
+    return num;
 }

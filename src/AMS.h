@@ -53,7 +53,7 @@ public:
     void set_t(char* num);
     void set_lst_x(char* num);
 private:
-    void round_to_limits(cl_R &num);
+    cl_R round_to_limits(cl_R num);
 
     cl_R x, y, z, t, lst_x;
 

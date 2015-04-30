@@ -60,11 +60,11 @@ bool DisplayModule::printNumberDisplay(cl_R numb) {
 bool DisplayModule::printErrorDisplay(int x) {
     hpSignals->sig_display_emit("Error"+to_string(x));
     
-    cerr << KRED << "CALCULATOR ERROR" << x << KRST << endl;
+    cerr << KRED << "CALCULATOR ERROR " << x << KRST << endl;
     
     return true;
 }
 
 string DisplayModule::to_display(double num) {
-    return "ciao";
+    return "Error ";
 }
