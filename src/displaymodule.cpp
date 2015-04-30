@@ -20,6 +20,7 @@
 
 #include "displaymodule.h"
 #include "flags.h"
+#include "colors.h"
 
 DisplayModule::DisplayModule(Signals *hpsignals_r, Flags *hpflags_r) {
     hpSignals = hpsignals_r;
@@ -47,10 +48,8 @@ bool DisplayModule::printNumberDisplay(cl_R numb) {
     display_stream << fixed;
     display_stream << setprecision(4) << float_approx(numb);
     
-#ifdef DEBUG
-    
-    cout << "printNumberDisplay(): number = " << display_stream.str() << endl;
-    
+#ifdef DEBUG  
+    cerr << KBLU << "printNumberDisplay(): number = " << display_stream.str() << KRST << endl;  
 #endif
     
     hpSignals->sig_display_emit(((numb >= 0) ? "+" : "") + display_stream.str());
@@ -60,6 +59,8 @@ bool DisplayModule::printNumberDisplay(cl_R numb) {
 
 bool DisplayModule::printErrorDisplay(int x) {
     hpSignals->sig_display_emit("Error"+to_string(x));
+    
+    cerr << KRED << "CALCULATOR ERROR" << x << KRST << endl;
     
     return true;
 }

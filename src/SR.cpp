@@ -18,6 +18,8 @@
  */
 #include "SR.h"
 
+#include "colors.h"
+
 StorageRegister::StorageRegister() {
     for (int i = 0; i < 21; i++) 
         sr[i] = 0;
@@ -29,7 +31,7 @@ StorageRegister::~StorageRegister() {
 bool StorageRegister::sr_loc_set(int loc, cl_R numb) {
     sr[loc] = numb;
 #ifdef DEBUG
-    cout << "STORAGE REGISTER - loc " << loc << " numb " << numb << endl;
+    cerr << KBLU << "STORAGE REGISTER - loc " << loc << " numb " << numb << KRST << endl;
 #endif 
     return true;
 }

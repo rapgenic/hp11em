@@ -18,6 +18,7 @@
  */
 
 #include "calcdrawarea.h"
+#include "colors.h"
 
 CalcDrawArea::CalcDrawArea(Signals *hpsignals_r)
 : display_hp(hpsignals_r) {
@@ -52,10 +53,6 @@ bool CalcDrawArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
 bool CalcDrawArea::on_motion_notify_event(GdkEventMotion *event) {
 //    if (0 <= event->x && event->x <= 640 && 0 <= event->y && event->y <= 100 && event->x < MENU_XS && event->x > MENU_XE && event->y < MENU_YS && event->y > MENU_YE) {
     if (((event->x >= 0 && event->x < MENU_XS) || (event->x > MENU_XE && event->x <= 640)) && ((event->y >= 0 && event->y < MENU_YS) || (event->y > MENU_YE && event->y <= 100))) {
-#ifdef DEBUG
-        cout << "Pressed MOVING AREA" << endl;
-        cout << "MOVE WINDOW TO: (" << event->x_root << "-" << event->x << "),(" << event->y_root << "-" << event->y << ")" << endl;
-#endif
         hpsignals->sig_window_move_emit(event->x_root - event->x + (event->x_root - last_x), event->y_root - event->y + (event->y_root - last_y));
         last_x = event->x_root;
         last_y = event->y_root;
@@ -64,7 +61,7 @@ bool CalcDrawArea::on_motion_notify_event(GdkEventMotion *event) {
 
 bool CalcDrawArea::on_button_press_event(GdkEventButton *event) {
 #ifdef DEBUG
-    cout << endl;
+    cerr << endl;
 #endif
     int keypressed;
 
@@ -76,13 +73,13 @@ bool CalcDrawArea::on_button_press_event(GdkEventButton *event) {
             break;
 
 #ifdef DEBUG
-    std::cout << "Key Pressed: X = " << event->x << "; Y = " << event->y << std::endl << std::flush;
+    std::cerr << KBLU << "Key Pressed: X = " << event->x << "; Y = " << event->y << KRST << std::endl << std::flush;
 #endif
 
     if (keypressed == 39) {
         if ((MENU_XS <= (int) event->x) && (MENU_XE >= (int) event->x) && (MENU_YS <= (int) event->y) && (MENU_YE >= (int) event->y)) {
 #ifdef DEBUG
-            std::cout << "Pressed Menu Key" << std::endl << std::flush;
+            std::cerr << KBLU << "Pressed Menu Key" << KRST << std::endl << std::flush;
 #endif
             hpsignals->sig_menu_emit();
             return true;

@@ -18,6 +18,7 @@
  */
 
 #include "core.h"
+#include "colors.h"
 
 // <<TBD>> write the whole core
 
@@ -69,7 +70,7 @@ void Core::keyPressEvent(int key) {
 #ifdef DEBUG
             hpSignals->sig_update_register_table_emit(double_approx(hpAMS.get_x()), double_approx(hpAMS.get_y()), double_approx(hpAMS.get_z()), double_approx(hpAMS.get_t()), double_approx(hpAMS.get_lst_x()));
             //            hpsignals->sig_update_decimal_emit(hpFlags.isDecimal(), hpFlags.getDecimalCount());
-            cout << "Pressed Key Number: " << key << endl;
+            cerr << KBLU << "Pressed Key Number: " << key << KRST << endl;
 #endif
             break;
     }

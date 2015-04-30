@@ -19,6 +19,8 @@
 
 #include "mainwindow.h"
 
+#include "colors.h"
+
 MainWindow::MainWindow(Signals *hpsignals_r)
 : calc(hpsignals_r)
 #ifdef DEBUG
@@ -31,7 +33,7 @@ MainWindow::MainWindow(Signals *hpsignals_r)
     try {
         icon = Gdk::Pixbuf::create_from_xpm_data(icon_xpm);
     } catch (const Gdk::PixbufError& ex) {
-        std::cerr << "PixbufError: " << ex.what() << std::endl;
+        std::cerr << KRED << "PixbufError: " << ex.what() << KRST << std::endl;
     }
 
     set_icon(icon);
@@ -54,9 +56,6 @@ MainWindow::~MainWindow() {
 }
 
 bool MainWindow::move_to(double x, double y) {
-#ifdef DEBUG
-    cout << "RECEIVED COORINATES" << endl;
-#endif
     move(static_cast<int>(x), static_cast<int>(y));
 }
 

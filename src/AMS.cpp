@@ -18,6 +18,7 @@
  */
 
 #include "AMS.h"
+#include "colors.h"
 
 AutomaticMemoryStack::AutomaticMemoryStack() {
     lst_x = x = y = z = t = hlimit = "9.999999999L99_10";
@@ -25,8 +26,8 @@ AutomaticMemoryStack::AutomaticMemoryStack() {
     lst_x = x = y = z = t = 0;
 
 #ifdef DEBUG
-    cout << "MAX_NUMBER: " << hlimit << endl;
-    cout << "MIN_NUMBER: " << llimit << endl;
+    cerr << KBLU << "MAX_NUMBER: " << hlimit << KRST << endl;
+    cerr << KBLU << "MIN_NUMBER: " << llimit << KRST << endl;
 #endif
 
     flags.lsyntax = lsyntax_all;
@@ -166,12 +167,12 @@ void AutomaticMemoryStack::set_t(cl_R num) {
 void AutomaticMemoryStack::round_to_limits(cl_R& num) {
     if (num > hlimit) {
 #ifdef DEBUG
-        cout << "NUMBER EXCEEDED MAXIMUM VALUE" << endl;
+        cerr << KYEL << "NUMBER EXCEEDED MAXIMUM VALUE" << KRST << endl;
 #endif
         num = hlimit;
     } else if (num < llimit) {
 #ifdef DEBUG
-        cout << "NUMBER EXCEEDED MINIMUM VALUE" << endl;
+        cerr << KYEL << "NUMBER EXCEEDED MINIMUM VALUE" << KRST << endl;
 #endif
         num = llimit;
     }
