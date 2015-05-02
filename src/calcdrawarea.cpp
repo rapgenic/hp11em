@@ -29,6 +29,8 @@ CalcDrawArea::CalcDrawArea(Signals *hpsignals_r)
     set_events(Gdk::BUTTON_PRESS_MASK);
     add_events(Gdk::BUTTON_RELEASE_MASK);
     add_events(Gdk::BUTTON_MOTION_MASK);
+    add_events(Gdk::KEY_PRESS_MASK);
+    add_events(Gdk::KEY_RELEASE_MASK);
 
     if (calc_image)
         set_size_request(640, 382);
@@ -100,6 +102,20 @@ bool CalcDrawArea::on_button_release_event(GdkEventButton *event) {
     // We have to update also the display to keep its content
     button_release_draw();
 
+    return true;
+}
+
+bool CalcDrawArea::on_key_press_event(GdkEventKey* event) {
+#ifdef DEBUG
+    cerr << endl;
+    cerr << KBLU << "Keyboard Pressed: " << event->keyval << KRST << endl;
+#endif
+    return true;
+}
+
+bool CalcDrawArea::on_key_release_event(GdkEventKey* event) {
+    button_release_draw();
+    
     return true;
 }
 

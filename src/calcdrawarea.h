@@ -56,6 +56,9 @@ protected:
     virtual bool on_motion_notify_event(GdkEventMotion *event);
     virtual bool on_button_press_event(GdkEventButton *event);
     virtual bool on_button_release_event(GdkEventButton *event);
+    virtual bool on_key_press_event(GdkEventKey* event);
+    virtual bool on_key_release_event(GdkEventKey* event);
+
 
     bool button_press_draw(int keypressed);
     bool button_release_draw();

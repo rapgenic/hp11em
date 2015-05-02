@@ -39,7 +39,7 @@ MainWindow::MainWindow(Signals *hpsignals_r)
     set_icon(icon);
     set_resizable(false);
     set_decorated(false);
-
+    
     hpsignals->signal_off().connect(sigc::mem_fun(*this, &MainWindow::hide));
     hpsignals->signal_menu().connect(sigc::mem_fun(*this, &MainWindow::menu_show));
     hpsignals->signal_window_move().connect(sigc::mem_fun(*this, &MainWindow::move_to));

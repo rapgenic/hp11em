@@ -87,6 +87,7 @@ protected:
     string display_text = "+0.000";
 
     virtual bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr);
+    
     bool draw_figure(const Cairo::RefPtr<Cairo::Context>& cr, int x, int y, int segs);
     bool draw_negative(const Cairo::RefPtr<Cairo::Context>& cr);
     bool draw_display(const Cairo::RefPtr<Cairo::Context>& cr);

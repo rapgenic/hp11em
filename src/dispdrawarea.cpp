@@ -25,6 +25,9 @@
 DispDrawArea::DispDrawArea(Signals *hpsignals_r) {
     hpsignals = hpsignals_r;
 
+    set_events(Gdk::KEY_PRESS_MASK);
+    add_events(Gdk::KEY_RELEASE_MASK);
+    
     hpsignals->signal_alarm().connect(sigc::mem_fun(*this, &DispDrawArea::switch_alarm));
     hpsignals->signal_display().connect(sigc::mem_fun(*this, &DispDrawArea::display_write));
 
