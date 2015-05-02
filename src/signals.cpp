@@ -17,6 +17,14 @@
     along with HP11em.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "config.h"
+
+#include <sigc++/sigc++.h>
+#include <string>
+using std::string;
+
+#include <cln/cln.h>
+
 #include "signals.h"
 
 Signals::Signals() {
@@ -66,14 +74,6 @@ Signals::d_signal_register_table_t Signals::signal_update_registers_table() {
 void Signals::sig_update_register_table_emit(cl_R x, cl_R y, cl_R z, cl_R t, cl_R lstx) {
     sig_register_table.emit(x, y, z, t, lstx);
 }
-
-/*Signals::d_signal_decimal_t Signals::signal_update_decimal() {
-    return sig_decimal;
-}*/
-
-/*void Signals::sig_update_decimal_emit(bool isDecimal, int decimalCount) {
-    sig_decimal.emit(isDecimal, decimalCount);
-}*/
 
 #endif
 

@@ -19,26 +19,21 @@
 
 #include "config.h"
 
-
 #ifdef DEBUG
 
 #ifndef DEBUGWINDOW_H_
 #define DEBUGWINDOW_H_
 
-#include "icon.xpm"
-
 #include "signals.h"
 
 #include <iostream>
 #include <ostream>
-#include <string>
-using namespace std;
+using std::ostringstream;
 
-#include <gtkmm/window.h>
-#include <gtkmm/grid.h>
-#include <gtkmm/label.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/button.h>
+#include <string>
+#include <gtkmm.h>
+
+#include "icon.xpm"
 
 class DebugWindow : public Gtk::Window {
 public:

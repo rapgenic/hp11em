@@ -17,10 +17,32 @@
     along with HP11em.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "config.h"
 
-#include "displaymodule.h"
+#include <string>
+using std::to_string;
+
+#include <iostream>
+using std::cerr;
+using std::endl;
+
+#include <iomanip>
+using std::setprecision;
+using std::fixed;
+
+#include <sstream>
+using std::ostringstream;
+
+#include <cln/cln.h>
+using cln::float_approx;
+
+#include <locale>
+using std::locale;
+
+#include "signals.h"
 #include "flags.h"
 #include "colors.h"
+#include "displaymodule.h"
 
 DisplayModule::DisplayModule(Signals *hpsignals_r, Flags *hpflags_r) {
     hpSignals = hpsignals_r;
@@ -34,17 +56,9 @@ bool DisplayModule::printStringDisplay(string disp) {
 }
 
 bool DisplayModule::printNumberDisplay(cl_R numb) {
-    //string disp = std::to_string(numb);
-
-    //disp.insert(0, (numb >= 0 ? "+" : "-"));
-
-    //hpsignals->sig_display_emit(disp);
-
-    //hpsignals->sig_display_emit("+7357");
-
     ostringstream display_stream;
     
-    display_stream.imbue(std::locale("en_US.UTF-8"));
+    display_stream.imbue(locale("en_US.UTF-8"));
     display_stream << fixed;
     display_stream << setprecision(4) << float_approx(numb);
     

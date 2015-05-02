@@ -17,9 +17,23 @@
     along with HP11em.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "mainwindow.h"
+#include "config.h"
 
-#include "colors.h"
+#include <iostream>
+
+#include <gtkmm/window.h>
+#include <gdkmm/pixbuf.h>
+#include <gtkmm/fixed.h>
+
+#include "calcdrawarea.h"
+#include "core.h"
+#include "signals.h"
+
+#ifdef DEBUG
+#include "debugwindow.h"
+#endif
+
+#include "mainwindow.h"
 
 MainWindow::MainWindow(Signals *hpsignals_r)
 : calc(hpsignals_r)

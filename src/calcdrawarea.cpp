@@ -17,8 +17,19 @@
     along with HP11em.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "calcdrawarea.h"
+#include "config.h"
+
+#include <iostream>
+
+#include <gtkmm.h>
+
+#include "core.h"
+#include "keys.h"
+#include "signals.h"
+#include "dispdrawarea.h"
 #include "colors.h"
+
+#include "calcdrawarea.h"
 
 CalcDrawArea::CalcDrawArea(Signals *hpsignals_r)
 : display_hp(hpsignals_r) {

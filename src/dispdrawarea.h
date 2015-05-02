@@ -29,13 +29,10 @@ using std::endl;
 #include <string>
 using std::string;
 
-#include <gtkmm/drawingarea.h>
-#include <gdkmm/pixbuf.h>
-#include <gdkmm.h>
-#include <glibmm/fileutils.h>
-#include <cairomm/context.h>
+#include <gtkmm.h>
 
 #include "signals.h"
+
 #include "hp11c.xpm"
 
 #define DISP_BG 0x6D8269FF

@@ -23,25 +23,28 @@
 #include "config.h"
 
 #include <string>
-using namespace std;
+using std::to_string;
+
+#include <iostream>
+using std::cerr;
+using std::endl;
 
 #include <iomanip>
-using namespace std;
-
-#include <sstream>
-using namespace std;
+using std::setprecision;
+using std::fixed;
 
 #include <ostream>
-using namespace std;
+using std::ostringstream;
 
 #include <cln/cln.h>
-using namespace cln;
+using cln::float_approx;
 
 #include <locale>
-using namespace std;
+using std::locale;
 
 #include "signals.h"
 #include "flags.h"
+#include "colors.h"
 
 class DisplayModule : public sigc::trackable {
 public:

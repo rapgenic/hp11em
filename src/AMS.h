@@ -23,10 +23,16 @@
 #include "config.h"
 
 #include <cln/cln.h>
-using namespace cln;
+using cln::cl_R;
+using cln::cl_read_flags;
+using cln::lsyntax_all;
+using cln::syntax_real;
 
 #include <iostream>
-using namespace std;
+using std::cerr;
+using std::endl;
+
+#include "colors.h"
 
 class AutomaticMemoryStack {
 public:

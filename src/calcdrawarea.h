@@ -24,18 +24,16 @@
 
 #include <iostream>
 
-#include <gtkmm/drawingarea.h>
-#include <gdkmm/pixbuf.h>
-#include <gdkmm.h>
-#include <glibmm/fileutils.h>
-#include <cairomm/context.h>
+#include <gtkmm.h>
 
-#include "hp11c.xpm"
-#include "icon.xpm"
 #include "core.h"
 #include "keys.h"
 #include "signals.h"
 #include "dispdrawarea.h"
+#include "colors.h"
+
+#include "hp11c.xpm"
+#include "icon.xpm"
 
 #define MENU_XS 562
 #define MENU_YS 22

@@ -16,9 +16,20 @@
     You should have received a copy of the GNU General Public License
     along with HP11em.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include "config.h"
 
-#include "AMS.h"
+#include <cln/cln.h>
+using cln::cl_R;
+using cln::cl_read_flags;
+using cln::lsyntax_all;
+using cln::syntax_real;
+
+#include <iostream>
+using std::cerr;
+using std::endl;
+
 #include "colors.h"
+#include "AMS.h"
 
 AutomaticMemoryStack::AutomaticMemoryStack() {
     lst_x = x = y = z = t = hlimit = "9.999999999L99_10";
@@ -73,8 +84,6 @@ cl_R AutomaticMemoryStack::get_lst_x() {
 }
 
 void AutomaticMemoryStack::set_x(char* num, bool using_lst_x) {
-    //const char* eop;
-
     cl_R cnum = round_to_limits(num);
 
     if (using_lst_x) {
@@ -86,35 +95,22 @@ void AutomaticMemoryStack::set_x(char* num, bool using_lst_x) {
 }
 
 void AutomaticMemoryStack::set_y(char* num) {
-    //const char* eop;
-
     cl_R cnum = round_to_limits(num);
-
     y = cnum;
 }
 
 void AutomaticMemoryStack::set_z(char* num) {
-    //const char* eop;
-
     cl_R cnum = round_to_limits(num);
-
     z = cnum;
-
 }
 
 void AutomaticMemoryStack::set_t(char* num) {
-    //const char* eop;
-
     cl_R cnum = round_to_limits(num);
-
     t = cnum;
 }
 
 void AutomaticMemoryStack::set_lst_x(char* num) {
-    //const char* eop;
-
     cl_R cnum = round_to_limits(num);
-
     lst_x = cnum;
 }
 

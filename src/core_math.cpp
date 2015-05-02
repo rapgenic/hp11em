@@ -17,6 +17,22 @@
     along with HP11em.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "config.h"
+
+#include <iostream>
+using std::cerr;
+using std::endl;
+
+#include <cln/cln.h>
+using cln::square;
+
+#include "keys.h"
+#include "signals.h"
+#include "dispdrawarea.h"
+#include "displaymodule.h"
+#include "AMS.h"
+#include "flags.h"
+#include "SR.h"
 #include "core.h"
 
 void Core::kcb_sqrt() {
@@ -612,8 +628,6 @@ void Core::kcb_avg_x() {
 }
 
 void Core::kcb_dot() {
-    //    hpFlags.setDecimal(true);
-    //    hpFlags.incDecimalCount();
     hpTempDisp.str[hpTempDisp.cursor] = '.';
     hpTempDisp.str[hpTempDisp.cursor + 1] = '\0';
     hpTempDisp.cursor++;
@@ -687,23 +701,6 @@ void Core::kcb_lst_x() {
  */
 
 void Core::kcb_c_number(int n) {
-    //if (hpFlags.penEnter())
-    //    hpAMS.set_x("0");
-
-    //    hpFlags.setDisplayWMode(Flags::M_DGT); /// ???????
-    //if (hpTempDisp.cursor == 0) {
-    //    hpTempDisp.str[0] = ' ';
-    //    hpTempDisp.cursor++;
-    //}
-
-    /*if (hpTempDisp.cursor == 1 && hpFlags.isstackdisabled() == false) {
-        hpAMS.stack_add("0");
-    }
-
-    if (hpFlags.isstackdisabled() == true) {
-        hpFlags.setstackdisabled(false);
-    }*/
-
     hpTempDisp.str[hpTempDisp.cursor] = 48 + n; // Number 0 is ascii 48
     hpTempDisp.str[hpTempDisp.cursor + 1] = '\0';
     hpTempDisp.cursor++;
@@ -720,15 +717,6 @@ void Core::kcb_c_number(int n) {
         hpAMS.set_x(hpTempDisp.str, false);
     }
 
-    /*
-
-    if (hpFlags.isDecimal()) {
-        hpAMS.set_x(hpAMS.get_x()+(static_cast<float> (n) / pow(10, hpFlags.getDecimalCount())));
-        hpFlags.incDecimalCount();
-    } else
-        hpAMS.set_x(hpAMS.get_x()*10 + n);
-     */
-    
     // to have the sign or the space
     char tempdisp[100];
     strcpy(tempdisp, ((hpAMS.get_x() >= 0) ? " " : ""));
@@ -861,7 +849,5 @@ void Core::kcb_c_sto_rcl(int storcl) {
 }
 
 void Core::reset_number() {
-    //hpFlags.setpenEnter(true);
-    //hpFlags.resDecimal();
     hpTempDisp.cursor = 0;
 }

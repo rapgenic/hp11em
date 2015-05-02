@@ -17,10 +17,23 @@
     along with HP11em.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "core.h"
-#include "colors.h"
+#include "config.h"
 
-// <<TBD>> write the whole core
+#include <iostream>
+using std::cerr;
+using std::endl;
+
+#include <cln/cln.h>
+using cln::square;
+
+#include "keys.h"
+#include "signals.h"
+#include "dispdrawarea.h"
+#include "displaymodule.h"
+#include "AMS.h"
+#include "flags.h"
+#include "SR.h"
+#include "core.h"
 
 Core::Core(Signals *hpSignals_r) :
 hpDisplay(hpSignals_r, &hpFlags) {
@@ -108,40 +121,3 @@ int Core::f_key_toggle(int key) {
     }
     return 1;
 }
-
-/*
- bool Core::AMS_add_figure_to_x(char number)
- {
- if (x_temp.counter < 10) {
- x_temp.number = x_temp.number * 10 + number;
- x_temp.counter++;
- } else {
- return false;
- }
-
- return true;
- }
-
- bool Core::DISPLAY_format_converter(double number, char* display_text)
- {
-
- }
-
- bool Core::DISPLAY_print_number(double number)
- {
- char* text;
-
- DISPLAY_format_converter(number, text);
- hpsignals->sig_display_emit(text);
-
- return true;
- }
-
- bool Core::DISPLAY_reset()
- {
- char *display_text = "+0D N N N N N N N N N";
-
- hpsignals->sig_display_emit(display_text);
-
- return true;
- }*/

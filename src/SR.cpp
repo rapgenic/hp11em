@@ -16,9 +16,18 @@
     You should have received a copy of the GNU General Public License
     along with HP11em.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "SR.h"
+
+#include "config.h"
+
+#include <iostream>
+using std::cerr;
+using std::endl;
+
+#include <cln/cln.h>
+using cln::cl_R;
 
 #include "colors.h"
+#include "SR.h"
 
 StorageRegister::StorageRegister() {
     for (int i = 0; i < 21; i++) 

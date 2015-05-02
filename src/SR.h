@@ -23,10 +23,13 @@
 #include "config.h"
 
 #include <iostream>
-using namespace std;
+using std::cerr;
+using std::endl;
 
 #include <cln/cln.h>
-using namespace cln;
+using cln::cl_R;
+
+#include "colors.h"
 
 class StorageRegister {
 public:

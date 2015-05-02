@@ -27,7 +27,7 @@
 using std::string;
 
 #include <cln/cln.h>
-using namespace cln;
+using cln::cl_R;
 
 class Signals {
 public:

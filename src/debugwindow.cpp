@@ -16,18 +16,25 @@
     You should have received a copy of the GNU General Public License
     along with HP11em.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-#include "debugwindow.h"
+#include "config.h"
 
 #ifdef DEBUG
 
+#include "signals.h"
+
+#include <iostream>
+#include <ostream>
+using std::ostringstream;
+
+#include <string>
+#include <gtkmm.h>
+
+#include "debugwindow.h"
+
 DebugWindow::DebugWindow(Signals *hpsignals_r)
 : boxReg("Registers Dump"),
-//boxDec("Decimal flags"),
 lab_reg("Register"),
 lab_val("Value"),
-//_lab_reg("Register"),
-//_lab_val("Value"),
 lab_x("X"),
 lab_y("Y"),
 lab_z("Z"),
@@ -38,10 +45,6 @@ lab_y_val("0"),
 lab_z_val("0"),
 lab_t_val("0"),
 lab_lst_x_val("0"),
-//lab_isdec("isDecimal"),
-//lab_decount("DecCount"),
-//lab_isdec_val("false"),
-//lab_decount_val("0"),
 quitBtn("Chiudi") {
     hpsignals = hpsignals_r;
 
@@ -58,7 +61,6 @@ quitBtn("Chiudi") {
 
     hpsignals->signal_off().connect(sigc::mem_fun(*this, &DebugWindow::hide));
     hpsignals->signal_update_registers_table().connect(sigc::mem_fun(*this, &DebugWindow::update_table_registers));
-    //    hpsignals->signal_update_decimal().connect(sigc::mem_fun(*this, &DebugWindow::update_decimal));
     quitBtn.signal_clicked().connect(sigc::mem_fun(*this, &DebugWindow::hide));
 
     set_title("HP11C EDEBUG");
@@ -67,7 +69,6 @@ quitBtn("Chiudi") {
     add(windowGrid);
 
     windowGrid.add(boxReg);
-    //    windowGrid.attach_next_to(boxDec, boxReg, Gtk::POS_BOTTOM, 1, 1);
     windowGrid.attach_next_to(quitBtn, boxReg, Gtk::POS_BOTTOM, 1, 1);
 
     boxReg.add(tableReg);
@@ -86,17 +87,6 @@ quitBtn("Chiudi") {
     tableReg.attach_next_to(lab_y_val, lab_z_val, Gtk::POS_BOTTOM, 1, 1);
     tableReg.attach_next_to(lab_x_val, lab_y_val, Gtk::POS_BOTTOM, 1, 1);
     tableReg.attach_next_to(lab_lst_x_val, lab_x_val, Gtk::POS_BOTTOM, 1, 1);
-
-    /*    boxDec.add(tableDec);
-
-        tableDec.set_column_spacing(10);
-        tableDec.set_border_width(3);
-        tableDec.add(_lab_reg);
-        tableDec.add(_lab_val);
-        tableDec.attach_next_to(lab_isdec, _lab_reg, Gtk::POS_BOTTOM, 1, 1);
-        tableDec.attach_next_to(lab_decount, lab_isdec, Gtk::POS_BOTTOM, 1, 1);
-        tableDec.attach_next_to(lab_isdec_val, _lab_val, Gtk::POS_BOTTOM, 1, 1);
-        tableDec.attach_next_to(lab_decount_val, lab_isdec_val, Gtk::POS_BOTTOM, 1, 1);*/
 
     show_all_children();
 }
@@ -132,10 +122,5 @@ bool DebugWindow::update_table_registers(cl_R x, cl_R y, cl_R z, cl_R t, cl_R ls
 
     return false;
 }
-
-/*bool DebugWindow::update_decimal(bool isdec, int deccount) {
-    lab_isdec_val.set_label((isdec == true ? "True" : "False"));
-    lab_decount_val.set_label(to_string(deccount));
-}*/
 
 #endif

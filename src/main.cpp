@@ -20,7 +20,9 @@
 #include <gtkmm/application.h>
 
 #include <iostream>
-using namespace std;
+using std::cerr;
+using std::endl;
+using std::flush;
 
 #include "config.h"
 #include "signals.h"
