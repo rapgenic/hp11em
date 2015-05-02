@@ -13,3 +13,6 @@ To compile it you need to install
 then you have to run aclocal and autoreconf in the project root
 
 to have debug information run configure with --with-debug option
+
+A lot of thanks to Torsten Manz, author of HP-15C Simulator (http://www.hp-15c.homepage.t-online.de),
+from which I took the font I used to write the display

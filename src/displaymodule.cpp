@@ -52,7 +52,7 @@ bool DisplayModule::printNumberDisplay(cl_R numb) {
     cerr << KBLU << "printNumberDisplay(): number = " << display_stream.str() << KRST << endl;  
 #endif
     
-    hpSignals->sig_display_emit(((numb >= 0) ? "+" : "") + display_stream.str());
+    hpSignals->sig_display_emit(((numb >= 0) ? " " : "") + display_stream.str());
 
     return true;
 }

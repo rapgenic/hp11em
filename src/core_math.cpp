@@ -691,10 +691,10 @@ void Core::kcb_c_number(int n) {
     //    hpAMS.set_x("0");
 
     //    hpFlags.setDisplayWMode(Flags::M_DGT); /// ???????
-    if (hpTempDisp.cursor == 0) {
-        hpTempDisp.str[0] = '+';
-        hpTempDisp.cursor++;
-    }
+    //if (hpTempDisp.cursor == 0) {
+    //    hpTempDisp.str[0] = ' ';
+    //    hpTempDisp.cursor++;
+    //}
 
     /*if (hpTempDisp.cursor == 1 && hpFlags.isstackdisabled() == false) {
         hpAMS.stack_add("0");
@@ -728,8 +728,13 @@ void Core::kcb_c_number(int n) {
     } else
         hpAMS.set_x(hpAMS.get_x()*10 + n);
      */
-
-    hpDisplay.printStringDisplay(hpTempDisp.str);
+    
+    // to have the sign or the space
+    char tempdisp[100];
+    strcpy(tempdisp, ((hpAMS.get_x() >= 0) ? " " : ""));
+    strcat(tempdisp, hpTempDisp.str);
+    
+    hpDisplay.printStringDisplay(tempdisp);
 }
 
 void Core::kcb_c_stdopr(operators op) {
