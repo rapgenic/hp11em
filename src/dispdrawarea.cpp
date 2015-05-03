@@ -35,7 +35,7 @@ DispDrawArea::DispDrawArea(Signals *hpsignals_r) {
 
     set_events(Gdk::KEY_PRESS_MASK);
     add_events(Gdk::KEY_RELEASE_MASK);
-
+    
     hpsignals->signal_alarm().connect(sigc::mem_fun(*this, &DispDrawArea::switch_alarm));
     hpsignals->signal_display().connect(sigc::mem_fun(*this, &DispDrawArea::display_write));
 
@@ -91,21 +91,208 @@ bool DispDrawArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
     return true;
 }
 
+bool DispDrawArea::draw_figure(const Cairo::RefPtr<Cairo::Context>& cr, int x, int y, int segs) {
+    // Limit the drawing position
+    x += 28;
+
+    // Setting up the context
+    // TBD correct color
+    cr->set_source_rgb(0, 0, 0);
+    cr->set_line_width(3);
+    cr->set_line_cap(Cairo::LINE_CAP_ROUND);
+
+    // Drawing 1st segment
+    if ((segs & 0x0F000000) >> 24) {
+        cr->move_to(x, y);
+        cr->line_to(x - 1, y + 8);
+        cr->stroke();
+    }
+
+    // drawing 2nd segment
+    if ((segs & 0x00F00000) >> 20) {
+        cr->move_to(x - 1, y + 11);
+        cr->line_to(x - 2, y + 19);
+        cr->stroke();
+    }
+
+    // drawing 3rd segment
+    if ((segs & 0x000F0000) >> 16) {
+        cr->move_to(x + 11, y);
+        cr->line_to(x + 11 - 1, y + 8);
+        cr->stroke();
+    }
+
+    // drawing 4th segment
+    if ((segs & 0x0000F000) >> 12) {
+        cr->move_to(x + 11 - 1, y + 11);
+        cr->line_to(x + 11 - 2, y + 19);
+        cr->stroke();
+    }
+
+    // drawing 5th segment
+    if ((segs & 0x00000F00) >> 8) {
+        cr->move_to(x + 3, y - 2);
+        cr->line_to(x + 3 + 5, y - 2);
+        cr->stroke();
+    }
+
+    // drawing 6th segment
+    if ((segs & 0x000000F0) >> 4) {
+        cr->move_to(x + 3 - 1, y - 2 + 12);
+        cr->line_to(x + 3 + 5 - 1, y - 2 + 12);
+        cr->stroke();
+    }
+
+    // drawing 7th segment
+    if ((segs & 0x0000000F)) {
+        cr->move_to(x + 3 - 2, y - 2 + 23);
+        cr->line_to(x + 3 + 5 - 2, y - 2 + 23);
+        cr->stroke();
+    }
+
+    // drawing the comma / dot
+    if (((segs & 0xF0000000) >> 28) > 0x9) {
+        cr->rectangle(x + 14, y + 20, 1, 1);
+        cr->stroke();
+        if (((segs & 0xF0000000) >> 28) == 0xF) {
+            cr->rectangle(x + 14, y + 24, 0.5, 1);
+            cr->stroke();
+        }
+    }
+
+    return true;
+}
+
 bool DispDrawArea::draw_display(const Cairo::RefPtr<Cairo::Context>& cr) {
-    Pango::FontDescription font;
+    int i = 1, z = 0;
 
-    font.set_family("HP15C Simulator Font");
-    font.set_absolute_size(40*PANGO_SCALE);
+    if (display_text[0] == 'E') {
+        int figure = 0;
+        // printing error message
+        draw_figure(cr, (DISP_FIG_WIDTH * 1 + DISP_FIG_DIST * 1), DISP_FIG_Y, 0x0FF00FFF);
+        draw_figure(cr, (DISP_FIG_WIDTH * 2 + DISP_FIG_DIST * 2), DISP_FIG_Y, 0x00F000F0);
+        draw_figure(cr, (DISP_FIG_WIDTH * 3 + DISP_FIG_DIST * 3), DISP_FIG_Y, 0x00F000F0);
+        draw_figure(cr, (DISP_FIG_WIDTH * 4 + DISP_FIG_DIST * 4), DISP_FIG_Y, 0x00F0F0FF);
+        draw_figure(cr, (DISP_FIG_WIDTH * 5 + DISP_FIG_DIST * 5), DISP_FIG_Y, 0x00F000F0);
 
-    Glib::RefPtr<Pango::Layout> layout = create_pango_layout(display_text);
+        switch (display_text[5]) {
+            case '0':
+                figure = 0x0FFFFF0F;
+                break;
+            case '1':
+                figure = 0x000FF000;
+                break;
+            case '2':
+                figure = 0x00FF0FFF;
+                break;
+            case '3':
+                figure = 0x000FFFFF;
+                break;
+            case '4':
+                figure = 0x0F0FF0F0;
+                break;
+            case '5':
+                figure = 0x0F00FFFF;
+                break;
+            case '6':
+                figure = 0x0FF0FFFF;
+                break;
+            case '7':
+                figure = 0x000FFF00;
+                break;
+            case '8':
+                figure = 0x0FFFFFFF;
+                break;
+            case '9':
+                figure = 0x0F0FFFFF;
+                break;
+            case ' ':
+                figure = 0x00000000;
+                break;
+        }
+        
+        draw_figure(cr, (DISP_FIG_WIDTH * 7 + DISP_FIG_DIST * 7), DISP_FIG_Y, figure);
 
-    layout->set_font_description(font);
+        return true;
+    }
 
-    // Position the text
-    cr->move_to(8, 4);
-    cr->set_source_rgb(0.0, 0.0, 0.0);
+    if (display_text[0] == '-')
+        draw_negative(cr);
 
-    layout->show_in_cairo_context(cr);
+    while (i < 22) {
+        int figure = 0;
+
+        if (display_text[i] == '\0')
+            break;
+
+        switch (display_text[i]) {
+            case '0':
+                figure = 0x0FFFFF0F;
+                break;
+            case '1':
+                figure = 0x000FF000;
+                break;
+            case '2':
+                figure = 0x00FF0FFF;
+                break;
+            case '3':
+                figure = 0x000FFFFF;
+                break;
+            case '4':
+                figure = 0x0F0FF0F0;
+                break;
+            case '5':
+                figure = 0x0F00FFFF;
+                break;
+            case '6':
+                figure = 0x0FF0FFFF;
+                break;
+            case '7':
+                figure = 0x000FFF00;
+                break;
+            case '8':
+                figure = 0x0FFFFFFF;
+                break;
+            case '9':
+                figure = 0x0F0FFFFF;
+                break;
+            case ' ':
+                figure = 0x00000000;
+                break;
+        }
+
+        if (display_text[i + 1] == '.')
+            figure |= 0xA0000000;
+        else if (display_text[i + 1] == ',')
+            figure |= 0xF0000000;
+
+        draw_figure(cr, (DISP_FIG_WIDTH * z + DISP_FIG_DIST * z), DISP_FIG_Y, figure);
+
+        if (display_text[i + 1] == '.' || display_text[i + 1] == ',')
+            i++;
+
+        z++;
+
+        i++;
+
+        if (z > 9)
+            break;
+    }
+
+    return true;
+}
+
+bool DispDrawArea::draw_negative(const Cairo::RefPtr<Cairo::Context>& cr) {
+    // Setting up the context
+    // TBD correct color
+    cr->set_source_rgb(0, 0, 0);
+    cr->set_line_width(3);
+    cr->set_line_cap(Cairo::LINE_CAP_ROUND);
+
+    // drawing the negative sign
+    cr->move_to(5, DISP_FIG_Y + 10);
+    cr->line_to(12, DISP_FIG_Y + 10);
+    cr->stroke();
 
     return true;
 }

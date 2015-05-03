@@ -36,6 +36,9 @@ using std::string;
 #include "hp11em640.xpm"
 
 #define DISP_BG 0x6D8269FF
+#define DISP_FIG_WIDTH 15
+#define DISP_FIG_DIST 12
+#define DISP_FIG_Y 20
 
 #define A_000 0
 #define A_SDF 1
@@ -78,10 +81,12 @@ protected:
         {0, 0, 0, 0}
     };
 
-    string display_text = " 0.0000";
+    string display_text = "+0.0000";
 
     virtual bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr);
     
+    bool draw_figure(const Cairo::RefPtr<Cairo::Context>& cr, int x, int y, int segs);
+    bool draw_negative(const Cairo::RefPtr<Cairo::Context>& cr);
     bool draw_display(const Cairo::RefPtr<Cairo::Context>& cr);
     bool switch_alarm(unsigned char alarm, bool state);
 };
