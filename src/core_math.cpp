@@ -701,22 +701,10 @@ void Core::kcb_lst_x() {
  */
 
 void Core::kcb_c_number(int n) {
-    //if (hpFlags.penEnter())
-    //    hpAMS.set_x("0");
-
-    //    hpFlags.setDisplayWMode(Flags::M_DGT); /// ???????
     if (hpTempDisp.cursor == 0) {
         hpTempDisp.str[0] = '+';
         hpTempDisp.cursor++;
     }
-
-    /*if (hpTempDisp.cursor == 1 && hpFlags.isstackdisabled() == false) {
-        hpAMS.stack_add("0");
-    }
-
-    if (hpFlags.isstackdisabled() == true) {
-        hpFlags.setstackdisabled(false);
-    }*/
 
     hpTempDisp.str[hpTempDisp.cursor] = 48 + n; // Number 0 is ascii 48
     hpTempDisp.str[hpTempDisp.cursor + 1] = '\0';
@@ -733,14 +721,6 @@ void Core::kcb_c_number(int n) {
     } else {
         hpAMS.set_x(hpTempDisp.str, false);
     }
-    /*
-
-    if (hpFlags.isDecimal()) {
-        hpAMS.set_x(hpAMS.get_x()+(static_cast<float> (n) / pow(10, hpFlags.getDecimalCount())));
-        hpFlags.incDecimalCount();
-    } else
-        hpAMS.set_x(hpAMS.get_x()*10 + n);
-     */
 
     hpDisplay.printStringDisplay(hpTempDisp.str);
 }
