@@ -32,7 +32,7 @@
 #include "dispdrawarea.h"
 #include "colors.h"
 
-#include "hp11c.xpm"
+#include "hp11em640.xpm"
 #include "icon.xpm"
 
 #define MENU_XS 562

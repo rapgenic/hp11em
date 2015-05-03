@@ -41,10 +41,18 @@ using cln::float_approx;
 
 #include <locale>
 using std::locale;
+using std::numpunct;
 
 #include "signals.h"
 #include "flags.h"
 #include "colors.h"
+
+class WithComma : public numpunct<char> // class for decimal numbers using comma instead of point
+{
+    protected:
+        char do_decimal_point() const { return '.'; } // change the decimal separator
+        char do_thousands_sep() const { return ','; } // change the tousands separator
+};
 
 class DisplayModule : public sigc::trackable {
 public:

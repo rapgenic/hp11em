@@ -39,7 +39,7 @@ DispDrawArea::DispDrawArea(Signals *hpsignals_r) {
     hpsignals->signal_alarm().connect(sigc::mem_fun(*this, &DispDrawArea::switch_alarm));
     hpsignals->signal_display().connect(sigc::mem_fun(*this, &DispDrawArea::display_write));
 
-    hp_image = Gdk::Pixbuf::create_from_xpm_data(hp11c_xpm);
+    hp_image = Gdk::Pixbuf::create_from_xpm_data(hp11em640_xpm);
 
     // Maybe we don't have to do it, just create a rectangle with cairo
     // and fill it with DISP_BG; needs further check -> replaced with a

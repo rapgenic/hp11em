@@ -35,7 +35,7 @@ CalcDrawArea::CalcDrawArea(Signals *hpsignals_r)
 : display_hp(hpsignals_r) {
     hpsignals = hpsignals_r;
 
-    calc_image = Gdk::Pixbuf::create_from_xpm_data(hp11c_xpm);
+    calc_image = Gdk::Pixbuf::create_from_xpm_data(hp11em640_xpm);
 
     set_events(Gdk::BUTTON_PRESS_MASK);
     add_events(Gdk::BUTTON_RELEASE_MASK);

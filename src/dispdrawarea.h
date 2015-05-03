@@ -33,7 +33,7 @@ using std::string;
 
 #include "signals.h"
 
-#include "hp11c.xpm"
+#include "hp11em640.xpm"
 
 #define DISP_BG 0x6D8269FF
 
@@ -78,7 +78,7 @@ protected:
         {0, 0, 0, 0}
     };
 
-    string display_text = " 0.000";
+    string display_text = " 0.0000";
 
     virtual bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr);
     
