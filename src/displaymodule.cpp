@@ -57,11 +57,10 @@ bool DisplayModule::printStringDisplay(string disp) {
 
 bool DisplayModule::printNumberDisplay(cl_R numb) {
     ostringstream display_stream;
-    locale MyLocale(locale("en_US.UTF-8"), new WithComma);
     
-    display_stream.imbue(MyLocale);
+    display_stream.imbue(locale("en_US.UTF-8"));
     display_stream << fixed;
-    display_stream << setprecision(4) << float_approx(numb);
+    display_stream << setprecision(hpFlags->getNotPrecision()) << float_approx(numb);
     
 #ifdef DEBUG  
     cerr << KBLU << "printNumberDisplay(): number = " << display_stream.str() << KRST << endl;  
@@ -73,7 +72,7 @@ bool DisplayModule::printNumberDisplay(cl_R numb) {
 }
 
 bool DisplayModule::printErrorDisplay(int x) {
-    hpSignals->sig_display_emit("  ERROR "+to_string(x));
+    hpSignals->sig_display_emit("Error"+to_string(x));
     
     cerr << KRED << "CALCULATOR ERROR " << x << KRST << endl;
     
@@ -81,5 +80,5 @@ bool DisplayModule::printErrorDisplay(int x) {
 }
 
 string DisplayModule::to_display(double num) {
-    return "  ERROR";
+    return "Error ";
 }

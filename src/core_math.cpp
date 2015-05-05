@@ -76,7 +76,7 @@ void Core::kcb_ln() {
 
 void Core::kcb_10_x() {
     // expt requires exponent to be INTEGER, but we wanto to use even decimals
-    hpAMS.set_x(expt(static_cast<cl_R>(10), floor1(hpAMS.get_x())));    
+    hpAMS.set_x(expt(static_cast<cl_R> (10), floor1(hpAMS.get_x())));
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
@@ -115,7 +115,7 @@ void Core::kcb_percent() {
 }
 
 void Core::kcb_1_x() {
-    hpAMS.set_x(1/hpAMS.get_x());
+    hpAMS.set_x(1 / hpAMS.get_x());
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
@@ -176,9 +176,23 @@ void Core::kcb_7() {
 }
 
 void Core::kcb_fix() {
-    hpDisplay.printNumberDisplay(hpAMS.get_x());
-    reset_number();
-    hpFlags.setStackDisabled(false);
+    if (!hpFlags.isPendingData()) {
+        hpFlags.setPendingData(true);
+        pending_data_function = &Core::kcb_fix;
+    } else {
+        if ((hpPendingData[pending_data_count - 1].fg == F_NULL && KEY_IS_NUMBER(hpPendingData[pending_data_count - 1].key))) {
+            hpFlags.setNotation(Flags::N_FIX);
+            hpFlags.setNotPrecision(c_get_val_from_key(hpPendingData[pending_data_count - 1].key));
+            hpDisplay.printNumberDisplay(hpAMS.get_x());
+            reset_number();
+            hpFlags.setStackDisabled(false);
+            hpFlags.setPendingData(false);
+            pending_data_count = 0;
+        } else {
+            pending_data_count = 0;
+            hpFlags.setPendingData(false);
+        }
+    }
 }
 
 void Core::kcb_deg() {
@@ -770,6 +784,7 @@ void Core::kcb_c_sto_rcl(int storcl) {
         if ((hpPendingData[pending_data_count - 1].fg == F_NULL && KEY_IS_NUMBER(hpPendingData[pending_data_count - 1].key)) || (hpPendingData[0].fg == F_FKEY && hpPendingData[0].key == Keys::K_TAN)) {
             int loc = -1;
             if (hpPendingData[pending_data_count - 1].fg == F_NULL) {
+                loc = c_get_val_from_key(hpPendingData[pending_data_count - 1].key); /*
                 switch (hpPendingData[pending_data_count - 1].key) {
                     case Keys::K_NO0:
                         loc = 0;
@@ -801,7 +816,7 @@ void Core::kcb_c_sto_rcl(int storcl) {
                     case Keys::K_NO9:
                         loc = 9;
                         break;
-                }
+                }*/
                 if (dot_pressed) {
                     loc += 10;
                     dot_pressed = 0;
@@ -850,4 +865,39 @@ void Core::kcb_c_sto_rcl(int storcl) {
 
 void Core::reset_number() {
     hpTempDisp.cursor = 0;
+}
+
+int Core::c_get_val_from_key(int key) {
+    switch (key) {
+        case Keys::K_NO0:
+            return 0;
+            break;
+        case Keys::K_NO1:
+            return 1;
+            break;
+        case Keys::K_NO2:
+            return 2;
+            break;
+        case Keys::K_NO3:
+            return 3;
+            break;
+        case Keys::K_NO4:
+            return 4;
+            break;
+        case Keys::K_NO5:
+            return 5;
+            break;
+        case Keys::K_NO6:
+            return 6;
+            break;
+        case Keys::K_NO7:
+            return 7;
+            break;
+        case Keys::K_NO8:
+            return 8;
+            break;
+        case Keys::K_NO9:
+            return 9;
+            break;
+    }
 }

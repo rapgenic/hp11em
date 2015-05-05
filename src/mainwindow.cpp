@@ -59,7 +59,7 @@ MainWindow::MainWindow(Signals *hpsignals_r)
     hpsignals->signal_window_move().connect(sigc::mem_fun(*this, &MainWindow::move_to));
 
     container.put(calc, 0, 0);
-    container.put(calc.display_hp, 115, 23);
+    container.put(calc.display_hp, 119, 23);
     calc.show();
     calc.display_hp.show();
     add(container);

@@ -167,51 +167,14 @@ bool DispDrawArea::draw_display(const Cairo::RefPtr<Cairo::Context>& cr) {
     int i = 1, z = 0;
 
     if (display_text[0] == 'E') {
-        int figure = 0;
-        // printing error message
-        draw_figure(cr, (DISP_FIG_WIDTH * 1 + DISP_FIG_DIST * 1), DISP_FIG_Y, 0x0FF00FFF);
-        draw_figure(cr, (DISP_FIG_WIDTH * 2 + DISP_FIG_DIST * 2), DISP_FIG_Y, 0x00F000F0);
-        draw_figure(cr, (DISP_FIG_WIDTH * 3 + DISP_FIG_DIST * 3), DISP_FIG_Y, 0x00F000F0);
-        draw_figure(cr, (DISP_FIG_WIDTH * 4 + DISP_FIG_DIST * 4), DISP_FIG_Y, 0x00F0F0FF);
-        draw_figure(cr, (DISP_FIG_WIDTH * 5 + DISP_FIG_DIST * 5), DISP_FIG_Y, 0x00F000F0);
 
-        switch (display_text[5]) {
-            case '0':
-                figure = 0x0FFFFF0F;
-                break;
-            case '1':
-                figure = 0x000FF000;
-                break;
-            case '2':
-                figure = 0x00FF0FFF;
-                break;
-            case '3':
-                figure = 0x000FFFFF;
-                break;
-            case '4':
-                figure = 0x0F0FF0F0;
-                break;
-            case '5':
-                figure = 0x0F00FFFF;
-                break;
-            case '6':
-                figure = 0x0FF0FFFF;
-                break;
-            case '7':
-                figure = 0x000FFF00;
-                break;
-            case '8':
-                figure = 0x0FFFFFFF;
-                break;
-            case '9':
-                figure = 0x0F0FFFFF;
-                break;
-            case ' ':
-                figure = 0x00000000;
-                break;
-        }
-        
-        draw_figure(cr, (DISP_FIG_WIDTH * 7 + DISP_FIG_DIST * 7), DISP_FIG_Y, figure);
+        // printing error message
+        draw_figure(cr, (DISP_FIG_WIDTH * 1 + DISP_FIG_DIST * 1), DISP_FIG_Y, figures['E']);
+        draw_figure(cr, (DISP_FIG_WIDTH * 2 + DISP_FIG_DIST * 2), DISP_FIG_Y, figures['r']);
+        draw_figure(cr, (DISP_FIG_WIDTH * 3 + DISP_FIG_DIST * 3), DISP_FIG_Y, figures['r']);
+        draw_figure(cr, (DISP_FIG_WIDTH * 4 + DISP_FIG_DIST * 4), DISP_FIG_Y, figures['o']);
+        draw_figure(cr, (DISP_FIG_WIDTH * 5 + DISP_FIG_DIST * 5), DISP_FIG_Y, figures['r']);        
+        draw_figure(cr, (DISP_FIG_WIDTH * 7 + DISP_FIG_DIST * 7), DISP_FIG_Y, figures[display_text[5]]);
 
         return true;
     }
@@ -225,41 +188,7 @@ bool DispDrawArea::draw_display(const Cairo::RefPtr<Cairo::Context>& cr) {
         if (display_text[i] == '\0')
             break;
 
-        switch (display_text[i]) {
-            case '0':
-                figure = 0x0FFFFF0F;
-                break;
-            case '1':
-                figure = 0x000FF000;
-                break;
-            case '2':
-                figure = 0x00FF0FFF;
-                break;
-            case '3':
-                figure = 0x000FFFFF;
-                break;
-            case '4':
-                figure = 0x0F0FF0F0;
-                break;
-            case '5':
-                figure = 0x0F00FFFF;
-                break;
-            case '6':
-                figure = 0x0FF0FFFF;
-                break;
-            case '7':
-                figure = 0x000FFF00;
-                break;
-            case '8':
-                figure = 0x0FFFFFFF;
-                break;
-            case '9':
-                figure = 0x0F0FFFFF;
-                break;
-            case ' ':
-                figure = 0x00000000;
-                break;
-        }
+        figure = figures[display_text[i]];
 
         if (display_text[i + 1] == '.')
             figure |= 0xA0000000;

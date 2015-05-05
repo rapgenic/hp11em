@@ -76,6 +76,7 @@ bool CalcDrawArea::on_button_press_event(GdkEventButton *event) {
 #ifdef DEBUG
     cerr << endl;
 #endif
+    
     int keypressed;
 
     last_x = event->x_root;

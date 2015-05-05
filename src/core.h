@@ -269,6 +269,8 @@ private:
     void kcb_c_stdopr(operators op);
     void kcb_c_sto_rcl(int storcl);
     void reset_number();
+    
+    int c_get_val_from_key(int key);
 
     void (Core::*keys_cb[KEY_NUMBER][3])(void) = {
         {&Core::kcb_sqrt, &Core::kcb_alpha_a, &Core::kcb_x_2},

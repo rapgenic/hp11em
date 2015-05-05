@@ -19,6 +19,11 @@
 
 #include "config.h"
 
+#include <iostream>
+using std::cerr;
+using std::endl;
+
+#include "colors.h"
 #include "flags.h"
 
 void Flags::setStackDisabled(bool value) {
@@ -51,4 +56,26 @@ void Flags::setState(state_t st) {
 
 Flags::state_t Flags::getState() const {
     return state;
+}
+
+void Flags::setNotation(notation_t notat) {
+    notation = notat;
+#ifdef DEBUG
+    cerr << KCYN << "Notation: " << notation << KRST << endl;
+#endif
+}
+
+Flags::notation_t Flags::getNotation() const {
+    return notation;
+}
+
+void Flags::setNotPrecision(int figures) {
+    notation_precision = figures;
+#ifdef DEBUG
+    cerr << KCYN << "Notation figures: " << notation_precision << KRST << endl;
+#endif
+}
+
+int Flags::getNotPrecision() const {
+    return notation_precision;
 }

@@ -22,6 +22,12 @@
 
 #include "config.h"
 
+#include <iostream>
+using std::cerr;
+using std::endl;
+
+#include "colors.h"
+
 class Flags {
 public:
 
@@ -36,40 +42,38 @@ public:
         S_RUN,
         S_PRG
     } state_t;
-    /*
-        typedef enum {
-            M_DGT,
-            M_RES,
-            M_PRG,
-        } DWriteMode_t;*/
 
-    /*    bool isNumberWriting() const;
-        void setNumberWriting(bool number);
-        bool isNumberDecimal() const;
-        void setNumberDecimal(bool value);
-        DWriteMode_t getDisplayWMode() const;
-        void setDisplayWMode(DWriteMode_t mode);
-        int getNumberDecCount() const;
-        void incNumberDecCount();
-        void resNumberDecimal();*/
+    typedef enum {
+        N_FIX,
+        N_SCI,
+        N_ENG
+    } notation_t;
+
     void setStackDisabled(bool value);
     bool isStackDisabled() const;
+    
     void setPendingData(bool value);
     bool isPendingData() const;
+    
     void setBase(base_t baseval);
     base_t getBase() const;
+    
     void setState(state_t st);
     state_t getState() const;
+    
+    void setNotation(notation_t notat);
+    notation_t getNotation() const;
+    
+    void setNotPrecision(int figures);
+    int getNotPrecision() const;
 
 private:
     bool stackDisabled = false;
     bool pendingData = false;
-    base_t base = B_OCT;
-    state_t state = S_RUN; 
-    /*    bool numberWriting = false;
-        bool numberDecimal = false;
-        int numberDecCount = 0;
-        DWriteMode_t displayWMode = M_DGT;*/
+    base_t base = B_DEC;
+    state_t state = S_RUN;
+    notation_t notation = N_FIX;
+    int notation_precision = 4;
 };
 
 #endif // FLAGS_H
