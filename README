@@ -13,3 +13,8 @@ To compile it you need to install
 then you have to run aclocal and autoreconf in the project root
 
 to have debug information run configure with --with-debug option
+
+LICENSE INFORMATION
+
+All the sources are licensed under GPLv3 
+images/hp11em.svg is licensed under CC BY-SA 4.0 (see http://creativecommons.org/licenses/by-sa/4.0/legalcode)
