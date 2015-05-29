@@ -30,6 +30,7 @@ public:
     virtual ~Keys();
 
     typedef bool key_t;
+
     typedef enum {
         K_SQR = 0,
         K_EAX,

@@ -74,8 +74,13 @@ void Flags::setNotPrecision(int figures) {
 #ifdef DEBUG
     cerr << KCYN << "Notation figures: " << notation_precision << KRST << endl;
 #endif
+    
+    if (notation == N_SCI)
+        if (notation_precision > 6)
+            notation_precision = 6;
 }
 
 int Flags::getNotPrecision() const {
     return notation_precision;
 }
+

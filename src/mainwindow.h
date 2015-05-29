@@ -46,7 +46,7 @@ public:
 protected:
     void menu_show();
     bool move_to(double x, double y);
-    
+
     Glib::RefPtr<Gdk::Pixbuf> icon;
 
     CalcDrawArea calc;

@@ -21,6 +21,9 @@
 
 #include <string>
 using std::to_string;
+using std::string;
+
+#include <cstring>
 
 #include <iostream>
 using std::cerr;
@@ -33,11 +36,11 @@ using std::fixed;
 #include <sstream>
 using std::ostringstream;
 
-#include <cln/cln.h>
-using cln::float_approx;
-
 #include <locale>
 using std::locale;
+
+#include <cmath>
+using std::fabs;
 
 #include "signals.h"
 #include "flags.h"
@@ -55,27 +58,119 @@ bool DisplayModule::printStringDisplay(string disp) {
     return true;
 }
 
-bool DisplayModule::printNumberDisplay(cl_R numb) {
-    ostringstream display_stream;
-    
-    display_stream.imbue(locale("en_US.UTF-8"));
-    display_stream << fixed;
-    display_stream << setprecision(hpFlags->getNotPrecision()) << float_approx(numb);
-    
-#ifdef DEBUG  
-    cerr << KBLU << "printNumberDisplay(): number = " << display_stream.str() << KRST << endl;  
+bool DisplayModule::printNumberDisplay(double numb) {
+    char display_text[22] = "";
+
+    // Working with positive numbers only
+    double pnumb = fabs(numb);
+
+    int exp = 0;
+    int exppos = 0;
+    long pnumbi = 0;
+    double pnumbd = 0;
+    char spnumbi[22] = "";
+    char spnumbd[22] = "";
+    char sexp[3] = "";
+
+#ifdef DEBUG
+    cerr << KCYN << endl;
 #endif
-    
-    hpSignals->sig_display_emit(((numb >= 0) ? "+" : "") + display_stream.str());
+
+    if (hpFlags->getNotation() == Flags::N_FIX && numb < pow10(10)) {
+        pnumbi = (long) pnumb;
+        pnumbd = pnumb - (double) pnumbi;
+
+        longToString(pnumbi, spnumbi, 1);
+        longToString((long) (pnumbd * pow(10, hpFlags->getNotPrecision())), spnumbd, hpFlags->getNotPrecision());
+
+        sprintf(display_text, "%c%s,%s", numb >= 0 ? '+' : '-', spnumbi, spnumbd);
+    } else if (hpFlags->getNotation() == Flags::N_SCI || (hpFlags->getNotation() == Flags::N_FIX && numb > pow10(10))) {
+        while (pnumb >= 10) {
+            pnumb /= 10;
+            exp++;
+        }
+
+        pnumbi = (long) pnumb;
+        pnumbd = pnumb - (double) pnumbi;
+
+        longToString(pnumbi, spnumbi, 1);
+        longToString((long) (pnumbd * pow(10, hpFlags->getNotPrecision())), spnumbd, hpFlags->getNotPrecision());
+
+        sprintf(display_text, "%c%s,%s", numb >= 0 ? '+' : '-', spnumbi, spnumbd);
+
+        // Adding exponent to string
+        longToString(exp, sexp, 2);
+
+        // calculate the position of the exponent in the display:
+        // we need to do all these strange calculations because only
+        // figures are considered while converting the string to 
+        // display lines so for example a string like this
+        //    "+1.1111"
+        // is a 7 char string, but when printing to the display
+        // only
+        //    "11111"
+        // are considered.
+        // in conclusion '+' '-' '.' ',' aren't considered as a character
+
+        exppos = strlen(display_text)+(10 - (strlen(spnumbi) + strlen(spnumbd)));
+
+        for (int h = strlen(display_text); h < 22; h++)
+            display_text[h] = ' ';
+
+        // insert a space before the exponent to distinguish it from the rest of
+        // the number
+        display_text[exppos - 3] = ' ';
+        display_text[exppos - 2] = sexp[0];
+        display_text[exppos - 1] = sexp[1];
+        display_text[exppos] = '\0';
+    }
+
+#ifdef DEBUG
+    cerr << "DISPLAY OUTPUT: " << display_text << KRST << endl;
+#endif
+
+    hpSignals->sig_display_emit(display_text);
+
+    return true;
+}
+
+bool DisplayModule::longToString(long x, char str[], int d) {
+    int i = 0;
+    int z = 0;
+    int j;
+    int temp;
+
+    while (x) {
+        str[i++] = (x % 10) + '0';
+        x = x / 10;
+    }
+
+    // If number of digits required is more, then
+    // add 0s at the beginning
+    while (i < d)
+        str[i++] = '0';
+
+    // reversing string
+    j = i - 1;
+
+    while (z < j) {
+        temp = str[z];
+        str[z] = str[j];
+        str[j] = temp;
+        z++;
+        j--;
+    }
+
+    str[i] = '\0';
 
     return true;
 }
 
 bool DisplayModule::printErrorDisplay(int x) {
-    hpSignals->sig_display_emit("Error"+to_string(x));
-    
+    hpSignals->sig_display_emit("Error" + to_string(x));
+
     cerr << KRED << "CALCULATOR ERROR " << x << KRST << endl;
-    
+
     return true;
 }
 

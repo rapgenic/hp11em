@@ -30,6 +30,9 @@
 #include <ostream>
 using std::ostringstream;
 
+#include <iomanip>
+using std::setprecision;
+
 #include <string>
 #include <gtkmm.h>
 
@@ -53,7 +56,7 @@ protected:
 
     Glib::RefPtr<Gdk::Pixbuf> icon;
 
-    bool update_table_registers(cl_R x, cl_R y, cl_R z, cl_R t, cl_R lstx);
+    bool update_table_registers(double x, double y, double z, double t, double lstx);
 };
 
 #endif /* DEBUGWINDOW_H_ */

@@ -23,8 +23,8 @@
 using std::cerr;
 using std::endl;
 
-#include <cln/cln.h>
-using cln::square;
+#include <cmath>
+using namespace std;
 
 #include "keys.h"
 #include "signals.h"
@@ -49,7 +49,7 @@ void Core::kcb_alpha_a() {
 }
 
 void Core::kcb_x_2() {
-    hpAMS.set_x(square(hpAMS.get_x()));
+    hpAMS.set_x(pow(hpAMS.get_x(), 2));
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
@@ -68,7 +68,7 @@ void Core::kcb_alpha_b() {
 }
 
 void Core::kcb_ln() {
-    hpAMS.set_x(ln(hpAMS.get_x()));
+    //    hpAMS.set_x(ln(hpAMS.get_x()));
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
@@ -76,7 +76,7 @@ void Core::kcb_ln() {
 
 void Core::kcb_10_x() {
     // expt requires exponent to be INTEGER, but we wanto to use even decimals
-    hpAMS.set_x(expt(static_cast<cl_R> (10), floor1(hpAMS.get_x())));
+    hpAMS.set_x(pow(10, hpAMS.get_x()));
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
@@ -89,7 +89,7 @@ void Core::kcb_alpha_c() {
 }
 
 void Core::kcb_log() {
-    hpAMS.set_x(log(hpAMS.get_x(), 10));
+    hpAMS.set_x(log10(hpAMS.get_x()));
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
@@ -97,7 +97,7 @@ void Core::kcb_log() {
 
 void Core::kcb_y_x() {
     // expt requires exponent to be INTEGER, but we wanto to use even decimals
-    hpDisplay.printNumberDisplay(expt(hpAMS.get_y(), floor1(hpAMS.get_x())));
+    hpDisplay.printNumberDisplay(pow(hpAMS.get_y(), hpAMS.get_x()));
     reset_number();
     hpFlags.setStackDisabled(false);
 }
@@ -146,7 +146,7 @@ void Core::kcb_chs() {
             hpTempDisp.str[0] = '+';
         else
             hpTempDisp.str[0] = '-';
-        hpAMS.set_x(hpTempDisp.str, false);
+        hpAMS.set_x(atof(hpTempDisp.str), false);
         hpDisplay.printStringDisplay(hpTempDisp.str);
         // Don't change stack lift status: neutral function
     }
@@ -176,7 +176,7 @@ void Core::kcb_7() {
 }
 
 void Core::kcb_fix() {
-    if (!hpFlags.isPendingData()) {
+    /*if (!hpFlags.isPendingData()) {
         hpFlags.setPendingData(true);
         pending_data_function = &Core::kcb_fix;
     } else {
@@ -192,7 +192,8 @@ void Core::kcb_fix() {
             pending_data_count = 0;
             hpFlags.setPendingData(false);
         }
-    }
+    }*/
+    kcb_c_not(Flags::N_FIX);
 }
 
 void Core::kcb_deg() {
@@ -206,9 +207,10 @@ void Core::kcb_8() {
 }
 
 void Core::kcb_sci() {
-    hpDisplay.printNumberDisplay(hpAMS.get_x());
-    reset_number();
-    hpFlags.setStackDisabled(false);
+    /*    hpDisplay.printNumberDisplay(hpAMS.get_x());
+        reset_number();
+        hpFlags.setStackDisabled(false);*/
+    kcb_c_not(Flags::N_SCI);
 }
 
 void Core::kcb_rad() {
@@ -222,9 +224,10 @@ void Core::kcb_9() {
 }
 
 void Core::kcb_eng() {
-    hpDisplay.printNumberDisplay(hpAMS.get_x());
+    /*hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
-    hpFlags.setStackDisabled(false);
+    hpFlags.setStackDisabled(false);*/
+    kcb_c_not(Flags::N_ENG);
 }
 
 void Core::kcb_grd() {
@@ -458,7 +461,7 @@ void Core::kcb_rtn() {
 }
 
 void Core::kcb_r_dwn() {
-    cl_R temp = hpAMS.get_x();
+    double temp = hpAMS.get_x();
     hpAMS.set_x(hpAMS.get_y(), false);
     hpAMS.set_y(hpAMS.get_z());
     hpAMS.set_z(hpAMS.get_t());
@@ -475,7 +478,7 @@ void Core::kcb_prgm() {
 }
 
 void Core::kcb_r_up() {
-    cl_R temp = hpAMS.get_t();
+    double temp = hpAMS.get_t();
     hpAMS.set_t(hpAMS.get_z());
     hpAMS.set_z(hpAMS.get_y());
     hpAMS.set_y(hpAMS.get_x());
@@ -486,7 +489,7 @@ void Core::kcb_r_up() {
 }
 
 void Core::kcb_x_xcng_y() {
-    cl_R temp = hpAMS.get_x();
+    double temp = hpAMS.get_x();
     hpAMS.set_x(hpAMS.get_y());
     hpAMS.set_y(temp);
     hpDisplay.printNumberDisplay(hpAMS.get_x());
@@ -518,7 +521,7 @@ void Core::kcb_prefix() {
 }
 
 void Core::kcb_clx() {
-    hpAMS.set_x(static_cast<cl_R> (0), false);
+    hpAMS.set_x(static_cast<double> (0), false);
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     hpFlags.setStackDisabled(true);
 }
@@ -596,14 +599,14 @@ void Core::kcb_sto() {
 }
 
 void Core::kcb_frac() {
-    hpAMS.set_x(hpAMS.get_x() - floor1(hpAMS.get_x()));
+    hpAMS.set_x(hpAMS.get_x() - floor(hpAMS.get_x()));
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
 }
 
 void Core::kcb_int() {
-    hpAMS.set_x(floor1(hpAMS.get_x()));
+    hpAMS.set_x(floor(hpAMS.get_x()));
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
@@ -642,7 +645,7 @@ void Core::kcb_avg_x() {
 }
 
 void Core::kcb_dot() {
-    hpTempDisp.str[hpTempDisp.cursor] = '.';
+    hpTempDisp.str[hpTempDisp.cursor] = ',';
     hpTempDisp.str[hpTempDisp.cursor + 1] = '\0';
     hpTempDisp.cursor++;
 
@@ -727,13 +730,13 @@ void Core::kcb_c_number(int n) {
     // If it is the first digit
     if (hpTempDisp.cursor == 2) {
         if (hpFlags.isStackDisabled() == false) {
-            hpAMS.stack_add(hpTempDisp.str);
+            hpAMS.stack_add(atof(hpTempDisp.str));
         } else if (hpFlags.isStackDisabled() == true) {
-            hpAMS.set_x(hpTempDisp.str, false);
+            hpAMS.set_x(atof(hpTempDisp.str), false);
             hpFlags.setStackDisabled(false);
         }
     } else {
-        hpAMS.set_x(hpTempDisp.str, false);
+        hpAMS.set_x(atof(hpTempDisp.str), false);
     }
 
     hpDisplay.printStringDisplay(hpTempDisp.str);
@@ -784,39 +787,7 @@ void Core::kcb_c_sto_rcl(int storcl) {
         if ((hpPendingData[pending_data_count - 1].fg == F_NULL && KEY_IS_NUMBER(hpPendingData[pending_data_count - 1].key)) || (hpPendingData[0].fg == F_FKEY && hpPendingData[0].key == Keys::K_TAN)) {
             int loc = -1;
             if (hpPendingData[pending_data_count - 1].fg == F_NULL) {
-                loc = c_get_val_from_key(hpPendingData[pending_data_count - 1].key); /*
-                switch (hpPendingData[pending_data_count - 1].key) {
-                    case Keys::K_NO0:
-                        loc = 0;
-                        break;
-                    case Keys::K_NO1:
-                        loc = 1;
-                        break;
-                    case Keys::K_NO2:
-                        loc = 2;
-                        break;
-                    case Keys::K_NO3:
-                        loc = 3;
-                        break;
-                    case Keys::K_NO4:
-                        loc = 4;
-                        break;
-                    case Keys::K_NO5:
-                        loc = 5;
-                        break;
-                    case Keys::K_NO6:
-                        loc = 6;
-                        break;
-                    case Keys::K_NO7:
-                        loc = 7;
-                        break;
-                    case Keys::K_NO8:
-                        loc = 8;
-                        break;
-                    case Keys::K_NO9:
-                        loc = 9;
-                        break;
-                }*/
+                loc = c_get_val_from_key(hpPendingData[pending_data_count - 1].key);
                 if (dot_pressed) {
                     loc += 10;
                     dot_pressed = 0;
@@ -858,6 +829,36 @@ void Core::kcb_c_sto_rcl(int storcl) {
             pending_data_count = 0;
             dot_pressed = 0;
             operation = -1;
+            hpFlags.setPendingData(false);
+        }
+    }
+}
+
+void Core::kcb_c_not(Flags::notation_t notat) {
+    if (!hpFlags.isPendingData()) {
+        hpFlags.setPendingData(true);
+        switch (notat) {
+            case Flags::N_FIX:
+                pending_data_function = &Core::kcb_fix;
+                break;
+            case Flags::N_SCI:
+                pending_data_function = &Core::kcb_sci;
+                break;
+            case Flags::N_ENG:
+                pending_data_function = &Core::kcb_eng;
+                break;
+        }
+    } else {
+        if ((hpPendingData[pending_data_count - 1].fg == F_NULL && KEY_IS_NUMBER(hpPendingData[pending_data_count - 1].key))) {
+            hpFlags.setNotation(notat);
+            hpFlags.setNotPrecision(c_get_val_from_key(hpPendingData[pending_data_count - 1].key));
+            hpDisplay.printNumberDisplay(hpAMS.get_x());
+            reset_number();
+            hpFlags.setStackDisabled(false);
+            hpFlags.setPendingData(false);
+            pending_data_count = 0;
+        } else {
+            pending_data_count = 0;
             hpFlags.setPendingData(false);
         }
     }

@@ -23,21 +23,18 @@
 using std::cerr;
 using std::endl;
 
-#include <cln/cln.h>
-using cln::cl_R;
-
 #include "colors.h"
 #include "SR.h"
 
 StorageRegister::StorageRegister() {
-    for (int i = 0; i < 21; i++) 
+    for (int i = 0; i < 21; i++)
         sr[i] = 0;
 }
 
 StorageRegister::~StorageRegister() {
 }
 
-bool StorageRegister::sr_loc_set(int loc, cl_R numb) {
+bool StorageRegister::sr_loc_set(int loc, double numb) {
     sr[loc] = numb;
 #ifdef DEBUG
     cerr << KBLU << "STORAGE REGISTER - loc " << loc << " numb " << numb << KRST << endl;
@@ -45,7 +42,7 @@ bool StorageRegister::sr_loc_set(int loc, cl_R numb) {
     return true;
 }
 
-cl_R StorageRegister::sr_loc_get(int loc) {
+double StorageRegister::sr_loc_get(int loc) {
     return sr[loc];
 }
 

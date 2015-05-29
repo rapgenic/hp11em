@@ -26,9 +26,6 @@
 using std::cerr;
 using std::endl;
 
-#include <cln/cln.h>
-using cln::square;
-
 #include "keys.h"
 #include "signals.h"
 #include "dispdrawarea.h"
@@ -268,8 +265,9 @@ private:
     void kcb_c_number(int n);
     void kcb_c_stdopr(operators op);
     void kcb_c_sto_rcl(int storcl);
+    void kcb_c_not(Flags::notation_t notat);
     void reset_number();
-    
+
     int c_get_val_from_key(int key);
 
     void (Core::*keys_cb[KEY_NUMBER][3])(void) = {

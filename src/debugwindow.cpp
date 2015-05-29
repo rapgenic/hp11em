@@ -26,6 +26,9 @@
 #include <ostream>
 using std::ostringstream;
 
+#include <iomanip>
+using std::setprecision;
+
 #include <string>
 #include <gtkmm.h>
 
@@ -94,30 +97,30 @@ quitBtn("Chiudi") {
 DebugWindow::~DebugWindow() {
 }
 
-bool DebugWindow::update_table_registers(cl_R x, cl_R y, cl_R z, cl_R t, cl_R lstx) {
+bool DebugWindow::update_table_registers(double x, double y, double z, double t, double lstx) {
     ostringstream tempstreamstring;
 
-    tempstreamstring << x;
+    tempstreamstring << setprecision(10) << x;
     lab_x_val.set_label(tempstreamstring.str());
     tempstreamstring.~ostringstream();
     new (&tempstreamstring) ostringstream();
 
-    tempstreamstring << y;
+    tempstreamstring << setprecision(10) << y;
     lab_y_val.set_label(tempstreamstring.str());
     tempstreamstring.~ostringstream();
     new (&tempstreamstring) ostringstream();
-    
-    tempstreamstring << z;
+
+    tempstreamstring << setprecision(10) << z;
     lab_z_val.set_label(tempstreamstring.str());
     tempstreamstring.~ostringstream();
     new (&tempstreamstring) ostringstream();
-    
-    tempstreamstring << t;
+
+    tempstreamstring << setprecision(10) << t;
     lab_t_val.set_label(tempstreamstring.str());
     tempstreamstring.~ostringstream();
     new (&tempstreamstring) ostringstream();
-    
-    tempstreamstring << lstx;
+
+    tempstreamstring << setprecision(10) << lstx;
     lab_lst_x_val.set_label(tempstreamstring.str());
 
     return false;

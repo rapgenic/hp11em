@@ -51,19 +51,19 @@ public:
 
     void setStackDisabled(bool value);
     bool isStackDisabled() const;
-    
+
     void setPendingData(bool value);
     bool isPendingData() const;
-    
+
     void setBase(base_t baseval);
     base_t getBase() const;
-    
+
     void setState(state_t st);
     state_t getState() const;
-    
+
     void setNotation(notation_t notat);
     notation_t getNotation() const;
-    
+
     void setNotPrecision(int figures);
     int getNotPrecision() const;
 

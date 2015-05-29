@@ -35,7 +35,7 @@ DispDrawArea::DispDrawArea(Signals *hpsignals_r) {
 
     set_events(Gdk::KEY_PRESS_MASK);
     add_events(Gdk::KEY_RELEASE_MASK);
-    
+
     hpsignals->signal_alarm().connect(sigc::mem_fun(*this, &DispDrawArea::switch_alarm));
     hpsignals->signal_display().connect(sigc::mem_fun(*this, &DispDrawArea::display_write));
 
@@ -173,7 +173,7 @@ bool DispDrawArea::draw_display(const Cairo::RefPtr<Cairo::Context>& cr) {
         draw_figure(cr, (DISP_FIG_WIDTH * 2 + DISP_FIG_DIST * 2), DISP_FIG_Y, figures['r']);
         draw_figure(cr, (DISP_FIG_WIDTH * 3 + DISP_FIG_DIST * 3), DISP_FIG_Y, figures['r']);
         draw_figure(cr, (DISP_FIG_WIDTH * 4 + DISP_FIG_DIST * 4), DISP_FIG_Y, figures['o']);
-        draw_figure(cr, (DISP_FIG_WIDTH * 5 + DISP_FIG_DIST * 5), DISP_FIG_Y, figures['r']);        
+        draw_figure(cr, (DISP_FIG_WIDTH * 5 + DISP_FIG_DIST * 5), DISP_FIG_Y, figures['r']);
         draw_figure(cr, (DISP_FIG_WIDTH * 7 + DISP_FIG_DIST * 7), DISP_FIG_Y, figures[display_text[5]]);
 
         return true;

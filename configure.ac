@@ -14,8 +14,6 @@ AX_CXX_COMPILE_STDCXX_11(, [mandatory])
 
 # Checks for libraries.
 PKG_CHECK_MODULES([GTKMM], [gtkmm-3.0 >= 3.8.0])
-PKG_CHECK_MODULES([CLN], [cln >= 1.3.3])
-AC_CHECK_LIB(gmp, __gmpz_init, , [AC_MSG_ERROR([GNU MP not found, see https://gmplib.org/])])
 
 # Checks for header files.
 AC_CHECK_HEADERS([string])

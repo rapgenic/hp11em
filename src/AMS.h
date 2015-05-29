@@ -22,12 +22,6 @@
 
 #include "config.h"
 
-#include <cln/cln.h>
-using cln::cl_R;
-using cln::cl_read_flags;
-using cln::lsyntax_all;
-using cln::syntax_real;
-
 #include <iostream>
 using std::cerr;
 using std::endl;
@@ -39,33 +33,29 @@ public:
     AutomaticMemoryStack();
     virtual ~AutomaticMemoryStack();
 
-    cl_R get_x();
-    cl_R get_y();
-    cl_R get_z();
-    cl_R get_t();
-    cl_R get_lst_x();
+    double get_x();
+    double get_y();
+    double get_z();
+    double get_t();
+    double get_lst_x();
 
-    void stack_add(cl_R number);
-    void set_x(cl_R num, bool using_lst_x = true);
-    void set_y(cl_R num);
-    void set_z(cl_R num);
-    void set_t(cl_R num);
-    void set_lst_x(cl_R num);
+    void stack_add(double number);
+    void set_x(double num, bool using_lst_x = true);
+    void set_y(double num);
+    void set_z(double num);
+    void set_t(double num);
+    void set_lst_x(double num);
 
-    void stack_add(char* num);
-    void set_x(char* num, bool using_lst_x = true);
-    void set_y(char* num);
-    void set_z(char* num);
-    void set_t(char* num);
-    void set_lst_x(char* num);
+    /*  void stack_add(char* num);
+      void set_x(char* num, bool using_lst_x = true);
+      void set_y(char* num);
+      void set_z(char* num);
+      void set_t(char* num);
+      void set_lst_x(char* num);*/
 private:
-    cl_R round_to_limits(cl_R num);
+    double round_to_limits(double num);
 
-    cl_R x, y, z, t, lst_x;
-
-    cl_R hlimit, llimit;
-    
-    cl_read_flags flags;
+    double x, y, z, t, lst_x;
 };
 
 #endif // AUTOMATICMEMORYSTACK_H

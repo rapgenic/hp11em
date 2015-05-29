@@ -26,21 +26,18 @@
 using std::cerr;
 using std::endl;
 
-#include <cln/cln.h>
-using cln::cl_R;
-
 #include "colors.h"
 
 class StorageRegister {
 public:
     StorageRegister();
     virtual ~StorageRegister();
-    
-    bool sr_loc_set(int loc, cl_R numb);
-    cl_R sr_loc_get(int loc);
-    
+
+    bool sr_loc_set(int loc, double numb);
+    double sr_loc_get(int loc);
+
 private:
-    cl_R sr[21];
+    double sr[21];
 };
 
 #endif	/* STORAGEREGISTER_H */

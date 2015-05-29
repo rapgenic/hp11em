@@ -38,7 +38,7 @@
 MainWindow::MainWindow(Signals *hpsignals_r)
 : calc(hpsignals_r)
 #ifdef DEBUG
-,hpDebug(hpsignals_r)
+, hpDebug(hpsignals_r)
 #endif
 {
     // creates the user interface
@@ -53,7 +53,7 @@ MainWindow::MainWindow(Signals *hpsignals_r)
     set_icon(icon);
     set_resizable(false);
     set_decorated(false);
-    
+
     hpsignals->signal_off().connect(sigc::mem_fun(*this, &MainWindow::hide));
     hpsignals->signal_menu().connect(sigc::mem_fun(*this, &MainWindow::menu_show));
     hpsignals->signal_window_move().connect(sigc::mem_fun(*this, &MainWindow::move_to));
@@ -70,7 +70,7 @@ MainWindow::~MainWindow() {
 }
 
 bool MainWindow::move_to(double x, double y) {
-    move(static_cast<int>(x), static_cast<int>(y));
+    move(static_cast<int> (x), static_cast<int> (y));
 }
 
 void MainWindow::menu_show() {

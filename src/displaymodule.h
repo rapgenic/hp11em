@@ -24,6 +24,9 @@
 
 #include <string>
 using std::to_string;
+using std::string;
+
+#include <cstring>
 
 #include <iostream>
 using std::cerr;
@@ -36,11 +39,11 @@ using std::fixed;
 #include <ostream>
 using std::ostringstream;
 
-#include <cln/cln.h>
-using cln::float_approx;
-
 #include <locale>
 using std::locale;
+
+#include <cmath>
+using std::fabs;
 
 #include "signals.h"
 #include "flags.h"
@@ -51,11 +54,14 @@ public:
     DisplayModule(Signals *hpsignals_r, Flags *hpflags_r);
 
     bool printStringDisplay(string disp);
-    bool printNumberDisplay(cl_R numb);
+    bool printNumberDisplay(double numb);
     bool printErrorDisplay(int x);
 
     string to_display(double num);
+    bool longToString(long x, char *str, int d);
 private:
+    int calculate_dec_digit_n(double numb);
+
     Signals *hpSignals;
     Flags *hpFlags;
 };

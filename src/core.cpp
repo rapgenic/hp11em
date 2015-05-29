@@ -23,9 +23,6 @@
 using std::cerr;
 using std::endl;
 
-#include <cln/cln.h>
-using cln::square;
-
 #include "keys.h"
 #include "signals.h"
 #include "dispdrawarea.h"

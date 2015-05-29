@@ -65,7 +65,7 @@ protected:
     Cairo::RefPtr<Cairo::Context> drawing_context;
 
     double last_x, last_y;
-    
+
     Keys key;
     Signals *hpsignals;
 };
