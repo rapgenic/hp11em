@@ -16,6 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with HP11em.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include "config.h"
 
 #include <iostream>
@@ -39,13 +40,6 @@ void AutomaticMemoryStack::stack_add(double number) {
     x = round_to_limits(number);
 }
 
-/*void AutomaticMemoryStack::stack_add(char* num) {
-    t = z;
-    z = y;
-    y = x;
-    x = round_to_limits(num);
-}*/
-
 double AutomaticMemoryStack::get_x() {
     return x;
 }
@@ -65,37 +59,6 @@ double AutomaticMemoryStack::get_t() {
 double AutomaticMemoryStack::get_lst_x() {
     return lst_x;
 }
-
-/*void AutomaticMemoryStack::set_x(char* num, bool using_lst_x) {
-    double cnum = round_to_limits(num);
-
-    if (using_lst_x) {
-        lst_x = x;
-        x = cnum;
-    } else {
-        x = cnum;
-    }
-}
-
-void AutomaticMemoryStack::set_y(char* num) {
-    double cnum = round_to_limits(num);
-    y = cnum;
-}
-
-void AutomaticMemoryStack::set_z(char* num) {
-    double cnum = round_to_limits(num);
-    z = cnum;
-}
-
-void AutomaticMemoryStack::set_t(char* num) {
-    double cnum = round_to_limits(num);
-    t = cnum;
-}
-
-void AutomaticMemoryStack::set_lst_x(char* num) {
-    double cnum = round_to_limits(num);
-    lst_x = cnum;
-}*/
 
 void AutomaticMemoryStack::set_lst_x(double num) {
     lst_x = round_to_limits(num);
@@ -124,20 +87,6 @@ void AutomaticMemoryStack::set_t(double num) {
 }
 
 double AutomaticMemoryStack::round_to_limits(double num) {
-    /*
-        if (num > hlimit) {
-    #ifdef DEBUG
-            cerr << KYEL << "NUMBER EXCEEDED MAXIMUM VALUE" << KRST << endl;
-    #endif
-            return hlimit;
-        } else if (num < llimit) {
-    #ifdef DEBUG
-            cerr << KYEL << "NUMBER EXCEEDED MINIMUM VALUE" << KRST << endl;
-    #endif
-            return llimit;
-        }
-     */
-
 #ifdef DEBUG
     cerr << KYEL << "Warning: internal registers limit NOT SUPPORTED YET" << KRST << endl;
 #endif     

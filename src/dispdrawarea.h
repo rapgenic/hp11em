@@ -85,7 +85,7 @@ protected:
     const int figures[128] = {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* ASCII characters from 0 to 31 */
         0x00000000, /* SPACE */
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* ASCII characters from 33 to 47 */
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x000000F0, 0, 0, /* ASCII characters from 33 to 47 */
         0x0FFFFF0F, /* 0 */
         0x000FF000, /* 1 */
         0x00FF0FFF, /* 2 */

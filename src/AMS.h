@@ -46,12 +46,6 @@ public:
     void set_t(double num);
     void set_lst_x(double num);
 
-    /*  void stack_add(char* num);
-      void set_x(char* num, bool using_lst_x = true);
-      void set_y(char* num);
-      void set_z(char* num);
-      void set_t(char* num);
-      void set_lst_x(char* num);*/
 private:
     double round_to_limits(double num);
 

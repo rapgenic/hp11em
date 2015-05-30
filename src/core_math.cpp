@@ -37,6 +37,7 @@ using namespace std;
 
 void Core::kcb_sqrt() {
     hpAMS.set_x(sqrt(hpAMS.get_x()));
+
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
@@ -50,6 +51,7 @@ void Core::kcb_alpha_a() {
 
 void Core::kcb_x_2() {
     hpAMS.set_x(pow(hpAMS.get_x(), 2));
+
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
@@ -68,15 +70,16 @@ void Core::kcb_alpha_b() {
 }
 
 void Core::kcb_ln() {
-    //    hpAMS.set_x(ln(hpAMS.get_x()));
+    hpAMS.set_x(log(hpAMS.get_x()));
+
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
 }
 
 void Core::kcb_10_x() {
-    // expt requires exponent to be INTEGER, but we wanto to use even decimals
     hpAMS.set_x(pow(10, hpAMS.get_x()));
+
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
@@ -90,14 +93,16 @@ void Core::kcb_alpha_c() {
 
 void Core::kcb_log() {
     hpAMS.set_x(log10(hpAMS.get_x()));
+
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
 }
 
 void Core::kcb_y_x() {
-    // expt requires exponent to be INTEGER, but we wanto to use even decimals
-    hpDisplay.printNumberDisplay(pow(hpAMS.get_y(), hpAMS.get_x()));
+    hpAMS.set_x(pow(hpAMS.get_y(), hpAMS.get_x()));
+
+    hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
 }
@@ -116,6 +121,7 @@ void Core::kcb_percent() {
 
 void Core::kcb_1_x() {
     hpAMS.set_x(1 / hpAMS.get_x());
+
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
@@ -166,6 +172,7 @@ void Core::kcb_pi() {
 
 void Core::kcb_abs() {
     hpAMS.set_x(abs(hpAMS.get_x()));
+
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
@@ -176,23 +183,6 @@ void Core::kcb_7() {
 }
 
 void Core::kcb_fix() {
-    /*if (!hpFlags.isPendingData()) {
-        hpFlags.setPendingData(true);
-        pending_data_function = &Core::kcb_fix;
-    } else {
-        if ((hpPendingData[pending_data_count - 1].fg == F_NULL && KEY_IS_NUMBER(hpPendingData[pending_data_count - 1].key))) {
-            hpFlags.setNotation(Flags::N_FIX);
-            hpFlags.setNotPrecision(c_get_val_from_key(hpPendingData[pending_data_count - 1].key));
-            hpDisplay.printNumberDisplay(hpAMS.get_x());
-            reset_number();
-            hpFlags.setStackDisabled(false);
-            hpFlags.setPendingData(false);
-            pending_data_count = 0;
-        } else {
-            pending_data_count = 0;
-            hpFlags.setPendingData(false);
-        }
-    }*/
     kcb_c_not(Flags::N_FIX);
 }
 
@@ -207,9 +197,6 @@ void Core::kcb_8() {
 }
 
 void Core::kcb_sci() {
-    /*    hpDisplay.printNumberDisplay(hpAMS.get_x());
-        reset_number();
-        hpFlags.setStackDisabled(false);*/
     kcb_c_not(Flags::N_SCI);
 }
 
@@ -224,9 +211,6 @@ void Core::kcb_9() {
 }
 
 void Core::kcb_eng() {
-    /*hpDisplay.printNumberDisplay(hpAMS.get_x());
-    reset_number();
-    hpFlags.setStackDisabled(false);*/
     kcb_c_not(Flags::N_ENG);
 }
 
@@ -466,6 +450,7 @@ void Core::kcb_r_dwn() {
     hpAMS.set_y(hpAMS.get_z());
     hpAMS.set_z(hpAMS.get_t());
     hpAMS.set_t(temp);
+
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
@@ -483,6 +468,7 @@ void Core::kcb_r_up() {
     hpAMS.set_z(hpAMS.get_y());
     hpAMS.set_y(hpAMS.get_x());
     hpAMS.set_x(temp, false);
+
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
@@ -492,7 +478,10 @@ void Core::kcb_x_xcng_y() {
     double temp = hpAMS.get_x();
     hpAMS.set_x(hpAMS.get_y());
     hpAMS.set_y(temp);
+
     hpDisplay.printNumberDisplay(hpAMS.get_x());
+    reset_number();
+    hpFlags.setStackDisabled(false);
 }
 
 void Core::kcb_reg() {
@@ -521,8 +510,10 @@ void Core::kcb_prefix() {
 }
 
 void Core::kcb_clx() {
-    hpAMS.set_x(static_cast<double> (0), false);
+    hpAMS.set_x(0.0, false);
+
     hpDisplay.printNumberDisplay(hpAMS.get_x());
+    reset_number();
     hpFlags.setStackDisabled(true);
 }
 
@@ -599,14 +590,18 @@ void Core::kcb_sto() {
 }
 
 void Core::kcb_frac() {
-    hpAMS.set_x(hpAMS.get_x() - floor(hpAMS.get_x()));
+    hpAMS.set_x(modf(hpAMS.get_x(), new float));
+
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
 }
 
 void Core::kcb_int() {
-    hpAMS.set_x(floor(hpAMS.get_x()));
+    double i;
+    modf(hpAMS.get_x(), &i);
+    hpAMS.set_x(i);
+
     hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(false);
@@ -696,8 +691,8 @@ void Core::kcb_x_eq_0() {
 
 void Core::kcb_enter() {
     hpAMS.stack_add(hpAMS.get_x());
-    hpDisplay.printNumberDisplay(hpAMS.get_x());
 
+    hpDisplay.printNumberDisplay(hpAMS.get_x());
     reset_number();
     hpFlags.setStackDisabled(true);
 }
@@ -710,7 +705,10 @@ void Core::kcb_ran() {
 
 void Core::kcb_lst_x() {
     hpAMS.stack_add(hpAMS.get_lst_x());
+    
     hpDisplay.printNumberDisplay(hpAMS.get_x());
+    reset_number();
+    hpFlags.setStackDisabled(false);
 }
 
 /*

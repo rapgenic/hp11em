@@ -23,7 +23,6 @@
 #include "config.h"
 
 #include <string>
-using std::to_string;
 using std::string;
 
 #include <cstring>

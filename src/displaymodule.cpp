@@ -20,7 +20,6 @@
 #include "config.h"
 
 #include <string>
-using std::to_string;
 using std::string;
 
 #include <cstring>
@@ -60,6 +59,9 @@ bool DisplayModule::printStringDisplay(string disp) {
 
 bool DisplayModule::printNumberDisplay(double numb) {
     char display_text[22] = "";
+    
+    // Assuring that numb doesn't get truncated
+    numb += 5.0 * pow10(-10.0);
 
     // Working with positive numbers only
     double pnumb = fabs(numb);
@@ -85,21 +87,30 @@ bool DisplayModule::printNumberDisplay(double numb) {
 
         sprintf(display_text, "%c%s,%s", numb >= 0 ? '+' : '-', spnumbi, spnumbd);
     } else if (hpFlags->getNotation() == Flags::N_SCI || (hpFlags->getNotation() == Flags::N_FIX && numb > pow10(10))) {
-        while (pnumb >= 10) {
-            pnumb /= 10;
-            exp++;
-        }
+        //double tpnumb = pnumb;
+
+        // calculates the exponent
+        if (pnumb >= 10.0)
+            while (pnumb >= 10.0) {
+                pnumb /= 10.0;
+                exp++;
+            }
+        else if (pnumb < 1.0) 
+            while (pnumb < 1.0) {
+                pnumb *= 10.0;
+                exp--;
+            }            
 
         pnumbi = (long) pnumb;
         pnumbd = pnumb - (double) pnumbi;
 
         longToString(pnumbi, spnumbi, 1);
-        longToString((long) (pnumbd * pow(10, hpFlags->getNotPrecision())), spnumbd, hpFlags->getNotPrecision());
+        longToString((long) (pnumbd * pow10(hpFlags->getNotPrecision())), spnumbd, hpFlags->getNotPrecision());
 
         sprintf(display_text, "%c%s,%s", numb >= 0 ? '+' : '-', spnumbi, spnumbd);
 
         // Adding exponent to string
-        longToString(exp, sexp, 2);
+        longToString(abs(exp), sexp, 2);
 
         // calculate the position of the exponent in the display:
         // we need to do all these strange calculations because only
@@ -117,9 +128,9 @@ bool DisplayModule::printNumberDisplay(double numb) {
         for (int h = strlen(display_text); h < 22; h++)
             display_text[h] = ' ';
 
-        // insert a space before the exponent to distinguish it from the rest of
+        // insert a space or a minus before the exponent to distinguish it from the rest of
         // the number
-        display_text[exppos - 3] = ' ';
+        display_text[exppos - 3] = exp >= 0 ? ' ' : '-';
         display_text[exppos - 2] = sexp[0];
         display_text[exppos - 1] = sexp[1];
         display_text[exppos] = '\0';
@@ -139,7 +150,7 @@ bool DisplayModule::longToString(long x, char str[], int d) {
     int z = 0;
     int j;
     int temp;
-
+    
     while (x) {
         str[i++] = (x % 10) + '0';
         x = x / 10;
@@ -167,7 +178,11 @@ bool DisplayModule::longToString(long x, char str[], int d) {
 }
 
 bool DisplayModule::printErrorDisplay(int x) {
-    hpSignals->sig_display_emit("Error" + to_string(x));
+    char display_text[22];
+
+    sprintf(display_text, "+Error %d", x);
+
+    hpSignals->sig_display_emit(display_text);
 
     cerr << KRED << "CALCULATOR ERROR " << x << KRST << endl;
 

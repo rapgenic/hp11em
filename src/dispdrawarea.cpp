@@ -166,7 +166,7 @@ bool DispDrawArea::draw_figure(const Cairo::RefPtr<Cairo::Context>& cr, int x, i
 bool DispDrawArea::draw_display(const Cairo::RefPtr<Cairo::Context>& cr) {
     int i = 1, z = 0;
 
-    if (display_text[0] == 'E') {
+   /* if (display_text[0] == 'E') {
 
         // printing error message
         draw_figure(cr, (DISP_FIG_WIDTH * 1 + DISP_FIG_DIST * 1), DISP_FIG_Y, figures['E']);
@@ -177,7 +177,7 @@ bool DispDrawArea::draw_display(const Cairo::RefPtr<Cairo::Context>& cr) {
         draw_figure(cr, (DISP_FIG_WIDTH * 7 + DISP_FIG_DIST * 7), DISP_FIG_Y, figures[display_text[5]]);
 
         return true;
-    }
+    }*/
 
     if (display_text[0] == '-')
         draw_negative(cr);
