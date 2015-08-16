@@ -87,8 +87,10 @@ private:
      * INPUT mode variables, to be resetted when changing state
      */
     bool decimal;
+    bool exp;
     int decimal_figures_number;
     int figures_number;
+    int exp_val;
 
     /*
      * IDLE mode variables

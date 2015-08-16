@@ -31,8 +31,10 @@ Core::Core(Signals *hpSignals_r) {
     stack_nolift_required = false;
 
     decimal = false;
+    exp = false;
     decimal_figures_number = 1;
     figures_number = 0;
+    exp_val = 0;
 
     notation = N_FIX;
     precision = 4;
@@ -82,8 +84,10 @@ void Core::input(int key) {
                              * Resetting INPUT variables
                              */
                             decimal = false;
+                            exp = false;
                             decimal_figures_number = 1;
                             figures_number = 0;
+                            exp_val = 0;
                             status = S_IDLE;
                             break;
                         case S_WAITDATA:
@@ -167,7 +171,7 @@ void Core::display() {
     // Working with positive numbers only
     double pnumb = fabs(numb);
 
-    int exp = 0;
+    int expv = 0;
     int exppos = 0;
     long pnumbi = 0;
     double pnumbd = 0;
@@ -194,14 +198,14 @@ void Core::display() {
                 if (pnumb >= 10.0) {
                     while (pnumb >= 10.0) {
                         pnumb /= 10.0;
-                        exp++;
+                        expv++;
                     }
                 } else if (pnumb == 0) {
-                    exp = 0;
+                    expv = 0;
                 } else if (pnumb < 1.0) {
                     while (pnumb < 1.0) {
                         pnumb *= 10.0;
-                        exp--;
+                        expv--;
                     }
                 }
 
@@ -214,7 +218,7 @@ void Core::display() {
                 sprintf(display_text, "%c%s,%s", numb >= 0 ? '+' : '-', spnumbi, spnumbd);
 
                 // Adding exponent to string
-                longToString(abs(exp), sexp, 2);
+                longToString(abs(expv), sexp, 2);
 
                 // calculate the position of the exponent in the display:
                 // we need to do all these strange calculations because only
@@ -234,7 +238,7 @@ void Core::display() {
 
                 // insert a space or a minus before the exponent to distinguish it from the rest of
                 // the number
-                display_text[exppos - 3] = exp >= 0 ? ' ' : '-';
+                display_text[exppos - 3] = expv >= 0 ? ' ' : '-';
                 display_text[exppos - 2] = sexp[0];
                 display_text[exppos - 1] = sexp[1];
                 display_text[exppos] = '\0';
@@ -243,6 +247,10 @@ void Core::display() {
             hpSignals->sig_display_emit(display_text);
             break;
         case S_INPUT:
+            if (exp) {
+                pnumb /= pow10(exp_val);
+            }
+
             pnumbi = (long) pnumb;
             pnumbd = pnumb - (double) pnumbi;
 
@@ -254,6 +262,34 @@ void Core::display() {
             if (decimal) {
                 strcat(display_text, ",");
                 strcat(display_text, spnumbd);
+            }
+
+            if (exp) {
+                // Adding exponent to string
+                longToString(abs(exp_val), sexp, 2);
+
+                // calculate the position of the exponent in the display:
+                // we need to do all these strange calculations because only
+                // figures are considered while converting the string to 
+                // display lines so for example a string like this
+                //    "+1.1111"
+                // is a 7 char string, but when printing to the display
+                // only
+                //    "11111"
+                // are considered.
+                // in conclusion '+' '-' '.' ',' aren't considered as a character
+
+                exppos = strlen(display_text)+(10 - (strlen(spnumbi) + strlen(spnumbd)));
+
+                for (int h = strlen(display_text); h < 22; h++)
+                    display_text[h] = ' ';
+
+                // insert a space or a minus before the exponent to distinguish it from the rest of
+                // the number
+                display_text[exppos - 3] = expv >= 0 ? ' ' : '-';
+                display_text[exppos - 2] = sexp[0];
+                display_text[exppos - 1] = sexp[1];
+                display_text[exppos] = '\0';
             }
 
             hpSignals->sig_display_emit(display_text);

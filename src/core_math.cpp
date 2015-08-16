@@ -507,8 +507,14 @@ void Core::kcb_tan_neg_1() {
 
 void Core::kcb_eex() {
     switch (status) {
-        case S_IDLE: break;
-        case S_INPUT: break;
+        case S_IDLE:
+            hpAMS.set_x(1);
+            figures_number++;
+            exp = true;
+            break;
+        case S_INPUT:
+            exp = true;
+            break;
         case S_ERR: break;
         default: break;
     }
@@ -771,7 +777,13 @@ void Core::kcb_del() {
             stack_nolift_required = true;
             break;
         case S_INPUT:
-            if (!decimal) {
+            if (exp) {
+                if (exp_val == 0) {
+                    exp = 0;
+                } else {
+                    exp_val = exp_val / 10;
+                }
+            } else if (!decimal) {
                 if (figures_number == 1) {
                     hpAMS.set_x(0.0, false);
                     stack_nolift_required = true;
@@ -779,19 +791,21 @@ void Core::kcb_del() {
                      * Passing to IDLE state
                      */
                     decimal = false;
+                    exp = false;
                     decimal_figures_number = 1;
                     figures_number = 0;
+                    exp_val = 0;
                     status = S_IDLE;
                 } else {
-                    hpAMS.set_x((long)(hpAMS.get_x() / 10), false);
+                    hpAMS.set_x((long) (hpAMS.get_x() / 10), false);
                     figures_number--;
                 }
             } else {
                 if (decimal_figures_number == 2) {
                     decimal = false;
-                } 
-                
-                hpAMS.set_x(((double)((long)(hpAMS.get_x() * pow10(decimal_figures_number - 1)))) / pow10(decimal_figures_number - 1));
+                }
+
+                hpAMS.set_x(((double) ((long) (hpAMS.get_x() * pow10(decimal_figures_number - 1)))) / pow10(decimal_figures_number - 1));
                 decimal_figures_number--;
                 figures_number--;
             }
@@ -1155,7 +1169,13 @@ void Core::kcb_common_number(int x) {
             }
             break;
         case S_INPUT:
-            if (figures_number < 10) {
+            if (exp) {
+                int old_exp_val = exp_val;
+                exp_val %= 10;
+                exp_val *= 10;
+                exp_val += x;
+                hpAMS.set_x(hpAMS.get_x() / pow10(old_exp_val) * pow10(exp_val));
+            } else if (figures_number < 10) {
                 if (!decimal) {
                     hpAMS.set_x(hpAMS.get_x()*10 + x, false);
                 } else {
@@ -1169,12 +1189,14 @@ void Core::kcb_common_number(int x) {
             break;
     }
 
-    if (!decimal) {
-        if (hpAMS.get_x() != 0) {
+    if (!exp) {
+        if (!decimal) {
+            if (hpAMS.get_x() != 0) {
+                figures_number++;
+            }
+        } else {
             figures_number++;
         }
-    } else {
-        figures_number++;
     }
 }
 
