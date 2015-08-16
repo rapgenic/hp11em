@@ -330,7 +330,7 @@ private:
         {S_IDLE, S_IDLE, S_IDLE},
         {S_IDLE, S_IDLE, S_IDLE},
         {S_IDLE, S_IDLE, S_IDLE},
-        {S_IDLE, S_IDLE, S_IDLE},
+        {S_INPUT, S_IDLE, S_IDLE},
         {S_INPUT, S_IDLE, S_IDLE},
         {S_INPUT, S_IDLE, S_IDLE},
         {S_INPUT, S_IDLE, S_IDLE},
