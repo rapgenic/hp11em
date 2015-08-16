@@ -17,12 +17,6 @@
     along with HP11em.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "config.h"
-
-#include <sigc++/sigc++.h>
-#include <string>
-using std::string;
-
 #include "signals.h"
 
 Signals::Signals() {
@@ -81,6 +75,14 @@ Signals::signal_t Signals::signal_menu() {
 
 void Signals::sig_menu_emit() {
     sig_menu.emit();
+}
+
+Signals::signal_t Signals::signal_minimize() {
+    return sig_minimize;
+}
+
+void Signals::sig_minimize_emit() {
+    sig_minimize.emit();
 }
 
 Signals::signal_window_move_t Signals::signal_window_move() {

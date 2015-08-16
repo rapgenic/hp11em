@@ -6,8 +6,6 @@ hp11em_SOURCES = src/AMS.cpp \
 	src/core_math.cpp \
 	src/debugwindow.cpp \
 	src/dispdrawarea.cpp \
-	src/displaymodule.cpp \
-	src/flags.cpp \
 	src/keys.cpp \
 	src/main.cpp \
 	src/mainwindow.cpp \

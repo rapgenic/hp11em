@@ -69,6 +69,9 @@ public:
     void sig_key_emit(int key);
 
     // GUI to GUI
+    signal_t signal_minimize();
+    void sig_minimize_emit();
+    
     signal_t signal_menu();
     void sig_menu_emit();
 
@@ -90,6 +93,7 @@ private:
 
     // GUI to GUI
     signal_t sig_menu;
+    signal_t sig_minimize;
     signal_window_move_t sig_window_move;
 };
 

@@ -20,19 +20,6 @@
 
 #ifdef DEBUG
 
-#include "signals.h"
-
-#include <iostream>
-#include <ostream>
-using std::ostringstream;
-
-#include <iomanip>
-using std::setprecision;
-using std::fixed;
-
-#include <string>
-#include <gtkmm.h>
-
 #include "debugwindow.h"
 
 DebugWindow::DebugWindow(Signals *hpsignals_r)

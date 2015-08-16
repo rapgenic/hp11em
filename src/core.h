@@ -29,21 +29,8 @@ using std::endl;
 #include "keys.h"
 #include "signals.h"
 #include "dispdrawarea.h"
-#include "displaymodule.h"
 #include "AMS.h"
-#include "flags.h"
 #include "SR.h"
-
-#define KEY_IS_NUMBER(x) (x == Keys::K_NO0 || \
-                            x == Keys::K_NO1 || \
-                            x == Keys::K_NO2 || \
-                            x == Keys::K_NO3 || \
-                            x == Keys::K_NO4 || \
-                            x == Keys::K_NO5 || \
-                            x == Keys::K_NO6 || \
-                            x == Keys::K_NO7 || \
-                            x == Keys::K_NO8 || \
-                            x == Keys::K_NO9)
 
 #define C_PI 3.141592654
 
@@ -52,34 +39,23 @@ public:
     Core(Signals *hpsignals_r);
     virtual ~Core();
 
-    void keyPressEvent(int key);
-
-    typedef struct {
-        char str[100];
-        int cursor; // global position of the string
-    } display_temp;
+    typedef enum {
+        S_IDLE = 1,
+        S_INPUT = 2,
+        S_WAITDATA = 3,
+        S_ERR = 4
+    } core_states_t;
 
     typedef enum {
-        S_NUL = -1,
-        S_FIX = 0,
-        S_SOF,
-        S_GOF
-    } pending_states;
+        F_NONE = 0,
+        F_FKEY = 1,
+        F_GKEY = 2
+    } function_keys_t;
+
+    void input(int key);
 
     typedef enum {
-        F_NULL = 0,
-        F_FKEY,
-        F_GKEY
-    } function_states;
-
-    typedef enum {
-        O_ADD = 0,
-        O_SUB,
-        O_MLT,
-        O_DIV
-    } operators;
-
-    typedef enum {
+        E_NONE = -1,
         E_IMO = 0,
         E_SRO,
         E_ISO,
@@ -89,31 +65,57 @@ public:
         E_IFN,
         E_SER,
         E_PRE
-    } error_conditions;
+    } error_t;
+
+    typedef enum {
+        N_FIX,
+        N_SCI,
+        N_ENG
+    } notation_t;
 
 private:
-
-    typedef struct {
-        int key;
-        function_states fg;
-    } pending_data_t;
-
-    pending_data_t hpPendingData[50];
-    int pending_data_count;
-
-    void (Core::*pending_data_function)(void);
-
     Signals *hpSignals;
     AutomaticMemoryStack hpAMS;
-    StorageRegister hpSR;
-    DisplayModule hpDisplay;
-    Flags hpFlags;
-    display_temp hpTempDisp;
 
-    function_states function_keys;
+    core_states_t status;
+    error_t error;
+    function_keys_t fkeys;
 
-    int f_key_set(unsigned char value);
-    int f_key_toggle(int key);
+    bool stack_nolift_required;
+
+    /*
+     * INPUT mode variables, to be resetted when changing state
+     */
+    bool decimal;
+    int decimal_figures_number;
+    int figures_number;
+
+    /*
+     * IDLE mode variables
+     */
+    notation_t notation;
+    int precision;
+
+    /*
+     * WAITDATA mode variables
+     */
+    typedef struct {
+        int key;
+        function_keys_t fg;
+    } pending_data_t;
+
+    pending_data_t waiting_data[50];
+    int waiting_data_len;
+
+    void (Core::*waitdata_cb)(void);
+
+    void f_key_set(unsigned char value);
+    void f_key_toggle(int key);
+
+    void display();
+    void longToString(long x, char str[], int d);
+
+    int c_get_val_from_key(int key);
 
     void kcb_sqrt();
     void kcb_alpha_a();
@@ -231,8 +233,6 @@ private:
     void kcb_x_div_y();
     void kcb_x_div_0();
 
-    void kcb_off();
-
     void kcb_sto();
     void kcb_frac();
     void kcb_int();
@@ -261,14 +261,7 @@ private:
     void kcb_ran();
     void kcb_lst_x();
 
-    //COMMON FUNCTIONS
-    void kcb_c_number(int n);
-    void kcb_c_stdopr(operators op);
-    void kcb_c_sto_rcl(int storcl);
-    void kcb_c_not(Flags::notation_t notat);
-    void reset_number();
-
-    int c_get_val_from_key(int key);
+    void kcb_common_number(int x);
 
     void (Core::*keys_cb[KEY_NUMBER][3])(void) = {
         {&Core::kcb_sqrt, &Core::kcb_alpha_a, &Core::kcb_x_2},
@@ -300,7 +293,7 @@ private:
         {&Core::kcb_2, &Core::kcb_to_hms, &Core::kcb_to_h},
         {&Core::kcb_3, &Core::kcb_to_rad, &Core::kcb_to_deg},
         {&Core::kcb_min, &Core::kcb_x_div_y, &Core::kcb_x_div_0},
-        {&Core::kcb_off, &Core::kcb_off, &Core::kcb_off},
+        {NULL, NULL, NULL},
         {NULL, NULL, NULL},
         {NULL, NULL, NULL},
         {&Core::kcb_sto, &Core::kcb_frac, &Core::kcb_int},
@@ -310,6 +303,48 @@ private:
         {&Core::kcb_sum_plus, &Core::kcb_l_r, &Core::kcb_sum_minus},
         {&Core::kcb_plus, &Core::kcb_x_eq_y, &Core::kcb_x_eq_0},
         {&Core::kcb_enter, &Core::kcb_ran, &Core::kcb_lst_x},
+    };
+
+    int key_status[KEY_NUMBER][3] = {
+        {S_IDLE, S_IDLE, S_IDLE},
+        {S_IDLE, S_IDLE, S_IDLE},
+        {S_IDLE, S_IDLE, S_IDLE},
+        {S_IDLE, S_IDLE, S_IDLE},
+        {S_IDLE, S_IDLE, S_IDLE},
+        {0, S_IDLE, S_IDLE},
+        {S_INPUT, S_WAITDATA, S_IDLE},
+        {S_INPUT, S_WAITDATA, S_IDLE},
+        {S_INPUT, S_WAITDATA, S_IDLE},
+        {S_IDLE, S_IDLE, S_IDLE},
+        {S_IDLE, S_IDLE, S_IDLE},
+        {S_IDLE, S_IDLE, S_IDLE},
+        {S_IDLE, S_IDLE, S_IDLE},
+        {S_IDLE, S_IDLE, S_IDLE},
+        {S_IDLE, S_IDLE, S_IDLE},
+        {S_INPUT, S_IDLE, S_IDLE},
+        {S_INPUT, S_IDLE, S_IDLE},
+        {S_INPUT, S_IDLE, S_IDLE},
+        {S_INPUT, S_IDLE, S_IDLE},
+        {S_IDLE, S_IDLE, S_IDLE},
+        {S_IDLE, S_IDLE, S_IDLE},
+        {S_IDLE, S_IDLE, S_IDLE},
+        {S_IDLE, S_IDLE, S_IDLE},
+        {S_IDLE, S_IDLE, S_IDLE},
+        {S_IDLE, S_IDLE, S_IDLE},
+        {S_INPUT, S_IDLE, S_IDLE},
+        {S_INPUT, S_IDLE, S_IDLE},
+        {S_INPUT, S_IDLE, S_IDLE},
+        {S_IDLE, S_IDLE, S_IDLE},
+        {S_IDLE, S_IDLE, S_IDLE},
+        {0, 0, 0},
+        {0, 0, 0},
+        {S_IDLE, S_IDLE, S_IDLE},
+        {S_IDLE, S_IDLE, S_IDLE},
+        {S_INPUT, S_IDLE, S_IDLE},
+        {S_INPUT, S_IDLE, S_IDLE},
+        {S_IDLE, S_IDLE, S_IDLE},
+        {S_IDLE, S_IDLE, S_IDLE},
+        {S_IDLE, S_IDLE, S_IDLE},
     };
 };
 

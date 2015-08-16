@@ -24,6 +24,25 @@
 
 #define KEY_NUMBER 39
 
+#define KEY_IS_NUMBER(x) (x == Keys::K_NO0 || \
+                            x == Keys::K_NO1 || \
+                            x == Keys::K_NO2 || \
+                            x == Keys::K_NO3 || \
+                            x == Keys::K_NO4 || \
+                            x == Keys::K_NO5 || \
+                            x == Keys::K_NO6 || \
+                            x == Keys::K_NO7 || \
+                            x == Keys::K_NO8 || \
+                            x == Keys::K_NO9)
+
+#define KEY_IS_NEUTRAL(x) (x == Keys::K_CHS)
+
+#define KEY_IS_INPUT(x) (KEY_IS_NUMBER(x) || \
+                            x == Keys::K_EEX || \
+                            x == Keys::K_DOT)
+
+#define KEY_IS_IDLE(x) (!KEY_IS_INPUT(x) && !KEY_IS_NEUTRAL(x))
+
 class Keys {
 public:
     Keys();

@@ -32,6 +32,7 @@ using std::ostringstream;
 
 #include <iomanip>
 using std::setprecision;
+using std::fixed;
 
 #include <string>
 #include <gtkmm.h>

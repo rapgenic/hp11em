@@ -99,7 +99,6 @@ am__dirstamp = $(am__leading_dot)dirstamp
 am_hp11em_OBJECTS = src/AMS.$(OBJEXT) src/calcdrawarea.$(OBJEXT) \
 	src/core.$(OBJEXT) src/core_math.$(OBJEXT) \
 	src/debugwindow.$(OBJEXT) src/dispdrawarea.$(OBJEXT) \
-	src/displaymodule.$(OBJEXT) src/flags.$(OBJEXT) \
 	src/keys.$(OBJEXT) src/main.$(OBJEXT) src/mainwindow.$(OBJEXT) \
 	src/signals.$(OBJEXT) src/SR.$(OBJEXT)
 hp11em_OBJECTS = $(am_hp11em_OBJECTS)
@@ -284,8 +283,6 @@ hp11em_SOURCES = src/AMS.cpp \
 	src/core_math.cpp \
 	src/debugwindow.cpp \
 	src/dispdrawarea.cpp \
-	src/displaymodule.cpp \
-	src/flags.cpp \
 	src/keys.cpp \
 	src/main.cpp \
 	src/mainwindow.cpp \
@@ -406,9 +403,6 @@ src/debugwindow.$(OBJEXT): src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
 src/dispdrawarea.$(OBJEXT): src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
-src/displaymodule.$(OBJEXT): src/$(am__dirstamp) \
-	src/$(DEPDIR)/$(am__dirstamp)
-src/flags.$(OBJEXT): src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
 src/keys.$(OBJEXT): src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
 src/main.$(OBJEXT): src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
 src/mainwindow.$(OBJEXT): src/$(am__dirstamp) \
@@ -435,8 +429,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/core_math.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/debugwindow.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/dispdrawarea.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/displaymodule.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/flags.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/keys.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/main.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/mainwindow.Po@am__quote@

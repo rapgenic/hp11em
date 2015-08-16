@@ -17,13 +17,6 @@
     along with HP11em.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "config.h"
-
-#include <iostream>
-using std::cerr;
-using std::endl;
-
-#include "colors.h"
 #include "SR.h"
 
 StorageRegister::StorageRegister() {

@@ -16,18 +16,7 @@
     You should have received a copy of the GNU General Public License
     along with HP11em.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "config.h"
 
-#include <iostream>
-using std::cerr;
-using std::endl;
-
-#include <string>
-using std::string;
-
-#include <gtkmm.h>
-
-#include "signals.h"
 #include "dispdrawarea.h"
 
 DispDrawArea::DispDrawArea(Signals *hpsignals_r) {

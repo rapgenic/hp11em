@@ -17,18 +17,6 @@
     along with HP11em.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "config.h"
-
-#include <iostream>
-
-#include <gtkmm.h>
-
-#include "core.h"
-#include "keys.h"
-#include "signals.h"
-#include "dispdrawarea.h"
-#include "colors.h"
-
 #include "calcdrawarea.h"
 
 CalcDrawArea::CalcDrawArea(Signals *hpsignals_r)
@@ -92,19 +80,27 @@ bool CalcDrawArea::on_button_press_event(GdkEventButton *event) {
 
     if (keypressed == 39) {
         if ((MENU_XS <= (int) event->x) && (MENU_XE >= (int) event->x) && (MENU_YS <= (int) event->y) && (MENU_YE >= (int) event->y)) {
+            if (event->type == GDK_BUTTON_PRESS) {
 #ifdef DEBUG
-            std::cerr << KBLU << "Pressed Menu Key" << KRST << std::endl << std::flush;
+                std::cerr << KBLU << "Pressed Menu Key" << KRST << std::endl << std::flush;
 #endif
-            hpsignals->sig_menu_emit();
-            return true;
+                hpsignals->sig_menu_emit();
+                return true;
+            }
         } else {
-            keypressed = -1;
+            if (event->type == GDK_2BUTTON_PRESS) {
+#ifdef DEBUG
+                std::cerr << KBLU << "Pressed Minimize Key" << KRST << std::endl << std::flush;
+#endif                
+                hpsignals->sig_minimize_emit();
+            }
         }
     } else {
-        button_press_draw(keypressed);
+        if (event->type == GDK_BUTTON_PRESS) {
+            hpsignals->sig_key_emit(keypressed);
+            button_press_draw(keypressed);
+        }
     }
-
-    hpsignals->sig_key_emit(keypressed);
 
     return true;
 }

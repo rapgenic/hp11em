@@ -17,22 +17,6 @@
     along with HP11em.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "config.h"
-
-#include <iostream>
-
-#include <gtkmm/window.h>
-#include <gdkmm/pixbuf.h>
-#include <gtkmm/fixed.h>
-
-#include "calcdrawarea.h"
-#include "core.h"
-#include "signals.h"
-
-#ifdef DEBUG
-#include "debugwindow.h"
-#endif
-
 #include "mainwindow.h"
 
 MainWindow::MainWindow(Signals *hpsignals_r)
@@ -55,6 +39,7 @@ MainWindow::MainWindow(Signals *hpsignals_r)
     set_decorated(false);
 
     hpsignals->signal_off().connect(sigc::mem_fun(*this, &MainWindow::hide));
+    hpsignals->signal_minimize().connect(sigc::mem_fun(*this, &MainWindow::iconify));
     hpsignals->signal_menu().connect(sigc::mem_fun(*this, &MainWindow::menu_show));
     hpsignals->signal_window_move().connect(sigc::mem_fun(*this, &MainWindow::move_to));
 
