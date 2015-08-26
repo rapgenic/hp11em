@@ -76,6 +76,7 @@ public:
 private:
     Signals *hpSignals;
     AutomaticMemoryStack hpAMS;
+    StorageRegister hpSR;
 
     core_states_t status;
     error_t error;
@@ -118,12 +119,12 @@ private:
     void display();
 
     int c_get_val_from_key(int key);
-    
+
     void double_to_display(double value, short _precision, char *buf, notation_t format_flag, char dot = 1);
-    
-    void reset_input_mode(); 
+
+    void reset_input_mode();
     void reset_waitdata_mode();
-    
+
     void kcb_sqrt();
     void kcb_alpha_a();
     void kcb_x_2();
@@ -345,8 +346,8 @@ private:
         {S_IDLE, S_IDLE, S_IDLE},
         {0, 0, 0},
         {0, 0, 0},
-        {S_IDLE, S_IDLE, S_IDLE},
-        {S_IDLE, S_IDLE, S_IDLE},
+        {S_WAITDATA, S_IDLE, S_IDLE},
+        {S_WAITDATA, S_IDLE, S_IDLE},
         {S_INPUT, S_IDLE, S_IDLE},
         {S_INPUT, S_IDLE, S_IDLE},
         {S_IDLE, S_IDLE, S_IDLE},

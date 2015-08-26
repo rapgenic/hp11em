@@ -20,22 +20,24 @@
 #include "SR.h"
 
 StorageRegister::StorageRegister() {
-    for (int i = 0; i < 21; i++)
-        sr[i] = 0;
+    sr_clear();
 }
 
 StorageRegister::~StorageRegister() {
 }
 
-bool StorageRegister::sr_loc_set(int loc, double numb) {
+void StorageRegister::sr_loc_set(int loc, double numb) {
     sr[loc] = numb;
 #ifdef DEBUG
     cerr << KBLU << "STORAGE REGISTER - loc " << loc << " numb " << numb << KRST << endl;
 #endif 
-    return true;
 }
 
 double StorageRegister::sr_loc_get(int loc) {
     return sr[loc];
 }
 
+void StorageRegister::sr_clear() {
+    for (int i = 0; i < SR_DIMENSION; i++)
+        sr[i] = 0;
+}

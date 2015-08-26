@@ -28,16 +28,19 @@ using std::endl;
 
 #include "colors.h"
 
+#define SR_DIMENSION 21
+
 class StorageRegister {
 public:
     StorageRegister();
     virtual ~StorageRegister();
 
-    bool sr_loc_set(int loc, double numb);
+    void sr_loc_set(int loc, double numb);
     double sr_loc_get(int loc);
+    void sr_clear();
 
 private:
-    double sr[21];
+    double sr[SR_DIMENSION];
 };
 
 #endif	/* STORAGEREGISTER_H */

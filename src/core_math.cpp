@@ -759,8 +759,10 @@ void Core::kcb_x_xcng_y() {
 
 void Core::kcb_reg() {
     switch (status) {
-        case S_IDLE: break;
-        case S_INPUT: break;
+        case S_IDLE: 
+        case S_INPUT: 
+            hpSR.sr_clear();
+            break;
         case S_ERR: break;
         default: break;
     }
@@ -941,11 +943,64 @@ void Core::kcb_x_div_0() {
 }
 
 void Core::kcb_sto() {
+    static int dot_pressed = 0;
+    static int operation = -1;
+
     switch (status) {
-        case S_IDLE: break;
-        case S_INPUT: break;
-        case S_ERR: break;
-        default: break;
+        case S_IDLE:
+            break;
+        case S_INPUT:
+            break;
+        case S_WAITDATA:
+            if ((waiting_data[waiting_data_len - 1].fg == F_NONE &&
+                    KEY_IS_NUMBER(waiting_data[waiting_data_len - 1].key)) ||
+                    (waiting_data[0].fg == F_FKEY &&
+                    waiting_data[0].key == Keys::K_TAN)) {
+                int loc = -1;
+                if (waiting_data[waiting_data_len - 1].fg == F_NONE) {
+                    loc = c_get_val_from_key(waiting_data[waiting_data_len - 1].key);
+                    if (dot_pressed) {
+                        loc += 10;
+                        dot_pressed = 0;
+                    }
+                } else if (waiting_data[0].fg == F_FKEY &&
+                        waiting_data[0].key == Keys::K_TAN)
+                    loc = 20;
+
+                if (operation == -1)
+                    hpSR.sr_loc_set(loc, hpAMS.get_x());
+                else if (operation == 0)
+                    hpSR.sr_loc_set(loc, hpSR.sr_loc_get(loc) + hpAMS.get_x());
+                else if (operation == 1)
+                    hpSR.sr_loc_set(loc, hpSR.sr_loc_get(loc) - hpAMS.get_x());
+                else if (operation == 2)
+                    hpSR.sr_loc_set(loc, hpSR.sr_loc_get(loc) * hpAMS.get_x());
+                else if (operation == 3)
+                    hpSR.sr_loc_set(loc, hpSR.sr_loc_get(loc) / hpAMS.get_x());
+
+                status = S_IDLE;
+                dot_pressed = 0;
+                operation = -1;
+            } else if (waiting_data[waiting_data_len - 1].fg == F_NONE && waiting_data[waiting_data_len - 1].key == Keys::K_DOT) {
+                dot_pressed = 1;
+            } else if (waiting_data[0].fg == F_NONE && waiting_data[0].key == Keys::K_PIU) {
+                operation = 0;
+            } else if (waiting_data[0].fg == F_NONE && waiting_data[0].key == Keys::K_MEN) {
+                operation = 1;
+            } else if (waiting_data[0].fg == F_NONE && waiting_data[0].key == Keys::K_PER) {
+                operation = 2;
+            } else if (waiting_data[0].fg == F_NONE && waiting_data[0].key == Keys::K_DIV) {
+                operation = 3;
+            } else {
+                status = S_IDLE;
+                dot_pressed = 0;
+                operation = -1;
+            }
+            break;
+        case S_ERR:
+            break;
+        default:
+            break;
     }
 }
 
@@ -979,11 +1034,45 @@ void Core::kcb_int() {
 }
 
 void Core::kcb_rcl() {
+    static int dot_pressed = 0;
+    
     switch (status) {
-        case S_IDLE: break;
-        case S_INPUT: break;
-        case S_ERR: break;
-        default: break;
+        case S_IDLE:
+            break;
+        case S_INPUT:
+            break;
+        case S_WAITDATA:
+            if ((waiting_data[waiting_data_len - 1].fg == F_NONE &&
+                    KEY_IS_NUMBER(waiting_data[waiting_data_len - 1].key)) ||
+                    (waiting_data[0].fg == F_FKEY &&
+                    waiting_data[0].key == Keys::K_TAN)) {
+                int loc = -1;
+                if (waiting_data[waiting_data_len - 1].fg == F_NONE) {
+                    loc = c_get_val_from_key(waiting_data[waiting_data_len - 1].key);
+                    if (dot_pressed) {
+                        loc += 10;
+                        dot_pressed = 0;
+                    }
+                } else if (waiting_data[0].fg == F_FKEY &&
+                        waiting_data[0].key == Keys::K_TAN) {
+                    loc = 20;
+                }
+
+                hpAMS.stack_add(hpSR.sr_loc_get(loc));
+
+                status = S_IDLE;
+                dot_pressed = 0;
+            } else if (waiting_data[waiting_data_len - 1].fg == F_NONE && waiting_data[waiting_data_len - 1].key == Keys::K_DOT) {
+                dot_pressed = 1;
+            } else {
+                status = S_IDLE;
+                dot_pressed = 0;
+            }
+            break;
+        case S_ERR:
+            break;
+        default:
+            break;
     }
 }
 
