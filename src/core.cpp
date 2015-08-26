@@ -30,11 +30,7 @@ Core::Core(Signals *hpSignals_r) {
 
     stack_nolift_required = false;
 
-    decimal = false;
-    exp = false;
-    decimal_figures_number = 1;
-    figures_number = 0;
-    exp_val = 0;
+    reset_input_mode();
 
     notation = N_FIX;
     precision = 4;
@@ -43,6 +39,15 @@ Core::Core(Signals *hpSignals_r) {
 }
 
 Core::~Core() {
+}
+
+void Core::reset_input_mode() {
+    decimal = false;
+    exp = false;
+    decimal_figures_number = 1;
+    figures_number = 0;
+    start_zero_figures_number = 0;
+    exp_val = 0;
 }
 
 void Core::input(int key) {
@@ -59,16 +64,17 @@ void Core::input(int key) {
                 case S_IDLE:
                     (this->*keys_cb[key][fkeys])();
 
-                    switch (key_status[key][fkeys]) {
-                        case S_INPUT:
-                            status = S_INPUT;
-                            break;
-                        case S_WAITDATA:
-                            waitdata_cb = keys_cb[key][fkeys];
-                            waiting_data_len = 0;
-                            status = S_WAITDATA;
-                            break;
-                    }
+                    if (status != S_ERR)
+                        switch (key_status[key][fkeys]) {
+                            case S_INPUT:
+                                status = S_INPUT;
+                                break;
+                            case S_WAITDATA:
+                                waitdata_cb = keys_cb[key][fkeys];
+                                waiting_data_len = 0;
+                                status = S_WAITDATA;
+                                break;
+                        }
 
                     f_key_set(F_NONE);
 
@@ -78,24 +84,23 @@ void Core::input(int key) {
                 case S_INPUT:
                     (this->*keys_cb[key][fkeys])();
 
-                    switch (key_status[key][fkeys]) {
-                        case S_IDLE:
-                            /*
-                             * Resetting INPUT variables
-                             */
-                            decimal = false;
-                            exp = false;
-                            decimal_figures_number = 1;
-                            figures_number = 0;
-                            exp_val = 0;
-                            status = S_IDLE;
-                            break;
-                        case S_WAITDATA:
-                            waitdata_cb = keys_cb[key][fkeys];
-                            waiting_data_len = 0;
-                            status = S_WAITDATA;
-                            break;
-                    }
+                    if (status != S_ERR)
+                        switch (key_status[key][fkeys]) {
+                            case S_IDLE:
+                                /*
+                                 * Resetting INPUT variables
+                                 */
+                                reset_input_mode();
+
+                                status = S_IDLE;
+
+                                break;
+                            case S_WAITDATA:
+                                waitdata_cb = keys_cb[key][fkeys];
+                                waiting_data_len = 0;
+                                status = S_WAITDATA;
+                                break;
+                        }
 
                     f_key_set(F_NONE);
 
@@ -162,86 +167,29 @@ void Core::f_key_toggle(int key) {
 
 void Core::display() {
     double numb = hpAMS.get_x();
-    // Assuring that numb doesn't get truncated
-    if (numb > 0) {
-        numb += 5.0 * pow10(-10.0);
-    } else if (numb < 0) {
-        numb -= 5.0 * pow10(-10.0);
-    }
-    // Working with positive numbers only
     double pnumb = fabs(numb);
-
-    int expv = 0;
-    int exppos = 0;
-    long pnumbi = 0;
-    double pnumbd = 0;
-    char spnumbi[22] = "";
-    char spnumbd[22] = "";
-    char sexp[3] = "";
 
     char display_text[22] = "";
 
+    memset(display_text, ' ', 22);
+
+    char *display_text_ptr = display_text;
+
+    if (numb >= 0)
+        *display_text_ptr++ = '+';
+    else
+        *display_text_ptr++ = '-';
+
     switch (status) {
         case S_IDLE:
-            if (notation == N_FIX && numb < pow10(10)) {
-                pnumbi = (long) pnumb;
-                pnumbd = pnumb - (double) pnumbi;
-
-                longToString(pnumbi, spnumbi, 1);
-                longToString((long) (pnumbd * pow(10, precision)), spnumbd, precision);
-
-                sprintf(display_text, "%c%s,%s", numb >= 0 ? '+' : '-', spnumbi, spnumbd);
-            } else if (notation == N_SCI || (notation == N_FIX && numb > pow10(10))) {
-                //double tpnumb = pnumb;
-
-                // calculates the exponent
-                if (pnumb >= 10.0) {
-                    while (pnumb >= 10.0) {
-                        pnumb /= 10.0;
-                        expv++;
-                    }
-                } else if (pnumb == 0) {
-                    expv = 0;
-                } else if (pnumb < 1.0) {
-                    while (pnumb < 1.0) {
-                        pnumb *= 10.0;
-                        expv--;
-                    }
-                }
-
-                pnumbi = (long) pnumb;
-                pnumbd = pnumb - (double) pnumbi;
-
-                longToString(pnumbi, spnumbi, 1);
-                longToString((long) (pnumbd * pow10(precision)), spnumbd, precision);
-
-                sprintf(display_text, "%c%s,%s", numb >= 0 ? '+' : '-', spnumbi, spnumbd);
-
-                // Adding exponent to string
-                longToString(abs(expv), sexp, 2);
-
-                // calculate the position of the exponent in the display:
-                // we need to do all these strange calculations because only
-                // figures are considered while converting the string to 
-                // display lines so for example a string like this
-                //    "+1.1111"
-                // is a 7 char string, but when printing to the display
-                // only
-                //    "11111"
-                // are considered.
-                // in conclusion '+' '-' '.' ',' aren't considered as a character
-
-                exppos = strlen(display_text)+(10 - (strlen(spnumbi) + strlen(spnumbd)));
-
-                for (int h = strlen(display_text); h < 22; h++)
-                    display_text[h] = ' ';
-
-                // insert a space or a minus before the exponent to distinguish it from the rest of
-                // the number
-                display_text[exppos - 3] = expv >= 0 ? ' ' : '-';
-                display_text[exppos - 2] = sexp[0];
-                display_text[exppos - 1] = sexp[1];
-                display_text[exppos] = '\0';
+            if (notation == N_FIX && (numb < pow10(10) && numb >= pow10(precision * -1) || numb == 0)) {
+                double_to_display(pnumb, precision, display_text_ptr, N_FIX);
+            } else if (notation == N_SCI || (notation == N_FIX && (numb > pow10(10) || numb < pow10(precision * -1)))) {
+                double_to_display(pnumb, precision, display_text_ptr, N_SCI);
+            } else if (notation == N_ENG) {
+                double_to_display(pnumb, precision, display_text_ptr, N_ENG);
+            } else {
+                std::cerr << KRED << "Bug: Value " << numb << "can't be displayed!!! Please send this line to a developer" << KRST << std::endl << std::flush;
             }
 
             hpSignals->sig_display_emit(display_text);
@@ -251,82 +199,177 @@ void Core::display() {
                 pnumb /= pow10(exp_val);
             }
 
-            pnumbi = (long) pnumb;
-            pnumbd = pnumb - (double) pnumbi;
-
-            longToString(pnumbi, spnumbi, 1);
-            longToString((long) (pnumbd * pow(10, decimal_figures_number - 1)), spnumbd, decimal_figures_number - 1);
-
-            sprintf(display_text, "%c", numb >= 0 ? '+' : '-');
-            strcat(display_text, spnumbi);
-            if (decimal) {
-                strcat(display_text, ",");
-                strcat(display_text, spnumbd);
+            if (start_zero_figures_number) {
+                memset(display_text_ptr, '0', start_zero_figures_number);
+                display_text_ptr += start_zero_figures_number - 1;
             }
 
+            double_to_display(pnumb, decimal_figures_number - 1, display_text_ptr, N_FIX, decimal);
+
             if (exp) {
-                // Adding exponent to string
-                longToString(abs(exp_val), sexp, 2);
+                int n, i;
+                int expv = 0;
 
-                // calculate the position of the exponent in the display:
-                // we need to do all these strange calculations because only
-                // figures are considered while converting the string to 
-                // display lines so for example a string like this
-                //    "+1.1111"
-                // is a 7 char string, but when printing to the display
-                // only
-                //    "11111"
-                // are considered.
-                // in conclusion '+' '-' '.' ',' aren't considered as a character
+                expv = exp_val;
 
-                exppos = strlen(display_text)+(10 - (strlen(spnumbi) + strlen(spnumbd)));
+                display_text_ptr = display_text;
 
-                for (int h = strlen(display_text); h < 22; h++)
-                    display_text[h] = ' ';
+                display_text_ptr += decimal ? 9 : 8;
 
-                // insert a space or a minus before the exponent to distinguish it from the rest of
-                // the number
-                display_text[exppos - 3] = expv >= 0 ? ' ' : '-';
-                display_text[exppos - 2] = sexp[0];
-                display_text[exppos - 1] = sexp[1];
-                display_text[exppos] = '\0';
+                if (expv < 0) {
+                    *display_text_ptr++ = '-';
+                    expv = -expv;
+                } else {
+                    *display_text_ptr++ = ' ';
+                }
+                n = 0;
+                display_text_ptr += 10;
+                do {
+                    n++;
+                    *display_text_ptr++ = (expv % 10) + '0';
+                    expv /= 10;
+                } while (expv || n < 2);
+                for (i = n; n > 0; n--)
+                    *(display_text_ptr - 11 - i + n) = *(display_text_ptr - n);
+                display_text_ptr -= 10;
             }
 
             hpSignals->sig_display_emit(display_text);
             break;
         case S_ERR:
+            sprintf(display_text, "+Error %d", error);
+            hpSignals->sig_display_emit(display_text);
+            cerr << KRED << "CALCULATOR ERROR " << error << KRST << endl;
             break;
         default:
             break;
     }
 }
 
-void Core::longToString(long x, char str[], int d) {
-    int i = 0;
-    int z = 0;
-    int j;
-    int temp;
+void Core::double_to_display(double value, short _precision, char *_buf, notation_t _notation, char dot) {
+    char *tb, *buf_pointer;
+    short t1, t2, dec_point_pos;
+    int exp10;
 
-    while (x) {
-        str[i++] = (x % 10) + '0';
-        x = x / 10;
+    buf_pointer = _buf;
+    exp10 = 0;
+
+    if (value != 0)
+        exp10 = floor(log10(value));
+
+    value /= pow10(exp10);
+
+    switch (_notation) {
+        case N_ENG:
+        case N_SCI:
+            dec_point_pos = 0;
+            break;
+        case N_FIX:
+            if (exp10 < 0) {
+                t1 = _precision;
+
+                *buf_pointer++ = '0';
+                if ((t1 = _precision) || dot)
+                    *buf_pointer++ = '.';
+
+                t2 = 0;
+
+                while (--t2 > exp10 && _precision) {
+                    *buf_pointer++ = '0';
+                    _precision--;
+                }
+
+                if (exp10 < (-t1 - 1)) {
+                    return;
+                }
+
+                dec_point_pos = 1;
+            } else {
+                dec_point_pos = -exp10;
+            }
+            break;
     }
 
-    // If number of digits required is more, then
-    // add 0s at the beginning
-    while (i < d)
-        str[i++] = '0';
+    t2 = dec_point_pos;
 
-    // reversing string
-    j = i - 1;
+    while (t2 <= _precision) {
+        value -= t1 = value;
+        value *= 10;
 
-    while (z < j) {
-        temp = str[z];
-        str[z] = str[j];
-        str[j] = temp;
-        z++;
-        j--;
+        *buf_pointer++ = t1 + '0';
+        if (!t2++ && (_precision || dot)) {
+            *buf_pointer++ = '.';
+        }
     }
 
-    str[i] = '\0';
+    if (value >= 5) {
+        t1 = 1;
+        tb = buf_pointer - 1;
+        do {
+            if (*tb != '.') {
+                if ((*tb += t1) == ('9' + 1)) {
+                    *tb = '0';
+                    t1 = 1;
+                } else {
+                    t1 = 0;
+                }
+            }
+        } while (tb-- > _buf);
+        if (t1) {
+            switch (_notation) {
+                case N_ENG:
+                case N_SCI:
+                    tb = buf_pointer;
+                    while (tb > _buf) {
+                        if (*(tb - 1) == '.') {
+                            *tb = *(tb - 2);
+                            tb--;
+                        } else {
+                            *tb = *(tb - 1);
+                        }
+                        tb--;
+                    }
+                    exp10++;
+                    break;
+                case N_FIX:
+                    tb = ++buf_pointer;
+                    while (tb > _buf) {
+                        *tb = *(tb - 1);
+                        tb--;
+                    }
+                    break;
+            }
+            *_buf = '1';
+        }
+    }
+
+    switch (_notation) {
+        case N_ENG:
+        case N_SCI:
+            buf_pointer = _buf;
+
+            buf_pointer += 8;
+
+            if (exp10 < 0) {
+                *buf_pointer++ = '-';
+                exp10 = -exp10;
+            } else {
+                *buf_pointer++ = ' ';
+            }
+            t1 = 0;
+            buf_pointer += 10;
+            do {
+                t1++;
+                *buf_pointer++ = (exp10 % 10) + '0';
+                exp10 /= 10;
+            } while (exp10 || t1 < 2);
+            for (t2 = t1; t1 > 0; t1--)
+                *(buf_pointer - 11 - t2 + t1) = *(buf_pointer - t1);
+            buf_pointer -= 10;
+            break;
+        case N_FIX:
+            break;
+    }
+
+    buf_pointer = '\0';
 }

@@ -22,6 +22,9 @@
 
 #include "config.h"
 
+#include <stddef.h>
+#include <gdk/gdkkeysyms.h>
+
 #define KEY_NUMBER 39
 
 #define KEY_IS_NUMBER(x) (x == Keys::K_NO0 || \
@@ -136,6 +139,48 @@ public:
         { 562, 318, 600, 356},
 
         { 332, 255, 369, 356}
+    };
+
+    const int keycodes[KEY_NUMBER] = {
+        GDK_KEY_a,
+        GDK_KEY_b,
+        GDK_KEY_c,
+        GDK_KEY_d,
+        GDK_KEY_e,
+        GDK_KEY_p,
+        GDK_KEY_7,
+        GDK_KEY_8,
+        GDK_KEY_9,
+        GDK_KEY_slash,
+        GDK_KEY_q,
+        GDK_KEY_w,
+        GDK_KEY_s,
+        GDK_KEY_o,
+        GDK_KEY_t,
+        GDK_KEY_x,
+        GDK_KEY_4,
+        GDK_KEY_5,
+        GDK_KEY_6,
+        GDK_KEY_asterisk,
+        GDK_KEY_r,
+        GDK_KEY_g,
+        GDK_KEY_u,
+        GDK_KEY_y,
+        GDK_KEY_BackSpace,
+        GDK_KEY_1,
+        GDK_KEY_2,
+        GDK_KEY_3,
+        GDK_KEY_minus,
+        GDK_KEY_Escape,
+        0,
+        0,
+        GDK_KEY_h,
+        GDK_KEY_l,
+        GDK_KEY_0,
+        GDK_KEY_period,
+        GDK_KEY_z,
+        GDK_KEY_plus,
+        GDK_KEY_Return
     };
 };
 

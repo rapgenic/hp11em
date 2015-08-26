@@ -88,27 +88,27 @@ DebugWindow::~DebugWindow() {
 bool DebugWindow::update_table_registers(double x, double y, double z, double t, double lstx) {
     ostringstream tempstreamstring;
 
-    tempstreamstring << fixed << setprecision(10) << x;
+    tempstreamstring << scientific << setprecision(10) << x;
     lab_x_val.set_label(tempstreamstring.str());
     tempstreamstring.~ostringstream();
     new (&tempstreamstring) ostringstream();
 
-    tempstreamstring << fixed <<  setprecision(10) << y;
+    tempstreamstring << scientific <<  setprecision(10) << y;
     lab_y_val.set_label(tempstreamstring.str());
     tempstreamstring.~ostringstream();
     new (&tempstreamstring) ostringstream();
 
-    tempstreamstring << fixed <<  setprecision(10) << z;
+    tempstreamstring << scientific <<  setprecision(10) << z;
     lab_z_val.set_label(tempstreamstring.str());
     tempstreamstring.~ostringstream();
     new (&tempstreamstring) ostringstream();
 
-    tempstreamstring << fixed <<  setprecision(10) << t;
+    tempstreamstring << scientific <<  setprecision(10) << t;
     lab_t_val.set_label(tempstreamstring.str());
     tempstreamstring.~ostringstream();
     new (&tempstreamstring) ostringstream();
 
-    tempstreamstring << fixed <<  setprecision(10) << lstx;
+    tempstreamstring << scientific <<  setprecision(10) << lstx;
     lab_lst_x_val.set_label(tempstreamstring.str());
 
     return false;

@@ -31,6 +31,9 @@ CalcDrawArea::CalcDrawArea(Signals *hpsignals_r)
     add_events(Gdk::KEY_PRESS_MASK);
     add_events(Gdk::KEY_RELEASE_MASK);
 
+    set_can_focus(true);
+    grab_focus();
+
     if (calc_image)
         set_size_request(640, 382);
 
@@ -70,7 +73,7 @@ bool CalcDrawArea::on_button_press_event(GdkEventButton *event) {
     last_x = event->x_root;
     last_y = event->y_root;
 
-    for (keypressed = 0; keypressed < 39; keypressed++)
+    for (keypressed = 0; keypressed < KEY_NUMBER; keypressed++)
         if ((key.key_location[keypressed][0] <= (int) event->x) && (key.key_location[keypressed][2] >= (int) event->x) && (key.key_location[keypressed][1] <= (int) event->y) && (key.key_location[keypressed][3] >= (int) event->y))
             break;
 
@@ -118,6 +121,30 @@ bool CalcDrawArea::on_key_press_event(GdkEventKey* event) {
     cerr << endl;
     cerr << KBLU << "Keyboard Pressed: " << event->keyval << KRST << endl;
 #endif
+
+    if (event->type == GDK_KEY_PRESS) {
+        for (int keypressed = 0; keypressed < KEY_NUMBER; keypressed++) {
+            if (key.keycodes[keypressed] == event->keyval) {
+                if ((event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK)) == GDK_CONTROL_MASK) {
+                    hpsignals->sig_key_emit(Keys::K_SDF);
+#ifdef DEBUG
+                    cerr << endl;
+                    cerr << KBLU << "Ctrl (F) modifier" << KRST << endl;
+#endif
+                } else if ((event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK)) == GDK_MOD1_MASK) {
+                    hpsignals->sig_key_emit(Keys::K_GDF);
+#ifdef DEBUG
+                    cerr << endl;
+                    cerr << KBLU << "Alt (G) modifier" << KRST << endl;
+#endif
+                }
+
+                hpsignals->sig_key_emit(keypressed);
+                button_press_draw(keypressed);
+            }
+        }
+    }
+
     return true;
 }
 

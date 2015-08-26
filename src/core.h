@@ -90,6 +90,7 @@ private:
     bool exp;
     int decimal_figures_number;
     int figures_number;
+    int start_zero_figures_number;
     int exp_val;
 
     /*
@@ -115,10 +116,14 @@ private:
     void f_key_toggle(int key);
 
     void display();
-    void longToString(long x, char str[], int d);
 
     int c_get_val_from_key(int key);
-
+    
+    void double_to_display(double value, short _precision, char *buf, notation_t format_flag, char dot = 1);
+    
+    void reset_input_mode(); 
+    void reset_waitdata_mode();
+    
     void kcb_sqrt();
     void kcb_alpha_a();
     void kcb_x_2();

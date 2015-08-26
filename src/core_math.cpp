@@ -196,7 +196,12 @@ void Core::kcb_chs() {
              */
         case S_IDLE:
         case S_INPUT:
-            hpAMS.set_x(hpAMS.get_x()*-1, false);
+            if (exp) {
+                int old_exp_val = exp_val;
+                exp_val *= -1;
+                hpAMS.set_x(hpAMS.get_x() / pow10(old_exp_val) * pow10(exp_val));
+            } else
+                hpAMS.set_x(hpAMS.get_x()*-1, false);
             break;
         case S_ERR:
             break;
@@ -790,11 +795,7 @@ void Core::kcb_del() {
                     /*
                      * Passing to IDLE state
                      */
-                    decimal = false;
-                    exp = false;
-                    decimal_figures_number = 1;
-                    figures_number = 0;
-                    exp_val = 0;
+                    reset_input_mode();
                     status = S_IDLE;
                 } else {
                     hpAMS.set_x((long) (hpAMS.get_x() / 10), false);
@@ -1191,9 +1192,10 @@ void Core::kcb_common_number(int x) {
 
     if (!exp) {
         if (!decimal) {
-            if (hpAMS.get_x() != 0) {
-                figures_number++;
-            }
+            figures_number++;
+            if (hpAMS.get_x() == 0)
+                start_zero_figures_number++;
+
         } else {
             figures_number++;
         }
