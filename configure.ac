@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([HP11em],[0.0.1],[giulio@rapgenic.com],[hp11em],[www.rapgenic.com/hp11em])
+AC_INIT([HP11em],[0.0.5],[giulio@rapgenic.com],[hp11em],[www.rapgenic.com/hp11em])
 AM_INIT_AUTOMAKE([subdir-objects])
 AC_CONFIG_SRCDIR([src/])
 AM_CONFIG_HEADER([config.h])

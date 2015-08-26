@@ -1,0 +1,4 @@
+2015-08-26  Giulio Girardi  <giulio@rapgenic.com>
+
+    release 0.0.5; complete core rerite, new calculator skin, EEX and DEL now
+    working, added keyboard input method, removed cln library
