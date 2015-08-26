@@ -1,6 +1,6 @@
 This is the HP11em: a C++, GTK, linux HP11C calculator emulator
 
-It's still in development, and almost only 30% completed.
+It's still in development, and almost only 50% completed.
 
 This emulator is released under GPLv3 license; for more information see the
 COPYING file in the root of the project
@@ -11,9 +11,9 @@ To compile it you need to install
 
 then you have to run aclocal and autoreconf in the project root
 
-to have debug information run configure with --with-debug option
+to get debug information run configure with --with-debug option
 
 LICENSE INFORMATION
 
-All the sources are licensed under GPLv3 
+All the source is licensed under GPLv3 
 images/hp11em.svg is licensed under CC BY-SA 4.0 (see http://creativecommons.org/licenses/by-sa/4.0/legalcode)
