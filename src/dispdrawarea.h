@@ -35,7 +35,7 @@ using std::string;
 
 #include "hp11em640.xpm"
 
-#define DISP_BG 0x6D8269FF
+#define DISP_BG 0x718464FF
 #define DISP_FIG_WIDTH 15
 #define DISP_FIG_DIST 12
 #define DISP_FIG_Y 18
