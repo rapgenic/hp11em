@@ -27,7 +27,8 @@ Core::Core(Signals *hpSignals_r) {
     status = S_IDLE;
     error = E_NONE;
     fkeys = F_NONE;
-
+    key = -1;
+    
     stack_nolift_required = false;
 
     reset_input_mode();
@@ -50,7 +51,21 @@ void Core::reset_input_mode() {
     exp_val = 0;
 }
 
-void Core::input(int key) {
+void Core::reset_waitdata_mode() {
+    waitingdata_cb = keys_cb[key][fkeys];
+    waiting_data_len = 0;
+    previous_status = status;
+}
+
+void Core::ignore_waitdata() {
+    status = previous_status;
+    f_key_set(waiting_data[waiting_data_len - 1].fg);
+    input(waiting_data[waiting_data_len - 1].key);
+}
+
+void Core::input(int _key) {
+    key = _key;
+    
     switch (key) {
         case Keys::K_SDF:
         case Keys::K_GDF:
@@ -70,8 +85,8 @@ void Core::input(int key) {
                                 status = S_INPUT;
                                 break;
                             case S_WAITDATA:
-                                waitdata_cb = keys_cb[key][fkeys];
-                                waiting_data_len = 0;
+                                reset_waitdata_mode();
+                                
                                 status = S_WAITDATA;
                                 break;
                         }
@@ -96,8 +111,8 @@ void Core::input(int key) {
 
                                 break;
                             case S_WAITDATA:
-                                waitdata_cb = keys_cb[key][fkeys];
-                                waiting_data_len = 0;
+                                reset_waitdata_mode();
+
                                 status = S_WAITDATA;
                                 break;
                         }
@@ -112,7 +127,7 @@ void Core::input(int key) {
                     waiting_data[waiting_data_len].fg = fkeys;
                     waiting_data_len++;
 
-                    (this->*waitdata_cb)();
+                    (this->*waitingdata_cb)();
 
                     display();
 

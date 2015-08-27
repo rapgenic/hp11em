@@ -255,8 +255,10 @@ void Core::kcb_fix() {
             if ((waiting_data[waiting_data_len - 1].fg == F_NONE && KEY_IS_NUMBER(waiting_data[waiting_data_len - 1].key))) {
                 notation = N_FIX;
                 precision = c_get_val_from_key(waiting_data[waiting_data_len - 1].key);
+                status = S_IDLE;
+            } else {
+                ignore_waitdata();
             }
-            status = S_IDLE;
         case S_ERR:
             break;
         default:
@@ -287,8 +289,10 @@ void Core::kcb_sci() {
             if ((waiting_data[waiting_data_len - 1].fg == F_NONE && KEY_IS_NUMBER(waiting_data[waiting_data_len - 1].key))) {
                 notation = N_SCI;
                 precision = c_get_val_from_key(waiting_data[waiting_data_len - 1].key);
+                status = S_IDLE;
+            } else {
+                ignore_waitdata();
             }
-            status = S_IDLE;
         case S_ERR:
             break;
         default:
@@ -319,8 +323,10 @@ void Core::kcb_eng() {
             if ((waiting_data[waiting_data_len - 1].fg == F_NONE && KEY_IS_NUMBER(waiting_data[waiting_data_len - 1].key))) {
                 notation = N_ENG;
                 precision = c_get_val_from_key(waiting_data[waiting_data_len - 1].key);
-            }
-            status = S_IDLE;
+                status = S_IDLE;
+            } else {
+                ignore_waitdata();
+            };
         case S_ERR:
             break;
         default:
@@ -759,8 +765,8 @@ void Core::kcb_x_xcng_y() {
 
 void Core::kcb_reg() {
     switch (status) {
-        case S_IDLE: 
-        case S_INPUT: 
+        case S_IDLE:
+        case S_INPUT:
             hpSR.sr_clear();
             break;
         case S_ERR: break;
@@ -992,7 +998,8 @@ void Core::kcb_sto() {
             } else if (waiting_data[0].fg == F_NONE && waiting_data[0].key == Keys::K_DIV) {
                 operation = 3;
             } else {
-                status = S_IDLE;
+                //status = S_IDLE;
+                ignore_waitdata();
                 dot_pressed = 0;
                 operation = -1;
             }
@@ -1035,7 +1042,7 @@ void Core::kcb_int() {
 
 void Core::kcb_rcl() {
     static int dot_pressed = 0;
-    
+
     switch (status) {
         case S_IDLE:
             break;
@@ -1065,7 +1072,8 @@ void Core::kcb_rcl() {
             } else if (waiting_data[waiting_data_len - 1].fg == F_NONE && waiting_data[waiting_data_len - 1].key == Keys::K_DOT) {
                 dot_pressed = 1;
             } else {
-                status = S_IDLE;
+                //status = S_IDLE;
+                ignore_waitdata();
                 dot_pressed = 0;
             }
             break;

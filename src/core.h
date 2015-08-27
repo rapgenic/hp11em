@@ -81,6 +81,7 @@ private:
     core_states_t status;
     error_t error;
     function_keys_t fkeys;
+    int key;
 
     bool stack_nolift_required;
 
@@ -110,8 +111,9 @@ private:
 
     pending_data_t waiting_data[50];
     int waiting_data_len;
+    core_states_t previous_status;
 
-    void (Core::*waitdata_cb)(void);
+    void (Core::*waitingdata_cb)(void);
 
     void f_key_set(unsigned char value);
     void f_key_toggle(int key);
@@ -125,6 +127,8 @@ private:
     void reset_input_mode();
     void reset_waitdata_mode();
 
+    void ignore_waitdata();
+    
     void kcb_sqrt();
     void kcb_alpha_a();
     void kcb_x_2();
