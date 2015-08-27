@@ -27,6 +27,7 @@ using std::cerr;
 using std::endl;
 
 #include <cmath>
+using namespace std;
 
 #include "keys.h"
 #include "signals.h"

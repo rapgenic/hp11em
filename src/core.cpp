@@ -204,7 +204,7 @@ void Core::display() {
             } else if (notation == N_ENG) {
                 double_to_display(pnumb, precision, display_text_ptr, N_ENG);
             } else {
-                std::cerr << KRED << "Bug: Value " << numb << "can't be displayed!!! Please send this line to a developer" << KRST << std::endl << std::flush;
+                std::cerr << KRED << "Bug: Value " << numb << " can't be displayed!!! Please send this line to a developer" << KRST << std::endl << std::flush;
             }
 
             hpSignals->sig_display_emit(display_text);

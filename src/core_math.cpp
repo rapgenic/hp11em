@@ -23,6 +23,11 @@ void Core::kcb_sqrt() {
     switch (status) {
         case S_IDLE:
         case S_INPUT:
+            if (hpAMS.get_x() < 0) {
+                status = S_ERR;
+                error = E_IMO;
+                return;
+            }
             hpAMS.set_x(sqrt(hpAMS.get_x()));
             break;
         case S_ERR:
@@ -78,6 +83,11 @@ void Core::kcb_ln() {
     switch (status) {
         case S_IDLE:
         case S_INPUT:
+            if (hpAMS.get_x() <= 0) {
+                status = S_ERR;
+                error = E_IMO;
+                return;
+            }
             hpAMS.set_x(log(hpAMS.get_x()));
             break;
         case S_ERR:
@@ -113,6 +123,11 @@ void Core::kcb_log() {
     switch (status) {
         case S_IDLE:
         case S_INPUT:
+            if (hpAMS.get_x() <= 0) {
+                status = S_ERR;
+                error = E_IMO;
+                return;
+            }
             hpAMS.set_x(log10(hpAMS.get_x()));
             break;
         case S_ERR:
@@ -126,6 +141,13 @@ void Core::kcb_y_x() {
     switch (status) {
         case S_IDLE:
         case S_INPUT:
+            if (hpAMS.get_y() == 0 ||
+                    hpAMS.get_x() <= 0 ||
+                    (hpAMS.get_y() < 0 && modf(hpAMS.get_x(), new double) != 0)) {
+                status = S_ERR;
+                error = E_IMO;
+                return;
+            }
             hpAMS.set_x(pow(hpAMS.get_y(), hpAMS.get_x()));
             hpAMS.set_y(hpAMS.get_z());
             hpAMS.set_z(hpAMS.get_t());
@@ -148,8 +170,8 @@ void Core::kcb_alpha_d() {
 
 void Core::kcb_percent() {
     switch (status) {
-        case S_IDLE: 
-        case S_INPUT: 
+        case S_IDLE:
+        case S_INPUT:
             hpAMS.set_x((hpAMS.get_y() * hpAMS.get_x()) / 100);
             break;
         case S_ERR: break;
@@ -865,8 +887,20 @@ void Core::kcb_1() {
 
 void Core::kcb_p_y_x() {
     switch (status) {
-        case S_IDLE: break;
-        case S_INPUT: break;
+        case S_IDLE:
+        case S_INPUT:
+            if (hpAMS.get_x() < 0 ||
+                    hpAMS.get_y() < 0 ||
+                    hpAMS.get_x() > hpAMS.get_y() ||
+                    hpAMS.get_x() >= pow10(10) ||
+                    modf(hpAMS.get_x(), new double) != 0 ||
+                    modf(hpAMS.get_y(), new double) != 0) {
+                status = S_ERR;
+                error = E_IMO;
+                return;
+            }
+            hpAMS.set_x(tgamma(hpAMS.get_y() + 1) / tgamma((hpAMS.get_y() - hpAMS.get_x()) + 1));
+            break;
         case S_ERR: break;
         default: break;
     }
@@ -874,8 +908,20 @@ void Core::kcb_p_y_x() {
 
 void Core::kcb_c_y_x() {
     switch (status) {
-        case S_IDLE: break;
-        case S_INPUT: break;
+        case S_IDLE:
+        case S_INPUT:
+            if (hpAMS.get_x() < 0 ||
+                    hpAMS.get_y() < 0 ||
+                    hpAMS.get_x() > hpAMS.get_y() ||
+                    hpAMS.get_x() >= pow10(10) ||
+                    modf(hpAMS.get_x(), new double) != 0 ||
+                    modf(hpAMS.get_y(), new double) != 0) {
+                status = S_ERR;
+                error = E_IMO;
+                return;
+            }
+            hpAMS.set_x(tgamma(hpAMS.get_y() + 1) / (tgamma(hpAMS.get_x() + 1) * tgamma((hpAMS.get_y() - hpAMS.get_x()) + 1)));
+            break;
         case S_ERR: break;
         default: break;
     }
@@ -991,9 +1037,16 @@ void Core::kcb_sto() {
                     hpSR.sr_loc_set(loc, hpSR.sr_loc_get(loc) - hpAMS.get_x());
                 else if (operation == 2)
                     hpSR.sr_loc_set(loc, hpSR.sr_loc_get(loc) * hpAMS.get_x());
-                else if (operation == 3)
+                else if (operation == 3) {
+                    if (hpAMS.get_x() == 0) {
+                        status = S_ERR;
+                        error = E_IMO;
+                        dot_pressed = 0;
+                        operation = -1;
+                        return;
+                    }
                     hpSR.sr_loc_set(loc, hpSR.sr_loc_get(loc) / hpAMS.get_x());
-
+                }
                 status = S_IDLE;
                 dot_pressed = 0;
                 operation = -1;
@@ -1118,8 +1171,10 @@ void Core::kcb_0() {
 
 void Core::kcb_x_() {
     switch (status) {
-        case S_IDLE: break;
-        case S_INPUT: break;
+        case S_IDLE:
+        case S_INPUT:
+            hpAMS.set_x(tgamma(hpAMS.get_x() + 1));
+            break;
         case S_ERR: break;
         default: break;
     }
