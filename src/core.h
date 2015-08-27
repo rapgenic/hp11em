@@ -26,6 +26,8 @@
 using std::cerr;
 using std::endl;
 
+#include <cmath>
+
 #include "keys.h"
 #include "signals.h"
 #include "dispdrawarea.h"

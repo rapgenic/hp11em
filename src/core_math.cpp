@@ -437,8 +437,10 @@ void Core::kcb_hyp_neg_1() {
 
 void Core::kcb_sin() {
     switch (status) {
-        case S_IDLE: break;
-        case S_INPUT: break;
+        case S_IDLE:
+        case S_INPUT:
+            hpAMS.set_x(sin(hpAMS.get_x()));
+            break;
         case S_ERR: break;
         default: break;
     }
@@ -464,8 +466,10 @@ void Core::kcb_sin_neg_1() {
 
 void Core::kcb_cos() {
     switch (status) {
-        case S_IDLE: break;
-        case S_INPUT: break;
+        case S_IDLE:
+        case S_INPUT:
+            hpAMS.set_x(cos(hpAMS.get_x()));
+            break;
         case S_ERR: break;
         default: break;
     }
@@ -491,8 +495,10 @@ void Core::kcb_cos_neg_1() {
 
 void Core::kcb_tan() {
     switch (status) {
-        case S_IDLE: break;
-        case S_INPUT: break;
+        case S_IDLE:
+        case S_INPUT:
+            hpAMS.set_x(tan(hpAMS.get_x()));
+            break;
         case S_ERR: break;
         default: break;
     }
