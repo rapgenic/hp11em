@@ -38,13 +38,15 @@ DispDrawArea::DispDrawArea(Signals *hpsignals_r) {
     // display_hp->fill(0?DISP_BG:0xFFFFFFFF);
 
     // Preparing the alarms' PixBufs
-    alarms[A_000] = Gdk::Pixbuf::create_subpixbuf(hp_image, 0, 382, 17, 11);
-    alarms[A_SDF] = Gdk::Pixbuf::create_subpixbuf(hp_image, 18, 382, 20, 11);
-    alarms[A_002] = Gdk::Pixbuf::create_subpixbuf(hp_image, 39, 382, 22, 11);
-    alarms[A_003] = Gdk::Pixbuf::create_subpixbuf(hp_image, 62, 382, 15, 12);
-    alarms[A_BAT] = Gdk::Pixbuf::create_subpixbuf(hp_image, 78, 385, 20, 10);
-    alarms[A_GRD] = Gdk::Pixbuf::create_subpixbuf(hp_image, 99, 384, 5, 10);
-    alarms[A_RAD] = Gdk::Pixbuf::create_subpixbuf(hp_image, 104, 384, 14, 10);
+    alarms[A_USR] = Gdk::Pixbuf::create_subpixbuf(hp_image, 0,   382, 37, 13);
+    alarms[A_SDF] = Gdk::Pixbuf::create_subpixbuf(hp_image, 38,  382, 15, 13);
+    alarms[A_GDF] = Gdk::Pixbuf::create_subpixbuf(hp_image, 54,  382, 15, 13);
+    alarms[A_BGN] = Gdk::Pixbuf::create_subpixbuf(hp_image, 70,  382, 47, 13);
+    alarms[A_GRD] = Gdk::Pixbuf::create_subpixbuf(hp_image, 118, 382, 11, 13);
+    alarms[A_RAD] = Gdk::Pixbuf::create_subpixbuf(hp_image, 130, 382, 28, 13);
+    alarms[A_DMY] = Gdk::Pixbuf::create_subpixbuf(hp_image, 159, 382, 39, 13);    
+    alarms[A_CCC] = Gdk::Pixbuf::create_subpixbuf(hp_image, 199, 382, 15, 13);
+    alarms[A_PRG] = Gdk::Pixbuf::create_subpixbuf(hp_image, 215, 382, 14, 13);
 
     set_size_request(300, 40 + 15);
 }
@@ -155,18 +157,18 @@ bool DispDrawArea::draw_figure(const Cairo::RefPtr<Cairo::Context>& cr, int x, i
 bool DispDrawArea::draw_display(const Cairo::RefPtr<Cairo::Context>& cr) {
     int i = 1, z = 0;
 
-   /* if (display_text[0] == 'E') {
+    /* if (display_text[0] == 'E') {
 
-        // printing error message
-        draw_figure(cr, (DISP_FIG_WIDTH * 1 + DISP_FIG_DIST * 1), DISP_FIG_Y, figures['E']);
-        draw_figure(cr, (DISP_FIG_WIDTH * 2 + DISP_FIG_DIST * 2), DISP_FIG_Y, figures['r']);
-        draw_figure(cr, (DISP_FIG_WIDTH * 3 + DISP_FIG_DIST * 3), DISP_FIG_Y, figures['r']);
-        draw_figure(cr, (DISP_FIG_WIDTH * 4 + DISP_FIG_DIST * 4), DISP_FIG_Y, figures['o']);
-        draw_figure(cr, (DISP_FIG_WIDTH * 5 + DISP_FIG_DIST * 5), DISP_FIG_Y, figures['r']);
-        draw_figure(cr, (DISP_FIG_WIDTH * 7 + DISP_FIG_DIST * 7), DISP_FIG_Y, figures[display_text[5]]);
+         // printing error message
+         draw_figure(cr, (DISP_FIG_WIDTH * 1 + DISP_FIG_DIST * 1), DISP_FIG_Y, figures['E']);
+         draw_figure(cr, (DISP_FIG_WIDTH * 2 + DISP_FIG_DIST * 2), DISP_FIG_Y, figures['r']);
+         draw_figure(cr, (DISP_FIG_WIDTH * 3 + DISP_FIG_DIST * 3), DISP_FIG_Y, figures['r']);
+         draw_figure(cr, (DISP_FIG_WIDTH * 4 + DISP_FIG_DIST * 4), DISP_FIG_Y, figures['o']);
+         draw_figure(cr, (DISP_FIG_WIDTH * 5 + DISP_FIG_DIST * 5), DISP_FIG_Y, figures['r']);
+         draw_figure(cr, (DISP_FIG_WIDTH * 7 + DISP_FIG_DIST * 7), DISP_FIG_Y, figures[display_text[5]]);
 
-        return true;
-    }*/
+         return true;
+     }*/
 
     if (display_text[0] == '-')
         draw_negative(cr);

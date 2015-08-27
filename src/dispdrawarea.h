@@ -38,18 +38,17 @@ using std::string;
 #define DISP_BG 0x6D8269FF
 #define DISP_FIG_WIDTH 15
 #define DISP_FIG_DIST 12
-#define DISP_FIG_Y 20
+#define DISP_FIG_Y 18
 
-#define A_000 0
+#define A_USR 0
 #define A_SDF 1
-#define A_002 2
-#define A_003 3
-#define A_BAT 4
-#define A_GRD 5
-#define A_RAD 6
-#define A_GDF 7
-#define A_008 8
-#define A_009 9
+#define A_GDF 2
+#define A_BGN 3
+#define A_GRD 4
+#define A_RAD 5
+#define A_DMY 6
+#define A_CCC 7
+#define A_PRG 8
 
 class DispDrawArea : public Gtk::DrawingArea {
 public:
@@ -63,23 +62,22 @@ public:
 
 protected:
     Glib::RefPtr<Gdk::Pixbuf> hp_image;
-    Glib::RefPtr<Gdk::Pixbuf> alarms[7];
+    Glib::RefPtr<Gdk::Pixbuf> alarms[9];
 
     Signals *hpsignals;
 
-    bool alarms_state[7] = {0, 0, 0, 0, 0, 0, 0};
+    bool alarms_state[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-    const char alarm_pos[10][4] = {
-        {3, 0, 17, 11},
-        {24, 0, 20, 11},
-        {47, 0, 22, 11},
-        {72, 0, 15, 12},
-        {90, 2, 20, 10},
-        {113, 1, 5, 10},
-        {118, 1, 14, 10},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0}
+    const int alarm_pos[9][4] = {
+        {3,   42, 17, 13},
+        {41,  42, 20, 13},
+        {57,  42, 22, 13},
+        {73,  42, 15, 13},
+        {121, 42, 20, 13},
+        {133, 42, 5,  13},
+        {162, 42, 14, 13},
+        {202, 42, 0,  13},
+        {218, 42, 0,  13}
     };
 
     const int figures[128] = {

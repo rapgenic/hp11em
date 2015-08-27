@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
+
 <!-- LICENSED UNDER CC BY-SA 4.0 (http://creativecommons.org/licenses/by-sa/4.0/legalcode) -->
 
 <svg
@@ -15,11 +16,11 @@
    height="395"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.4 r9939"
+   inkscape:version="0.91 r13725"
    sodipodi:docname="hp11em.svg"
-   inkscape:export-filename="/home/giulio/developing/hp11em/images/hp11em.png"
-   inkscape:export-xdpi="270"
-   inkscape:export-ydpi="270">
+   inkscape:export-filename="/home/giulio/Devel/rapgenic/hp11em/images/hp11em640.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs4">
     <linearGradient
@@ -2551,15 +2552,15 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
-     inkscape:cx="282.16902"
-     inkscape:cy="226.8302"
+     inkscape:cx="354.76991"
+     inkscape:cy="234.14449"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:window-width="1920"
-     inkscape:window-height="1030"
+     inkscape:window-height="1004"
      inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-y="24"
      inkscape:window-maximized="1"
      inkscape:snap-grids="true"
      inkscape:snap-page="false"
@@ -2709,7 +2710,7 @@
        sodipodi:cy="370"
        sodipodi:rx="2"
        sodipodi:ry="2"
-       d="m 174,370 c 0,1.10457 -0.89543,2 -2,2 -1.10457,0 -2,-0.89543 -2,-2 0,-1.10457 0.89543,-2 2,-2 1.10457,0 2,0.89543 2,2 z"
+       d="m 174,370 a 2,2 0 0 1 -2,2 2,2 0 0 1 -2,-2 2,2 0 0 1 2,-2 2,2 0 0 1 2,2 z"
        transform="translate(1.5,657.36218)" />
     <g
        id="g3875"
@@ -3632,7 +3633,7 @@
    id="tspan11830">≷</tspan>y</tspan></text>
     <path
        transform="translate(292.38389,621.86083)"
-       d="m 174,370 c 0,1.10457 -0.89543,2 -2,2 -1.10457,0 -2,-0.89543 -2,-2 0,-1.10457 0.89543,-2 2,-2 1.10457,0 2,0.89543 2,2 z"
+       d="m 174,370 a 2,2 0 0 1 -2,2 2,2 0 0 1 -2,-2 2,2 0 0 1 2,-2 2,2 0 0 1 2,2 z"
        sodipodi:ry="2"
        sodipodi:rx="2"
        sodipodi:cy="370"
@@ -4784,5 +4785,18 @@
        id="path4419"
        inkscape:connector-curvature="0"
        transform="translate(0,657.36218)" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="2"
+       y="1052.3622"
+       id="text5730"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan5732"
+         x="2"
+         y="1052.3622"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:11.25px;line-height:125%;font-family:monospace;-inkscape-font-specification:'monospace, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#000000;letter-spacing:1.3px"
+         dy="-3">USER f g BEGIN GRAD D.MY C PRGM</tspan></text>
   </g>
 </svg>
