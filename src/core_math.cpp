@@ -148,8 +148,10 @@ void Core::kcb_alpha_d() {
 
 void Core::kcb_percent() {
     switch (status) {
-        case S_IDLE: break;
-        case S_INPUT: break;
+        case S_IDLE: 
+        case S_INPUT: 
+            hpAMS.set_x((hpAMS.get_y() * hpAMS.get_x()) / 100);
+            break;
         case S_ERR: break;
         default: break;
     }
