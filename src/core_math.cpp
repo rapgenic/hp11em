@@ -56,8 +56,10 @@ void Core::kcb_x_2() {
 
 void Core::kcb_e_x() {
     switch (status) {
-        case S_IDLE: break;
-        case S_INPUT: break;
+        case S_IDLE: 
+        case S_INPUT:
+            hpAMS.set_x(pow(C_E, hpAMS.get_x()));
+            break;
         case S_ERR: break;
         default: break;
     }
