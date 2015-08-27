@@ -35,7 +35,6 @@ using std::endl;
 #include "SR.h"
 
 #define C_PI 3.141592654
-#define C_E  2.718281828
 
 class Core : public sigc::trackable {
 public:
