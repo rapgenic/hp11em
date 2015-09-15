@@ -893,7 +893,7 @@ void Core::kcb_rnd() {
     }
 }
 
-void Core::kcb_del() {
+void Core::kcb_del() {    
     switch (status) {
         case S_IDLE:
             hpAMS.set_x(0.0, false);
@@ -923,8 +923,8 @@ void Core::kcb_del() {
                 if (decimal_figures_number == 2) {
                     decimal = false;
                 }
-
-                hpAMS.set_x(((double) ((long) (hpAMS.get_x() * pow10(decimal_figures_number - 1)))) / pow10(decimal_figures_number - 1));
+                
+                hpAMS.set_x(((double) ((long) (hpAMS.get_x() * pow10(decimal_figures_number - 2)))) / pow10(decimal_figures_number - 2), false);
                 decimal_figures_number--;
                 figures_number--;
             }
@@ -1440,12 +1440,12 @@ void Core::kcb_common_number(int x) {
                 exp_val %= 10;
                 exp_val *= 10;
                 exp_val += x;
-                hpAMS.set_x(hpAMS.get_x() / pow10(old_exp_val) * pow10(exp_val));
+                hpAMS.set_x(hpAMS.get_x() / pow10(old_exp_val) * pow10(exp_val), false);
             } else if (figures_number < 10) {
                 if (!decimal) {
                     hpAMS.set_x(hpAMS.get_x()*10 + x, false);
                 } else {
-                    hpAMS.set_x(hpAMS.get_x()+(x / pow10(decimal_figures_number++)));
+                    hpAMS.set_x(hpAMS.get_x()+(x / pow10(decimal_figures_number++)), false);
                 }
             }
             break;
@@ -1457,13 +1457,12 @@ void Core::kcb_common_number(int x) {
 
     if (!exp) {
         if (!decimal) {
-            figures_number++;
             if (hpAMS.get_x() == 0)
                 start_zero_figures_number++;
-
-        } else {
+        } 
+        
+        if (figures_number <= 9)
             figures_number++;
-        }
     }
 }
 

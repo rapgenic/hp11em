@@ -361,7 +361,7 @@ private:
         {S_IDLE, S_IDLE, S_IDLE},
         {S_IDLE, S_IDLE, S_IDLE},
         {S_IDLE, S_IDLE, S_IDLE},
-        {S_INPUT, S_IDLE, S_IDLE},
+        {0, S_IDLE, S_IDLE},
         {S_INPUT, S_IDLE, S_IDLE},
         {S_INPUT, S_IDLE, S_IDLE},
         {S_INPUT, S_IDLE, S_IDLE},
