@@ -505,13 +505,13 @@ void Core::kcb_sin_neg_1() {
         case S_INPUT:
             switch (trigonometric_mode) {
                 case T_DEG:
-                    hpAMS.set_x(asin(d2r(hpAMS.get_x())));
+                    hpAMS.set_x(r2d(asin(hpAMS.get_x())));
                     break;
                 case T_RAD:
                     hpAMS.set_x(asin(hpAMS.get_x()));
                     break;
                 case T_GRD:
-                    hpAMS.set_x(asin(g2r(hpAMS.get_x())));
+                    hpAMS.set_x(g2r(asin(hpAMS.get_x())));
                     break;
             }
             break;
@@ -556,13 +556,13 @@ void Core::kcb_cos_neg_1() {
         case S_INPUT:
             switch (trigonometric_mode) {
                 case T_DEG:
-                    hpAMS.set_x(acos(d2r(hpAMS.get_x())));
+                    hpAMS.set_x(r2d(acos(hpAMS.get_x())));
                     break;
                 case T_RAD:
                     hpAMS.set_x(acos(hpAMS.get_x()));
                     break;
                 case T_GRD:
-                    hpAMS.set_x(acos(g2r(hpAMS.get_x())));
+                    hpAMS.set_x(g2r(acos(hpAMS.get_x())));
                     break;
             }
             break;
@@ -607,13 +607,13 @@ void Core::kcb_tan_neg_1() {
         case S_INPUT:
             switch (trigonometric_mode) {
                 case T_DEG:
-                    hpAMS.set_x(atan(d2r(hpAMS.get_x())));
+                    hpAMS.set_x(r2d(atan(hpAMS.get_x())));
                     break;
                 case T_RAD:
                     hpAMS.set_x(atan(hpAMS.get_x()));
                     break;
                 case T_GRD:
-                    hpAMS.set_x(atan(d2g(hpAMS.get_x())));
+                    hpAMS.set_x(d2g(atan(hpAMS.get_x())));
                     break;
             }
             break;
