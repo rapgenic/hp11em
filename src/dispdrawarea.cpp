@@ -42,7 +42,7 @@ DispDrawArea::DispDrawArea(Signals *hpsignals_r) {
     alarms[A_SDF] = Gdk::Pixbuf::create_subpixbuf(hp_image, 38,  382, 15, 13);
     alarms[A_GDF] = Gdk::Pixbuf::create_subpixbuf(hp_image, 54,  382, 15, 13);
     alarms[A_BGN] = Gdk::Pixbuf::create_subpixbuf(hp_image, 70,  382, 47, 13);
-    alarms[A_GRD] = Gdk::Pixbuf::create_subpixbuf(hp_image, 118, 382, 11, 13);
+    alarms[A_GRD] = Gdk::Pixbuf::create_subpixbuf(hp_image, 118, 382, 39, 13);
     alarms[A_RAD] = Gdk::Pixbuf::create_subpixbuf(hp_image, 130, 382, 28, 13);
     alarms[A_DMY] = Gdk::Pixbuf::create_subpixbuf(hp_image, 159, 382, 39, 13);    
     alarms[A_CCC] = Gdk::Pixbuf::create_subpixbuf(hp_image, 199, 382, 15, 13);

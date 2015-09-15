@@ -57,7 +57,8 @@ protected:
     virtual bool on_key_press_event(GdkEventKey* event);
     virtual bool on_key_release_event(GdkEventKey* event);
 
-
+    void parse_numpad(GdkEventKey *event);
+    
     bool button_press_draw(int keypressed);
     bool button_release_draw();
 

@@ -38,6 +38,7 @@ public:
     void sr_loc_set(int loc, double numb);
     double sr_loc_get(int loc);
     void sr_clear();
+    void sr_clear_sum();
 
 private:
     double sr[SR_DIMENSION];

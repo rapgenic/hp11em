@@ -41,3 +41,9 @@ void StorageRegister::sr_clear() {
     for (int i = 0; i < SR_DIMENSION; i++)
         sr[i] = 0;
 }
+
+void StorageRegister::sr_clear_sum() {
+    for (int i = 0; i < 6; i++) {
+        sr[i] = 0;
+    }
+}

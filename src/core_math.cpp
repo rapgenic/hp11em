@@ -294,8 +294,10 @@ void Core::kcb_fix() {
 
 void Core::kcb_deg() {
     switch (status) {
-        case S_IDLE: break;
-        case S_INPUT: break;
+        case S_IDLE:
+        case S_INPUT:
+            trigonometric_mode = T_DEG;
+            break;
         case S_ERR: break;
         default: break;
     }
@@ -328,8 +330,10 @@ void Core::kcb_sci() {
 
 void Core::kcb_rad() {
     switch (status) {
-        case S_IDLE: break;
-        case S_INPUT: break;
+        case S_IDLE:
+        case S_INPUT:
+            trigonometric_mode = T_RAD;
+            break;
         case S_ERR: break;
         default: break;
     }
@@ -362,8 +366,10 @@ void Core::kcb_eng() {
 
 void Core::kcb_grd() {
     switch (status) {
-        case S_IDLE: break;
-        case S_INPUT: break;
+        case S_IDLE:
+        case S_INPUT:
+            trigonometric_mode = T_GRD;
+            break;
         case S_ERR: break;
         default: break;
     }
@@ -378,6 +384,8 @@ void Core::kcb_div() {
                 error = E_IMO;
                 return;
             }
+            if (stack_nolift_required)
+                stack_nolift_required = false;
             hpAMS.set_x(hpAMS.get_y() / hpAMS.get_x());
             hpAMS.set_y(hpAMS.get_z());
             hpAMS.set_z(hpAMS.get_t());
@@ -465,7 +473,17 @@ void Core::kcb_sin() {
     switch (status) {
         case S_IDLE:
         case S_INPUT:
-            hpAMS.set_x(sin(hpAMS.get_x()));
+            switch (trigonometric_mode) {
+                case T_DEG:
+                    hpAMS.set_x(sin(d2r(hpAMS.get_x())));
+                    break;
+                case T_RAD:
+                    hpAMS.set_x(sin(hpAMS.get_x()));
+                    break;
+                case T_GRD:
+                    hpAMS.set_x(sin(g2r(hpAMS.get_x())));
+                    break;
+            }
             break;
         case S_ERR: break;
         default: break;
@@ -494,7 +512,17 @@ void Core::kcb_cos() {
     switch (status) {
         case S_IDLE:
         case S_INPUT:
-            hpAMS.set_x(cos(hpAMS.get_x()));
+            switch (trigonometric_mode) {
+                case T_DEG:
+                    hpAMS.set_x(cos(d2r(hpAMS.get_x())));
+                    break;
+                case T_RAD:
+                    hpAMS.set_x(cos(hpAMS.get_x()));
+                    break;
+                case T_GRD:
+                    hpAMS.set_x(cos(g2r(hpAMS.get_x())));
+                    break;
+            }
             break;
         case S_ERR: break;
         default: break;
@@ -523,7 +551,17 @@ void Core::kcb_tan() {
     switch (status) {
         case S_IDLE:
         case S_INPUT:
-            hpAMS.set_x(tan(hpAMS.get_x()));
+            switch (trigonometric_mode) {
+                case T_DEG:
+                    hpAMS.set_x(tan(d2r(hpAMS.get_x())));
+                    break;
+                case T_RAD:
+                    hpAMS.set_x(tan(hpAMS.get_x()));
+                    break;
+                case T_GRD:
+                    hpAMS.set_x(tan(d2g(hpAMS.get_x())));
+                    break;
+            }
             break;
         case S_ERR: break;
         default: break;
@@ -651,6 +689,8 @@ void Core::kcb_per() {
     switch (status) {
         case S_IDLE:
         case S_INPUT:
+            if (stack_nolift_required)
+                stack_nolift_required = false;
             hpAMS.set_x(hpAMS.get_y() * hpAMS.get_x());
             hpAMS.set_y(hpAMS.get_z());
             hpAMS.set_z(hpAMS.get_t());
@@ -718,8 +758,10 @@ void Core::kcb_gsb() {
 
 void Core::kcb_sum() {
     switch (status) {
-        case S_IDLE: break;
-        case S_INPUT: break;
+        case S_IDLE:
+        case S_INPUT:
+            hpSR.sr_clear_sum();
+            break;
         case S_ERR: break;
         default: break;
     }
@@ -975,6 +1017,8 @@ void Core::kcb_min() {
     switch (status) {
         case S_IDLE:
         case S_INPUT:
+            if (stack_nolift_required)
+                stack_nolift_required = false;
             hpAMS.set_x(hpAMS.get_y() - hpAMS.get_x());
             hpAMS.set_y(hpAMS.get_z());
             hpAMS.set_z(hpAMS.get_t());
@@ -1182,8 +1226,11 @@ void Core::kcb_x_() {
 
 void Core::kcb_avg_x() {
     switch (status) {
-        case S_IDLE: break;
-        case S_INPUT: break;
+        case S_IDLE:
+        case S_INPUT:
+            hpAMS.set_y(hpSR.sr_loc_get(1) / hpSR.sr_loc_get(0));
+            hpAMS.set_x(hpSR.sr_loc_get(3) / hpSR.sr_loc_get(0));
+            break;
         case S_ERR: break;
         default: break;
     }
@@ -1223,8 +1270,17 @@ void Core::kcb_s() {
 
 void Core::kcb_sum_plus() {
     switch (status) {
-        case S_IDLE: break;
-        case S_INPUT: break;
+        case S_IDLE:
+        case S_INPUT:
+            hpSR.sr_loc_set(0, hpSR.sr_loc_get(0) + 1);
+            hpSR.sr_loc_set(1, hpSR.sr_loc_get(1) + hpAMS.get_x());
+            hpSR.sr_loc_set(2, hpSR.sr_loc_get(2) + pow(hpAMS.get_x(), 2));
+            hpSR.sr_loc_set(3, hpSR.sr_loc_get(3) + hpAMS.get_y());
+            hpSR.sr_loc_set(4, hpSR.sr_loc_get(4) + pow(hpAMS.get_y(), 2));
+            hpSR.sr_loc_set(5, hpSR.sr_loc_get(5) + (hpAMS.get_x() * hpAMS.get_y()));
+            hpAMS.set_x(hpSR.sr_loc_get(0));
+            stack_nolift_required = true;
+            break;
         case S_ERR: break;
         default: break;
     }
@@ -1241,8 +1297,17 @@ void Core::kcb_l_r() {
 
 void Core::kcb_sum_minus() {
     switch (status) {
-        case S_IDLE: break;
-        case S_INPUT: break;
+        case S_IDLE:
+        case S_INPUT:
+            hpSR.sr_loc_set(0, hpSR.sr_loc_get(0) - 1);
+            hpSR.sr_loc_set(1, hpSR.sr_loc_get(1) - hpAMS.get_x());
+            hpSR.sr_loc_set(2, hpSR.sr_loc_get(2) - pow(hpAMS.get_x(), 2));
+            hpSR.sr_loc_set(3, hpSR.sr_loc_get(3) - hpAMS.get_y());
+            hpSR.sr_loc_set(4, hpSR.sr_loc_get(4) - pow(hpAMS.get_y(), 2));
+            hpSR.sr_loc_set(5, hpSR.sr_loc_get(5) - (hpAMS.get_x() * hpAMS.get_y()));
+            hpAMS.set_x(hpSR.sr_loc_get(0));
+            stack_nolift_required = true;
+            break;
         case S_ERR: break;
         default: break;
     }
@@ -1252,6 +1317,8 @@ void Core::kcb_plus() {
     switch (status) {
         case S_IDLE:
         case S_INPUT:
+            if (stack_nolift_required)
+                stack_nolift_required = false;
             hpAMS.set_x(hpAMS.get_y() + hpAMS.get_x());
             hpAMS.set_y(hpAMS.get_z());
             hpAMS.set_z(hpAMS.get_t());

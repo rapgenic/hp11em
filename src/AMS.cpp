@@ -30,7 +30,7 @@ void AutomaticMemoryStack::stack_add(double number) {
     t = z;
     z = y;
     y = x;
-    x = round_to_limits(number);
+    x = round(number);
 }
 
 double AutomaticMemoryStack::get_x() {
@@ -54,11 +54,11 @@ double AutomaticMemoryStack::get_lst_x() {
 }
 
 void AutomaticMemoryStack::set_lst_x(double num) {
-    lst_x = round_to_limits(num);
+    lst_x = round(num);
 }
 
 void AutomaticMemoryStack::set_x(double num, bool using_lst_x) {
-    num = round_to_limits(num);
+    num = round(num);
     if (using_lst_x) {
         lst_x = x;
         x = num;
@@ -68,20 +68,24 @@ void AutomaticMemoryStack::set_x(double num, bool using_lst_x) {
 }
 
 void AutomaticMemoryStack::set_y(double num) {
-    y = round_to_limits(num);
+    y = round(num);
 }
 
 void AutomaticMemoryStack::set_z(double num) {
-    z = round_to_limits(num);
+    z = round(num);
 }
 
 void AutomaticMemoryStack::set_t(double num) {
-    t = round_to_limits(num);
+    t = round(num);
 }
 
-double AutomaticMemoryStack::round_to_limits(double num) {
+double AutomaticMemoryStack::round(double num) {
 #ifdef DEBUG
     cerr << KYEL << "Warning: internal registers limit NOT SUPPORTED YET" << KRST << endl;
 #endif     
-    return num;
+    double numb;
+    
+    numb = std::round(num * pow10(10)) / pow10(10);
+    
+    return numb;
 }

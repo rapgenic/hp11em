@@ -37,6 +37,13 @@ using namespace std;
 
 #define C_PI 3.141592654
 
+#define d2r(x) (x * C_PI / 180.0)
+#define d2g(x) (x)
+#define r2d(x) (x * 180.0 / C_PI)
+#define r2g(x) (x)
+#define g2d(x) (x * 9.0 / 10.0)
+#define g2r(x) (x * C_PI / 200.0)
+
 class Core : public sigc::trackable {
 public:
     Core(Signals *hpsignals_r);
@@ -76,12 +83,19 @@ public:
         N_ENG
     } notation_t;
 
+    typedef enum {
+        T_DEG,
+        T_RAD,
+        T_GRD
+    } trig_mode_t;
+
 private:
     Signals *hpSignals;
     AutomaticMemoryStack hpAMS;
     StorageRegister hpSR;
 
     core_states_t status;
+    trig_mode_t trigonometric_mode;
     error_t error;
     function_keys_t fkeys;
     int key;
@@ -127,11 +141,13 @@ private:
 
     void double_to_display(double value, short _precision, char *buf, notation_t format_flag, char dot = 1);
 
+    void draw_trig_announciator();
+
     void reset_input_mode();
     void reset_waitdata_mode();
 
     void ignore_waitdata();
-    
+
     void kcb_sqrt();
     void kcb_alpha_a();
     void kcb_x_2();

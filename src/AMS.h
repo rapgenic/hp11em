@@ -26,6 +26,8 @@
 using std::cerr;
 using std::endl;
 
+#include <cmath>
+
 #include "colors.h"
 
 class AutomaticMemoryStack {
@@ -47,7 +49,7 @@ public:
     void set_lst_x(double num);
 
 private:
-    double round_to_limits(double num);
+    double round(double num);
 
     double x, y, z, t, lst_x;
 };

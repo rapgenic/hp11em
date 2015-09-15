@@ -122,6 +122,8 @@ bool CalcDrawArea::on_key_press_event(GdkEventKey* event) {
     cerr << KBLU << "Keyboard Pressed: " << event->keyval << KRST << endl;
 #endif
 
+    parse_numpad(event);
+    
     if (event->type == GDK_KEY_PRESS) {
         for (int keypressed = 0; keypressed < KEY_NUMBER; keypressed++) {
             if (key.keycodes[keypressed] == event->keyval) {
@@ -146,6 +148,59 @@ bool CalcDrawArea::on_key_press_event(GdkEventKey* event) {
     }
 
     return true;
+}
+
+void CalcDrawArea::parse_numpad(GdkEventKey* event) {
+    switch (event->keyval) {
+        case GDK_KEY_KP_0:
+            event->keyval = GDK_KEY_0;
+            break;
+        case GDK_KEY_KP_1:
+            event->keyval = GDK_KEY_1;
+            break;
+        case GDK_KEY_KP_2:
+            event->keyval = GDK_KEY_2;
+            break;
+        case GDK_KEY_KP_3:
+            event->keyval = GDK_KEY_3;
+            break;
+        case GDK_KEY_KP_4:
+            event->keyval = GDK_KEY_4;
+            break;
+        case GDK_KEY_KP_5:
+            event->keyval = GDK_KEY_5;
+            break;
+        case GDK_KEY_KP_6:
+            event->keyval = GDK_KEY_6;
+            break;
+        case GDK_KEY_KP_7:
+            event->keyval = GDK_KEY_7;
+            break;
+        case GDK_KEY_KP_8:
+            event->keyval = GDK_KEY_8;
+            break;
+        case GDK_KEY_KP_9:
+            event->keyval = GDK_KEY_9;
+            break;
+        case GDK_KEY_KP_Enter: 
+            event->keyval = GDK_KEY_Return;
+            break;
+        case GDK_KEY_KP_Add:
+            event->keyval = GDK_KEY_plus;
+            break;
+        case GDK_KEY_KP_Subtract:
+            event->keyval = GDK_KEY_minus;
+            break;
+        case GDK_KEY_KP_Multiply:
+            event->keyval = GDK_KEY_asterisk;
+            break;
+        case GDK_KEY_KP_Divide:
+            event->keyval = GDK_KEY_slash;
+            break;
+        case GDK_KEY_KP_Decimal:
+            event->keyval = GDK_KEY_period;
+            break;
+    }
 }
 
 bool CalcDrawArea::on_key_release_event(GdkEventKey* event) {

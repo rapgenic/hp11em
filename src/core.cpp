@@ -28,13 +28,14 @@ Core::Core(Signals *hpSignals_r) {
     error = E_NONE;
     fkeys = F_NONE;
     key = -1;
-    
+
     stack_nolift_required = false;
 
     reset_input_mode();
 
     notation = N_FIX;
     precision = 4;
+    trigonometric_mode = T_DEG;
 
     waiting_data_len = 0;
 }
@@ -65,7 +66,7 @@ void Core::ignore_waitdata() {
 
 void Core::input(int _key) {
     key = _key;
-    
+
     switch (key) {
         case Keys::K_SDF:
         case Keys::K_GDF:
@@ -86,7 +87,7 @@ void Core::input(int _key) {
                                 break;
                             case S_WAITDATA:
                                 reset_waitdata_mode();
-                                
+
                                 status = S_WAITDATA;
                                 break;
                         }
@@ -208,6 +209,7 @@ void Core::display() {
             }
 
             hpSignals->sig_display_emit(display_text);
+            draw_trig_announciator();
             break;
         case S_INPUT:
             if (exp) {
@@ -250,6 +252,7 @@ void Core::display() {
             }
 
             hpSignals->sig_display_emit(display_text);
+            draw_trig_announciator();
             break;
         case S_ERR:
             sprintf(display_text, "+Error %d", error);
@@ -258,6 +261,22 @@ void Core::display() {
             break;
         default:
             break;
+    }
+}
+
+void Core::draw_trig_announciator() {
+    switch (trigonometric_mode) {
+        case T_RAD:
+            hpSignals->sig_alarm_emit(A_GRD, false);
+            hpSignals->sig_alarm_emit(A_RAD, true);
+            break;
+        case T_GRD:
+            hpSignals->sig_alarm_emit(A_GRD, true);
+            hpSignals->sig_alarm_emit(A_RAD, false);
+            break;
+        case T_DEG:
+            hpSignals->sig_alarm_emit(A_GRD, false);
+            hpSignals->sig_alarm_emit(A_RAD, false);            
     }
 }
 
