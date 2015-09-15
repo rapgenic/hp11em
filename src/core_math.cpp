@@ -1034,7 +1034,9 @@ void Core::kcb_3() {
 void Core::kcb_to_rad() {
     switch (status) {
         case S_IDLE: break;
-        case S_INPUT: break;
+        case S_INPUT:
+            hpAMS.set_x(d2r(hpAMS.get_x()));
+            break;
         case S_ERR: break;
         default: break;
     }
@@ -1042,8 +1044,10 @@ void Core::kcb_to_rad() {
 
 void Core::kcb_to_deg() {
     switch (status) {
-        case S_IDLE: break;
-        case S_INPUT: break;
+        case S_IDLE: 
+        case S_INPUT: 
+            hpAMS.set_x(r2d(hpAMS.get_x()));
+            break;
         case S_ERR: break;
         default: break;
     }
