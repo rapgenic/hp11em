@@ -184,7 +184,8 @@ void Core::f_key_toggle(int key) {
 void Core::display() {
     double numb = hpAMS.get_x();
     double pnumb = fabs(numb);
-
+    int log10_pnumb = (int)floor(log10(pnumb));
+    
     char display_text[22] = "";
 
     memset(display_text, ' ', 22);
@@ -198,9 +199,9 @@ void Core::display() {
 
     switch (status) {
         case S_IDLE:
-            if (notation == N_FIX && (numb < pow10(10) && numb >= pow10(precision * -1) || numb == 0)) {
+            if (notation == N_FIX && (log10_pnumb < 10 && log10_pnumb >= -precision || numb == 0)) {
                 double_to_display(pnumb, precision, display_text_ptr, N_FIX);
-            } else if (notation == N_SCI || (notation == N_FIX && (numb > pow10(10) || numb < pow10(precision * -1)))) {
+            } else if (notation == N_SCI || (notation == N_FIX && (log10_pnumb > 10 || log10_pnumb < -precision))) {
                 double_to_display(pnumb, precision, display_text_ptr, N_SCI);
             } else if (notation == N_ENG) {
                 double_to_display(pnumb, precision, display_text_ptr, N_ENG);
