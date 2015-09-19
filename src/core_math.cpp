@@ -503,6 +503,11 @@ void Core::kcb_sin_neg_1() {
     switch (status) {
         case S_IDLE:
         case S_INPUT:
+            if (abs(hpAMS.get_x()) > 1) {
+                status = S_ERR;
+                error = E_IMO;
+                return;
+            }
             switch (trigonometric_mode) {
                 case T_DEG:
                     hpAMS.set_x(r2d(asin(hpAMS.get_x())));
@@ -554,6 +559,11 @@ void Core::kcb_cos_neg_1() {
     switch (status) {
         case S_IDLE:
         case S_INPUT:
+            if (abs(hpAMS.get_x()) > 1) {
+                status = S_ERR;
+                error = E_IMO;
+                return;
+            }
             switch (trigonometric_mode) {
                 case T_DEG:
                     hpAMS.set_x(r2d(acos(hpAMS.get_x())));
