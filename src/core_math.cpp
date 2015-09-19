@@ -583,7 +583,7 @@ void Core::kcb_tan() {
                     hpAMS.set_x(tan(hpAMS.get_x()));
                     break;
                 case T_GRD:
-                    hpAMS.set_x(tan(d2g(hpAMS.get_x())));
+                    hpAMS.set_x(tan(g2r(hpAMS.get_x())));
                     break;
             }
             break;
