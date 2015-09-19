@@ -79,13 +79,17 @@ void AutomaticMemoryStack::set_t(double num) {
     t = round(num);
 }
 
-double AutomaticMemoryStack::round(double num) {
-#ifdef DEBUG
-    cerr << KYEL << "Warning: internal registers limit NOT SUPPORTED YET" << KRST << endl;
-#endif     
+double AutomaticMemoryStack::round(double num) {   
     double numb;
+    double log10_pnumb = floor(log10(fabs(num)));
     
     numb = std::round(num * pow10(10)) / pow10(10);
-    
+
+    if (log10_pnumb >= floor(log10(BIGGEST_REPR))) {
+        numb = BIGGEST_REPR * (numb >= 0 ? 1 : -1);
+    } else if (log10_pnumb <= floor(log10(SMALLST_REPR))) {
+        numb = 0;
+    }
+
     return numb;
 }

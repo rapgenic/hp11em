@@ -199,7 +199,11 @@ void Core::display() {
 
     switch (status) {
         case S_IDLE:
-            if (notation == N_FIX && (log10_pnumb < 10 && log10_pnumb >= -precision || numb == 0)) {
+            if (numb == BIGGEST_REPR) {
+                double_to_display(pnumb, 9, display_text_ptr, N_SCI);
+            } else if (numb == SMALLST_REPR) {
+                double_to_display(pnumb, 9, display_text_ptr, N_SCI);
+            } else if (notation == N_FIX && (log10_pnumb < 10 && log10_pnumb >= -precision || numb == 0)) {
                 double_to_display(pnumb, precision, display_text_ptr, N_FIX);
             } else if (notation == N_SCI || (notation == N_FIX && (log10_pnumb >= 10 || log10_pnumb < -precision))) {
                 double_to_display(pnumb, precision, display_text_ptr, N_SCI);

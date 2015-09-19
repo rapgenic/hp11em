@@ -27,8 +27,14 @@ using std::cerr;
 using std::endl;
 
 #include <cmath>
+using std::floor;
+using std::log10;
+using std::fabs;
 
 #include "colors.h"
+
+#define BIGGEST_REPR 9.999999999e+99
+#define SMALLST_REPR 9.999999999e-99
 
 class AutomaticMemoryStack {
 public:
