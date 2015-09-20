@@ -903,7 +903,7 @@ void Core::kcb_rnd() {
     }
 }
 
-void Core::kcb_del() {    
+void Core::kcb_del() {
     switch (status) {
         case S_IDLE:
             hpAMS.set_x(0.0, false);
@@ -933,7 +933,7 @@ void Core::kcb_del() {
                 if (decimal_figures_number == 2) {
                     decimal = false;
                 }
-                
+
                 hpAMS.set_x(((double) ((long) (hpAMS.get_x() * pow10(decimal_figures_number - 2)))) / pow10(decimal_figures_number - 2), false);
                 decimal_figures_number--;
                 figures_number--;
@@ -1054,8 +1054,8 @@ void Core::kcb_to_rad() {
 
 void Core::kcb_to_deg() {
     switch (status) {
-        case S_IDLE: 
-        case S_INPUT: 
+        case S_IDLE:
+        case S_INPUT:
             hpAMS.set_x(r2d(hpAMS.get_x()));
             break;
         case S_ERR: break;
@@ -1278,6 +1278,11 @@ void Core::kcb_avg_x() {
     switch (status) {
         case S_IDLE:
         case S_INPUT:
+            if (hpSR.sr_loc_get(0) == 0) {
+                status = S_ERR;
+                error = E_ISO;
+                return;
+            }
             hpAMS.set_y(hpSR.sr_loc_get(1) / hpSR.sr_loc_get(0));
             hpAMS.set_x(hpSR.sr_loc_get(3) / hpSR.sr_loc_get(0));
             break;
@@ -1473,8 +1478,8 @@ void Core::kcb_common_number(int x) {
         if (!decimal) {
             if (hpAMS.get_x() == 0)
                 start_zero_figures_number++;
-        } 
-        
+        }
+
         if (figures_number <= 9)
             figures_number++;
     }
