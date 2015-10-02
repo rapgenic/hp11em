@@ -32,8 +32,8 @@ using std::string;
 #include <gtkmm.h>
 
 #include "signals.h"
-
-#include "hp11em640.xpm"
+#include "hpresources_external.h"
+#include "colors.h"
 
 #define DISP_BG 0x718464FF
 #define DISP_FIG_WIDTH 15

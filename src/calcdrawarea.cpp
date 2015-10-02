@@ -23,7 +23,18 @@ CalcDrawArea::CalcDrawArea(Signals *hpsignals_r)
 : display_hp(hpsignals_r) {
     hpsignals = hpsignals_r;
 
-    calc_image = Gdk::Pixbuf::create_from_xpm_data(hp11em640_xpm);
+    try {
+        /*
+         * Sadly I can't use Gdk::Pixbuf::create_from_resource() because it's
+         * available only in 3.12+ 
+         */
+
+        GError *error = NULL;
+
+        calc_image = Gdk::Pixbuf::create_from_stream(Glib::wrap(g_resource_open_stream(resources_get_resource(), "/com/rapgenic/hp11em/images/hp11em640.png", G_RESOURCE_LOOKUP_FLAGS_NONE, &error)));
+    } catch (const Gdk::PixbufError& ex) {
+        std::cerr << KRED << "PixbufError: " << ex.what() << KRST << std::endl;
+    }
 
     set_events(Gdk::BUTTON_PRESS_MASK);
     add_events(Gdk::BUTTON_RELEASE_MASK);
@@ -74,7 +85,7 @@ bool CalcDrawArea::on_button_press_event(GdkEventButton *event) {
     last_y = event->y_root;
 
     for (keypressed = 0; keypressed < KEY_NUMBER; keypressed++)
-        if ((key.key_location[keypressed][0] <= (int) event->x) && (key.key_location[keypressed][2] >= (int) event->x) && (key.key_location[keypressed][1] <= (int) event->y) && (key.key_location[keypressed][3] >= (int) event->y))
+        if ((key_location[keypressed][0] <= (int) event->x) && (key_location[keypressed][2] >= (int) event->x) && (key_location[keypressed][1] <= (int) event->y) && (key_location[keypressed][3] >= (int) event->y))
             break;
 
 #ifdef DEBUG
@@ -123,18 +134,18 @@ bool CalcDrawArea::on_key_press_event(GdkEventKey* event) {
 #endif
 
     parse_numpad(event);
-    
+
     if (event->type == GDK_KEY_PRESS) {
         for (int keypressed = 0; keypressed < KEY_NUMBER; keypressed++) {
-            if (key.keycodes[keypressed] == event->keyval) {
+            if (key_codes[keypressed] == event->keyval) {
                 if ((event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK)) == GDK_CONTROL_MASK) {
-                    hpsignals->sig_key_emit(Keys::K_SDF);
+                    hpsignals->sig_key_emit(K_SDF);
 #ifdef DEBUG
                     cerr << endl;
                     cerr << KBLU << "Ctrl (F) modifier" << KRST << endl;
 #endif
                 } else if ((event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK)) == GDK_MOD1_MASK) {
-                    hpsignals->sig_key_emit(Keys::K_GDF);
+                    hpsignals->sig_key_emit(K_GDF);
 #ifdef DEBUG
                     cerr << endl;
                     cerr << KBLU << "Alt (G) modifier" << KRST << endl;
@@ -182,7 +193,7 @@ void CalcDrawArea::parse_numpad(GdkEventKey* event) {
         case GDK_KEY_KP_9:
             event->keyval = GDK_KEY_9;
             break;
-        case GDK_KEY_KP_Enter: 
+        case GDK_KEY_KP_Enter:
             event->keyval = GDK_KEY_Return;
             break;
         case GDK_KEY_KP_Add:
@@ -221,11 +232,11 @@ bool CalcDrawArea::button_release_draw() {
 
 bool CalcDrawArea::button_press_draw(int keypressed) {
     Cairo::RefPtr<Cairo::Context> cr = get_window()->create_cairo_context();
-    Glib::RefPtr<Gdk::Pixbuf> button = Gdk::Pixbuf::create_subpixbuf(calc_image, key.key_location[keypressed][0], key.key_location[keypressed][1], key.key_location[keypressed][2] - key.key_location[keypressed][0], key.key_location[keypressed][3] - key.key_location[keypressed][1]);
+    Glib::RefPtr<Gdk::Pixbuf> button = Gdk::Pixbuf::create_subpixbuf(calc_image, key_location[keypressed][0], key_location[keypressed][1], key_location[keypressed][2] - key_location[keypressed][0], key_location[keypressed][3] - key_location[keypressed][1]);
 
     cr->save();
 
-    Gdk::Cairo::set_source_pixbuf(cr, button, key.key_location[keypressed][0] + 1, key.key_location[keypressed][1] + 1);
+    Gdk::Cairo::set_source_pixbuf(cr, button, key_location[keypressed][0] + 1, key_location[keypressed][1] + 1);
     cr->paint();
 
     cr->restore();

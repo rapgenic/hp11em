@@ -40,7 +40,14 @@ quitBtn("Chiudi") {
     hpsignals = hpsignals_r;
 
     try {
-        icon = Gdk::Pixbuf::create_from_xpm_data(icon_xpm);
+        /*
+         * Sadly I can't use Gdk::Pixbuf::create_from_resource() because it's
+         * available only in 3.12+ 
+         */
+
+        GError *error = NULL;
+
+        icon = Gdk::Pixbuf::create_from_stream(Glib::wrap(g_resource_open_stream(resources_get_resource(), "/com/rapgenic/hp11em/images/icon.png", G_RESOURCE_LOOKUP_FLAGS_NONE, &error)));
     } catch (const Gdk::PixbufError& ex) {
         std::cerr << "PixbufError: " << ex.what() << std::endl;
     }
@@ -93,22 +100,22 @@ bool DebugWindow::update_table_registers(double x, double y, double z, double t,
     tempstreamstring.~ostringstream();
     new (&tempstreamstring) ostringstream();
 
-    tempstreamstring << scientific <<  setprecision(10) << y;
+    tempstreamstring << scientific << setprecision(10) << y;
     lab_y_val.set_label(tempstreamstring.str());
     tempstreamstring.~ostringstream();
     new (&tempstreamstring) ostringstream();
 
-    tempstreamstring << scientific <<  setprecision(10) << z;
+    tempstreamstring << scientific << setprecision(10) << z;
     lab_z_val.set_label(tempstreamstring.str());
     tempstreamstring.~ostringstream();
     new (&tempstreamstring) ostringstream();
 
-    tempstreamstring << scientific <<  setprecision(10) << t;
+    tempstreamstring << scientific << setprecision(10) << t;
     lab_t_val.set_label(tempstreamstring.str());
     tempstreamstring.~ostringstream();
     new (&tempstreamstring) ostringstream();
 
-    tempstreamstring << scientific <<  setprecision(10) << lstx;
+    tempstreamstring << scientific << setprecision(10) << lstx;
     lab_lst_x_val.set_label(tempstreamstring.str());
 
     return false;

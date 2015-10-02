@@ -31,12 +31,11 @@
 #include "calcdrawarea.h"
 #include "core.h"
 #include "signals.h"
+#include "hpresources_external.h"
 
 #ifdef DEBUG
 #include "debugwindow.h"
 #endif
-
-#include "icon.xpm"
 
 class MainWindow : public Gtk::Window {
 public:

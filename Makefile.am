@@ -1,12 +1,13 @@
 bin_PROGRAMS = hp11em
 
-hp11em_SOURCES = src/AMS.cpp \
+hp11em_SOURCES = src/hpresources_external.c \
+	src/hpresources.cpp \
+	src/AMS.cpp \
 	src/calcdrawarea.cpp \
 	src/core.cpp \
 	src/core_math.cpp \
 	src/debugwindow.cpp \
 	src/dispdrawarea.cpp \
-	src/keys.cpp \
 	src/main.cpp \
 	src/mainwindow.cpp \
 	src/signals.cpp \

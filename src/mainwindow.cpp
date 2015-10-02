@@ -25,11 +25,21 @@ MainWindow::MainWindow(Signals *hpsignals_r)
 , hpDebug(hpsignals_r)
 #endif
 {
+    // Register resources
+    resources_register_resource();
+    
     // creates the user interface
     hpsignals = hpsignals_r;
 
     try {
-        icon = Gdk::Pixbuf::create_from_xpm_data(icon_xpm);
+        /*
+         * Sadly I can't use Gdk::Pixbuf::create_from_resource() because it's
+         * available only in 3.12+ 
+         */
+                
+        GError *error = NULL;
+         
+        icon = Gdk::Pixbuf::create_from_stream(Glib::wrap(g_resource_open_stream(resources_get_resource(), "/com/rapgenic/hp11em/images/icon.png", G_RESOURCE_LOOKUP_FLAGS_NONE, &error)));
     } catch (const Gdk::PixbufError& ex) {
         std::cerr << KRED << "PixbufError: " << ex.what() << KRST << std::endl;
     }
@@ -52,6 +62,7 @@ MainWindow::MainWindow(Signals *hpsignals_r)
 }
 
 MainWindow::~MainWindow() {
+    resources_unregister_resource();
 }
 
 bool MainWindow::move_to(double x, double y) {

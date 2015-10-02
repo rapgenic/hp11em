@@ -27,13 +27,11 @@
 #include <gtkmm.h>
 
 #include "core.h"
-#include "keys.h"
 #include "signals.h"
 #include "dispdrawarea.h"
 #include "colors.h"
-
-#include "hp11em640.xpm"
-#include "icon.xpm"
+#include "hpresources.h"
+#include "hpresources_external.h"
 
 #define MENU_XS 562
 #define MENU_YS 22
@@ -68,7 +66,6 @@ protected:
     double last_x, last_y;
     bool f_key, g_key;
 
-    Keys key;
     Signals *hpsignals;
 };
 

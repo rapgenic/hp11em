@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
 #ifdef DEBUG
     cerr << KGRN << "Creating GTKMM application..." << KRST << endl << flush;
 #endif
-    Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "org.hp11c.emulator");
+    Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "com.rapgenic.hp11em");
 
     // creates a signal handler to exchange data from the core to the GUI
 #ifdef DEBUG

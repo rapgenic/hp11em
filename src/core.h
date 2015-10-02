@@ -29,7 +29,7 @@ using std::endl;
 #include <cmath>
 using namespace std;
 
-#include "keys.h"
+#include "hpresources.h"
 #include "signals.h"
 #include "dispdrawarea.h"
 #include "AMS.h"
@@ -49,45 +49,7 @@ public:
     Core(Signals *hpsignals_r);
     virtual ~Core();
 
-    typedef enum {
-        S_IDLE = 1,
-        S_INPUT = 2,
-        S_WAITDATA = 3,
-        S_ERR = 4
-    } core_states_t;
-
-    typedef enum {
-        F_NONE = 0,
-        F_FKEY = 1,
-        F_GKEY = 2
-    } function_keys_t;
-
     void input(int key);
-
-    typedef enum {
-        E_NONE = -1,
-        E_IMO = 0,
-        E_SRO,
-        E_ISO,
-        E_IRN,
-        E_ILN,
-        E_SLD,
-        E_IFN,
-        E_SER,
-        E_PRE
-    } error_t;
-
-    typedef enum {
-        N_FIX,
-        N_SCI,
-        N_ENG
-    } notation_t;
-
-    typedef enum {
-        T_DEG,
-        T_RAD,
-        T_GRD
-    } trig_mode_t;
 
 private:
     Signals *hpSignals;
@@ -96,7 +58,7 @@ private:
 
     core_states_t status;
     trig_mode_t trigonometric_mode;
-    error_t error;
+    core_error_t error;
     function_keys_t fkeys;
     int key;
 
@@ -334,48 +296,6 @@ private:
         {&Core::kcb_sum_plus, &Core::kcb_l_r, &Core::kcb_sum_minus},
         {&Core::kcb_plus, &Core::kcb_x_eq_y, &Core::kcb_x_eq_0},
         {&Core::kcb_enter, &Core::kcb_ran, &Core::kcb_lst_x},
-    };
-
-    int key_status[KEY_NUMBER][3] = {
-        {S_IDLE, S_IDLE, S_IDLE},
-        {S_IDLE, S_IDLE, S_IDLE},
-        {S_IDLE, S_IDLE, S_IDLE},
-        {S_IDLE, S_IDLE, S_IDLE},
-        {S_IDLE, S_IDLE, S_IDLE},
-        {0, S_IDLE, S_IDLE},
-        {S_INPUT, S_WAITDATA, S_IDLE},
-        {S_INPUT, S_WAITDATA, S_IDLE},
-        {S_INPUT, S_WAITDATA, S_IDLE},
-        {S_IDLE, S_IDLE, S_IDLE},
-        {S_IDLE, S_IDLE, S_IDLE},
-        {S_IDLE, S_IDLE, S_IDLE},
-        {S_IDLE, S_IDLE, S_IDLE},
-        {S_IDLE, S_IDLE, S_IDLE},
-        {S_IDLE, S_IDLE, S_IDLE},
-        {S_INPUT, S_IDLE, S_IDLE},
-        {S_INPUT, S_IDLE, S_IDLE},
-        {S_INPUT, S_IDLE, S_IDLE},
-        {S_INPUT, S_IDLE, S_IDLE},
-        {S_IDLE, S_IDLE, S_IDLE},
-        {S_IDLE, S_IDLE, S_IDLE},
-        {S_IDLE, S_IDLE, S_IDLE},
-        {S_IDLE, S_IDLE, S_IDLE},
-        {S_IDLE, S_IDLE, S_IDLE},
-        {0, S_IDLE, S_IDLE},
-        {S_INPUT, S_IDLE, S_IDLE},
-        {S_INPUT, S_IDLE, S_IDLE},
-        {S_INPUT, S_IDLE, S_IDLE},
-        {S_IDLE, S_IDLE, S_IDLE},
-        {S_IDLE, S_IDLE, S_IDLE},
-        {0, 0, 0},
-        {0, 0, 0},
-        {S_WAITDATA, S_IDLE, S_IDLE},
-        {S_WAITDATA, S_IDLE, S_IDLE},
-        {S_INPUT, S_IDLE, S_IDLE},
-        {S_INPUT, S_IDLE, S_IDLE},
-        {S_IDLE, S_IDLE, S_IDLE},
-        {S_IDLE, S_IDLE, S_IDLE},
-        {S_IDLE, S_IDLE, S_IDLE},
     };
 };
 

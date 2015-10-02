@@ -356,7 +356,7 @@ void Core::kcb_eng() {
                 status = S_IDLE;
             } else {
                 ignore_waitdata();
-            };
+            }
         case S_ERR:
             break;
         default:
@@ -1111,7 +1111,7 @@ void Core::kcb_sto() {
             if ((waiting_data[waiting_data_len - 1].fg == F_NONE &&
                     KEY_IS_NUMBER(waiting_data[waiting_data_len - 1].key)) ||
                     (waiting_data[0].fg == F_FKEY &&
-                    waiting_data[0].key == Keys::K_TAN)) {
+                    waiting_data[0].key == K_TAN)) {
                 int loc = -1;
                 if (waiting_data[waiting_data_len - 1].fg == F_NONE) {
                     loc = c_get_val_from_key(waiting_data[waiting_data_len - 1].key);
@@ -1120,7 +1120,7 @@ void Core::kcb_sto() {
                         dot_pressed = 0;
                     }
                 } else if (waiting_data[0].fg == F_FKEY &&
-                        waiting_data[0].key == Keys::K_TAN)
+                        waiting_data[0].key == K_TAN)
                     loc = 20;
 
                 if (operation == -1)
@@ -1144,15 +1144,15 @@ void Core::kcb_sto() {
                 status = S_IDLE;
                 dot_pressed = 0;
                 operation = -1;
-            } else if (waiting_data[waiting_data_len - 1].fg == F_NONE && waiting_data[waiting_data_len - 1].key == Keys::K_DOT) {
+            } else if (waiting_data[waiting_data_len - 1].fg == F_NONE && waiting_data[waiting_data_len - 1].key == K_DOT) {
                 dot_pressed = 1;
-            } else if (waiting_data[0].fg == F_NONE && waiting_data[0].key == Keys::K_PIU) {
+            } else if (waiting_data[0].fg == F_NONE && waiting_data[0].key == K_PIU) {
                 operation = 0;
-            } else if (waiting_data[0].fg == F_NONE && waiting_data[0].key == Keys::K_MEN) {
+            } else if (waiting_data[0].fg == F_NONE && waiting_data[0].key == K_MEN) {
                 operation = 1;
-            } else if (waiting_data[0].fg == F_NONE && waiting_data[0].key == Keys::K_PER) {
+            } else if (waiting_data[0].fg == F_NONE && waiting_data[0].key == K_PER) {
                 operation = 2;
-            } else if (waiting_data[0].fg == F_NONE && waiting_data[0].key == Keys::K_DIV) {
+            } else if (waiting_data[0].fg == F_NONE && waiting_data[0].key == K_DIV) {
                 operation = 3;
             } else {
                 //status = S_IDLE;
@@ -1209,7 +1209,7 @@ void Core::kcb_rcl() {
             if ((waiting_data[waiting_data_len - 1].fg == F_NONE &&
                     KEY_IS_NUMBER(waiting_data[waiting_data_len - 1].key)) ||
                     (waiting_data[0].fg == F_FKEY &&
-                    waiting_data[0].key == Keys::K_TAN)) {
+                    waiting_data[0].key == K_TAN)) {
                 int loc = -1;
                 if (waiting_data[waiting_data_len - 1].fg == F_NONE) {
                     loc = c_get_val_from_key(waiting_data[waiting_data_len - 1].key);
@@ -1218,7 +1218,7 @@ void Core::kcb_rcl() {
                         dot_pressed = 0;
                     }
                 } else if (waiting_data[0].fg == F_FKEY &&
-                        waiting_data[0].key == Keys::K_TAN) {
+                        waiting_data[0].key == K_TAN) {
                     loc = 20;
                 }
 
@@ -1226,7 +1226,7 @@ void Core::kcb_rcl() {
 
                 status = S_IDLE;
                 dot_pressed = 0;
-            } else if (waiting_data[waiting_data_len - 1].fg == F_NONE && waiting_data[waiting_data_len - 1].key == Keys::K_DOT) {
+            } else if (waiting_data[waiting_data_len - 1].fg == F_NONE && waiting_data[waiting_data_len - 1].key == K_DOT) {
                 dot_pressed = 1;
             } else {
                 //status = S_IDLE;
@@ -1505,34 +1505,34 @@ void Core::function_template(int x) {
 
 int Core::c_get_val_from_key(int key) {
     switch (key) {
-        case Keys::K_NO0:
+        case K_NO0:
             return 0;
             break;
-        case Keys::K_NO1:
+        case K_NO1:
             return 1;
             break;
-        case Keys::K_NO2:
+        case K_NO2:
             return 2;
             break;
-        case Keys::K_NO3:
+        case K_NO3:
             return 3;
             break;
-        case Keys::K_NO4:
+        case K_NO4:
             return 4;
             break;
-        case Keys::K_NO5:
+        case K_NO5:
             return 5;
             break;
-        case Keys::K_NO6:
+        case K_NO6:
             return 6;
             break;
-        case Keys::K_NO7:
+        case K_NO7:
             return 7;
             break;
-        case Keys::K_NO8:
+        case K_NO8:
             return 8;
             break;
-        case Keys::K_NO9:
+        case K_NO9:
             return 9;
             break;
     }

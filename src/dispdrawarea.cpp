@@ -20,6 +20,8 @@
 #include "dispdrawarea.h"
 
 DispDrawArea::DispDrawArea(Signals *hpsignals_r) {
+    resources_register_resource();
+    
     hpsignals = hpsignals_r;
 
     set_events(Gdk::KEY_PRESS_MASK);
@@ -28,7 +30,18 @@ DispDrawArea::DispDrawArea(Signals *hpsignals_r) {
     hpsignals->signal_alarm().connect(sigc::mem_fun(*this, &DispDrawArea::switch_alarm));
     hpsignals->signal_display().connect(sigc::mem_fun(*this, &DispDrawArea::display_write));
 
-    hp_image = Gdk::Pixbuf::create_from_xpm_data(hp11em640_xpm);
+    try {
+        /*
+         * Sadly I can't use Gdk::Pixbuf::create_from_resource() because it's
+         * available only in 3.12+ 
+         */
+                
+        GError *error = NULL;
+         
+        hp_image = Gdk::Pixbuf::create_from_stream(Glib::wrap(g_resource_open_stream(resources_get_resource(), "/com/rapgenic/hp11em/images/hp11em640.png", G_RESOURCE_LOOKUP_FLAGS_NONE, &error)));
+    } catch (const Gdk::PixbufError& ex) {
+        std::cerr << KRED << "PixbufError: " << ex.what() << KRST << std::endl;
+    }
 
     // Maybe we don't have to do it, just create a rectangle with cairo
     // and fill it with DISP_BG; needs further check -> replaced with a
@@ -52,6 +65,7 @@ DispDrawArea::DispDrawArea(Signals *hpsignals_r) {
 }
 
 DispDrawArea::~DispDrawArea() {
+    resources_unregister_resource();
 }
 
 bool DispDrawArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {

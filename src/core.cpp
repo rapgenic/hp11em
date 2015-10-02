@@ -68,11 +68,11 @@ void Core::input(int _key) {
     key = _key;
 
     switch (key) {
-        case Keys::K_SDF:
-        case Keys::K_GDF:
+        case K_SDF:
+        case K_GDF:
             f_key_toggle(key);
             break;
-        case Keys::K_ONF:
+        case K_ONF:
             hpSignals->sig_off_emit();
             break;
         default:
@@ -168,12 +168,12 @@ void Core::f_key_set(unsigned char value) {
 }
 
 void Core::f_key_toggle(int key) {
-    if (key == Keys::K_SDF) {
+    if (key == K_SDF) {
         if (fkeys == F_FKEY)
             f_key_set(F_NONE);
         else if (fkeys == F_NONE || fkeys == F_GKEY)
             f_key_set(F_FKEY);
-    } else if (key == Keys::K_GDF) {
+    } else if (key == K_GDF) {
         if (fkeys == F_GKEY)
             f_key_set(F_NONE);
         else if (fkeys == F_NONE || fkeys == F_FKEY)

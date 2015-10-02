@@ -24,8 +24,6 @@
 #ifndef DEBUGWINDOW_H_
 #define DEBUGWINDOW_H_
 
-#include "signals.h"
-
 #include <iostream>
 #include <ostream>
 using std::ostringstream;
@@ -37,7 +35,8 @@ using std::scientific;
 #include <string>
 #include <gtkmm.h>
 
-#include "icon.xpm"
+#include "hpresources_external.h"
+#include "signals.h"
 
 class DebugWindow : public Gtk::Window {
 public:
