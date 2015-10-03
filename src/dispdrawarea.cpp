@@ -38,7 +38,7 @@ DispDrawArea::DispDrawArea(Signals *hpsignals_r) {
                 
         GError *error = NULL;
          
-        hp_image = Gdk::Pixbuf::create_from_stream(Glib::wrap(g_resource_open_stream(resources_get_resource(), "/com/rapgenic/hp11em/images/hp11em640.png", G_RESOURCE_LOOKUP_FLAGS_NONE, &error)));
+        hp_image = Gdk::Pixbuf::create_from_stream(Glib::wrap(g_resource_open_stream(resources_get_resource(), "/com/rapgenic/hp11em/images/hp11em.svg", G_RESOURCE_LOOKUP_FLAGS_NONE, &error)));
     } catch (const Gdk::PixbufError& ex) {
         std::cerr << KRED << "PixbufError: " << ex.what() << KRST << std::endl;
     }

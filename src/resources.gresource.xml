@@ -20,7 +20,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
     <gresource prefix="/com/rapgenic/hp11em/">
-        <file>images/hp11em640.png</file>
+        <file>images/hp11em.svg</file>
         <file>images/icon.png</file>
     </gresource>
 </gresources>
