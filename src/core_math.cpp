@@ -896,8 +896,10 @@ void Core::kcb_reg() {
 
 void Core::kcb_rnd() {
     switch (status) {
-        case S_IDLE: break;
-        case S_INPUT: break;
+        case S_IDLE:
+        case S_INPUT:
+            hpAMS.set_x(round(hpAMS.get_x() * pow10(precision)) / pow10(precision));
+            break;
         case S_ERR: break;
         default: break;
     }
@@ -1021,8 +1023,16 @@ void Core::kcb_2() {
 
 void Core::kcb_to_hms() {
     switch (status) {
-        case S_IDLE: break;
-        case S_INPUT: break;
+        case S_IDLE: 
+        case S_INPUT: 
+            double H,h,s,m;
+            h = modf(hpAMS.get_x(), &H);
+            h *= 10000.0;
+            s = round((1800.0 * h) / 5000.0);
+            m = floor(s / 60.0);
+            s = s - m * 60.0;
+            hpAMS.set_x(H + m / 100.0 + s / 10000.0);
+            break;
         case S_ERR: break;
         default: break;
     }
@@ -1030,8 +1040,16 @@ void Core::kcb_to_hms() {
 
 void Core::kcb_to_h() {
     switch (status) {
-        case S_IDLE: break;
-        case S_INPUT: break;
+        case S_IDLE: 
+        case S_INPUT: 
+            double H,ms,m,s;
+            ms = modf(hpAMS.get_x(), &H);
+            ms *= 100.0;
+            s = modf(ms, &m);
+            s *= 100.0;
+            s = s + m * 60;
+            hpAMS.set_x(H + (0.5 * s) / 1800.0);
+            break;
         case S_ERR: break;
         default: break;
     }

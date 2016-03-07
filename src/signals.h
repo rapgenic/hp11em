@@ -31,8 +31,9 @@ public:
     Signals();
     ~Signals();
 
-    // Core to GUI
     typedef sigc::signal<void> signal_t;
+
+    // Core to GUI
     typedef sigc::signal<bool, char, bool> signal_alarm_t;
     typedef sigc::signal<bool, string> signal_display_t;
     typedef sigc::signal<bool, double, double> signal_window_move_t;
@@ -67,13 +68,16 @@ public:
     // GUI to core
     signal_key_t signal_key();
     void sig_key_emit(int key);
+    
+    signal_t signal_gui_ready();
+    void sig_gui_ready_emit();
 
     // GUI to GUI
     signal_t signal_minimize();
     void sig_minimize_emit();
     
-    signal_t signal_menu();
-    void sig_menu_emit();
+    signal_t signal_debug_window_toggle();
+    void sig_debug_window_toggle_emit();
 
     signal_window_move_t signal_window_move();
     void sig_window_move_emit(double x, double y);
@@ -90,9 +94,10 @@ private:
 
     // GUI to core
     signal_key_t sig_key;
+    signal_t sig_gui_ready;
 
     // GUI to GUI
-    signal_t sig_menu;
+    signal_t sig_debug_window_toggle;
     signal_t sig_minimize;
     signal_window_move_t sig_window_move;
 };

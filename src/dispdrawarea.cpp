@@ -17,6 +17,8 @@
     along with HP11em.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <gtkmm-3.0/gtkmm/drawingarea.h>
+
 #include "dispdrawarea.h"
 
 DispDrawArea::DispDrawArea(Signals *hpsignals_r) {
@@ -93,7 +95,7 @@ bool DispDrawArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
     // Draws the display
     draw_display(cr);
 
-    return true;
+    return Gtk::DrawingArea::on_draw(cr);
 }
 
 bool DispDrawArea::draw_figure(const Cairo::RefPtr<Cairo::Context>& cr, int x, int y, int segs) {

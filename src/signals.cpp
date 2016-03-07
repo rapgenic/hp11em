@@ -57,6 +57,14 @@ void Signals::sig_key_emit(int key) {
     sig_key.emit(key);
 }
 
+Signals::signal_t Signals::signal_gui_ready() {
+    return sig_gui_ready;
+}
+
+void Signals::sig_gui_ready_emit() {
+    sig_gui_ready.emit();
+}
+
 #ifdef DEBUG
 
 Signals::d_signal_register_table_t Signals::signal_update_registers_table() {
@@ -69,12 +77,12 @@ void Signals::sig_update_register_table_emit(double x, double y, double z, doubl
 
 #endif
 
-Signals::signal_t Signals::signal_menu() {
-    return sig_menu;
+Signals::signal_t Signals::signal_debug_window_toggle() {
+    return sig_debug_window_toggle;
 }
 
-void Signals::sig_menu_emit() {
-    sig_menu.emit();
+void Signals::sig_debug_window_toggle_emit() {
+    sig_debug_window_toggle.emit();
 }
 
 Signals::signal_t Signals::signal_minimize() {

@@ -151,9 +151,9 @@ protected:
         0, 0, 0, 0, 0 /* ASCII characters from 123 to 127 */
     };
 
-    string display_text = "+0.0000";
+    string display_text;
 
-    virtual bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr);
+    virtual bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr) override;
 
     bool draw_figure(const Cairo::RefPtr<Cairo::Context>& cr, int x, int y, int segs);
     bool draw_negative(const Cairo::RefPtr<Cairo::Context>& cr);

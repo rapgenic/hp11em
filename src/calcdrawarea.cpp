@@ -17,10 +17,13 @@
     along with HP11em.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <gtkmm-2.4/gtkmm/drawingarea.h>
+
 #include "calcdrawarea.h"
 
 CalcDrawArea::CalcDrawArea(Signals *hpsignals_r)
-: display_hp(hpsignals_r) {
+: display_hp(hpsignals_r),
+mainmenu(hpsignals_r) {
     hpsignals = hpsignals_r;
 
     try {
@@ -49,6 +52,8 @@ CalcDrawArea::CalcDrawArea(Signals *hpsignals_r)
         set_size_request(640, 382);
 
     last_x = last_y = 0;
+    
+    f_key = g_key = false;
 }
 
 CalcDrawArea::~CalcDrawArea() {
@@ -62,7 +67,7 @@ bool CalcDrawArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
     Gdk::Cairo::set_source_pixbuf(cr, calc_image, 0, 0);
     cr->paint();
 
-    return true;
+    return Gtk::DrawingArea::on_draw(cr);
 }
 
 bool CalcDrawArea::on_motion_notify_event(GdkEventMotion *event) {
@@ -98,7 +103,9 @@ bool CalcDrawArea::on_button_press_event(GdkEventButton *event) {
 #ifdef DEBUG
                 std::cerr << KBLU << "Pressed Menu Key" << KRST << std::endl << std::flush;
 #endif
-                hpsignals->sig_menu_emit();
+                //hpsignals->sig_menu_emit();
+                mainmenu.GetMenu()->popup(event->button, event->time);
+
                 return true;
             }
         } else {
@@ -138,22 +145,17 @@ bool CalcDrawArea::on_key_press_event(GdkEventKey* event) {
     if (event->type == GDK_KEY_PRESS) {
         for (int keypressed = 0; keypressed < KEY_NUMBER; keypressed++) {
             if (key_codes[keypressed] == event->keyval) {
-                if ((event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK)) == GDK_CONTROL_MASK) {
-                    hpsignals->sig_key_emit(K_SDF);
-#ifdef DEBUG
-                    cerr << endl;
-                    cerr << KBLU << "Ctrl (F) modifier" << KRST << endl;
-#endif
-                } else if ((event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK)) == GDK_MOD1_MASK) {
-                    hpsignals->sig_key_emit(K_GDF);
-#ifdef DEBUG
-                    cerr << endl;
-                    cerr << KBLU << "Alt (G) modifier" << KRST << endl;
-#endif
-                }
-
+                f_key = g_key = false;
                 hpsignals->sig_key_emit(keypressed);
                 button_press_draw(keypressed);
+            } else if ((event->keyval == GDK_KEY_Control_L || event->keyval == GDK_KEY_Control_R) && !g_key) {
+                hpsignals->sig_key_emit(K_SDF);
+                f_key = true;
+                button_press_draw(K_SDF);
+            } else if ((event->keyval == GDK_KEY_Alt_L || event->keyval == GDK_KEY_Alt_R) && !f_key) {
+                hpsignals->sig_key_emit(K_GDF);
+                g_key = true;
+                button_press_draw(K_GDF);
             }
         }
     }
@@ -215,8 +217,27 @@ void CalcDrawArea::parse_numpad(GdkEventKey* event) {
 }
 
 bool CalcDrawArea::on_key_release_event(GdkEventKey* event) {
-    button_release_draw();
+    if (f_key) {
+        if (!(event->keyval == GDK_KEY_Alt_L || event->keyval == GDK_KEY_Alt_R)) {
+            hpsignals->sig_key_emit(K_SDF);
+            f_key = false;
+            button_release_draw();
+        }
+    }
 
+    if (g_key) {
+        if (!(event->keyval == GDK_KEY_Control_L || event->keyval == GDK_KEY_Control_R)) {
+            hpsignals->sig_key_emit(K_GDF);
+            g_key = false;
+            button_release_draw();
+        }
+    }
+
+    if (!f_key && !g_key)
+        button_release_draw();
+    
+    button_release_draw();
+    
     return true;
 }
 

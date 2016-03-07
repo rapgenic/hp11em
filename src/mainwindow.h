@@ -43,15 +43,16 @@ public:
     virtual ~MainWindow();
 
 protected:
-    void menu_show();
+    void debug_window_show();
     bool move_to(double x, double y);
+    bool on_draw(const ::Cairo::RefPtr<::Cairo::Context>& cr) override;
 
     Glib::RefPtr<Gdk::Pixbuf> icon;
 
     CalcDrawArea calc;
     Gtk::Fixed container;
     Signals *hpsignals;
-
+  
 #ifdef DEBUG
     DebugWindow hpDebug;
 #endif

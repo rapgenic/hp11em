@@ -23,6 +23,7 @@ Core::Core(Signals *hpSignals_r) {
     // Initializing variables
     hpSignals = hpSignals_r;
     hpSignals->signal_key().connect(sigc::mem_fun(*this, &Core::input));
+    hpSignals->signal_gui_ready().connect(sigc::mem_fun(*this, &Core::gui_init));
 
     status = S_IDLE;
     error = E_NONE;
@@ -38,6 +39,10 @@ Core::Core(Signals *hpSignals_r) {
     trigonometric_mode = T_DEG;
 
     waiting_data_len = 0;
+}
+
+void Core::gui_init() {
+    display();
 }
 
 Core::~Core() {

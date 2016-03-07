@@ -50,7 +50,8 @@ public:
     virtual ~Core();
 
     void input(int key);
-
+    void gui_init();
+    
 private:
     Signals *hpSignals;
     AutomaticMemoryStack hpAMS;

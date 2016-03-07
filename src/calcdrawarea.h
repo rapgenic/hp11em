@@ -32,6 +32,7 @@
 #include "colors.h"
 #include "hpresources.h"
 #include "hpresources_external.h"
+#include "mainmenu.h"
 
 #define MENU_XS 562
 #define MENU_YS 22
@@ -48,12 +49,12 @@ public:
     void calc_update();
 
 protected:
-    virtual bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr);
-    virtual bool on_motion_notify_event(GdkEventMotion *event);
-    virtual bool on_button_press_event(GdkEventButton *event);
-    virtual bool on_button_release_event(GdkEventButton *event);
-    virtual bool on_key_press_event(GdkEventKey* event);
-    virtual bool on_key_release_event(GdkEventKey* event);
+    virtual bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr) override;
+    virtual bool on_motion_notify_event(GdkEventMotion *event) override;
+    virtual bool on_button_press_event(GdkEventButton *event) override;
+    virtual bool on_button_release_event(GdkEventButton *event) override;
+    virtual bool on_key_press_event(GdkEventKey* event) override;
+    virtual bool on_key_release_event(GdkEventKey* event) override;
 
     void parse_numpad(GdkEventKey *event);
     
@@ -65,7 +66,8 @@ protected:
 
     double last_x, last_y;
     bool f_key, g_key;
-
+    
+    MainMenu mainmenu;
     Signals *hpsignals;
 };
 

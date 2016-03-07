@@ -30,7 +30,7 @@ MainWindow::MainWindow(Signals *hpsignals_r)
     
     // creates the user interface
     hpsignals = hpsignals_r;
-
+    
     try {
         /*
          * Sadly I can't use Gdk::Pixbuf::create_from_resource() because it's
@@ -50,9 +50,11 @@ MainWindow::MainWindow(Signals *hpsignals_r)
 
     hpsignals->signal_off().connect(sigc::mem_fun(*this, &MainWindow::hide));
     hpsignals->signal_minimize().connect(sigc::mem_fun(*this, &MainWindow::iconify));
-    hpsignals->signal_menu().connect(sigc::mem_fun(*this, &MainWindow::menu_show));
+#ifdef DEBUG
+    hpsignals->signal_debug_window_toggle().connect(sigc::mem_fun(*this, &MainWindow::debug_window_show));
+#endif
     hpsignals->signal_window_move().connect(sigc::mem_fun(*this, &MainWindow::move_to));
-
+    
     container.put(calc, 0, 0);
     container.put(calc.display_hp, 119, 23);
     calc.show();
@@ -69,11 +71,16 @@ bool MainWindow::move_to(double x, double y) {
     move(static_cast<int> (x), static_cast<int> (y));
 }
 
-void MainWindow::menu_show() {
+bool MainWindow::on_draw(const ::Cairo::RefPtr<::Cairo::Context>& cr) {
+    hpsignals->sig_gui_ready_emit();
+    return Gtk::Window::on_draw(cr);
+}
+
 #ifdef DEBUG
+void MainWindow::debug_window_show() {
     if (hpDebug.is_visible())
         hpDebug.hide();
     else
         hpDebug.show();
-#endif
 }
+#endif

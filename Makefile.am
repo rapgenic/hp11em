@@ -11,7 +11,8 @@ hp11em_SOURCES = src/hpresources_external.c \
 	src/main.cpp \
 	src/mainwindow.cpp \
 	src/signals.cpp \
-	src/SR.cpp
+	src/SR.cpp \
+	src/mainmenu.cpp
 
 LDADD = $(GTKMM_LIBS) $(CLN_LIBS)
 	
