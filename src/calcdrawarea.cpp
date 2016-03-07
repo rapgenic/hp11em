@@ -118,7 +118,6 @@ bool CalcDrawArea::on_button_press_event(GdkEventButton *event) {
         }
     } else {
         if (event->type == GDK_BUTTON_PRESS) {
-            hpsignals->sig_key_emit(keypressed);
             button_press_draw(keypressed);
         }
     }
@@ -127,11 +126,26 @@ bool CalcDrawArea::on_button_press_event(GdkEventButton *event) {
 }
 
 bool CalcDrawArea::on_button_release_event(GdkEventButton *event) {
-    // Updates the window to release buttons
-    // We have to update also the display to keep its content
-    button_release_draw();
+    #ifdef DEBUG
+    cerr << endl;
+#endif
 
-    return true;
+    int keypressed;
+
+    for (keypressed = 0; keypressed < KEY_NUMBER; keypressed++)
+        if ((key_location[keypressed][0] <= (int) event->x) && (key_location[keypressed][2] >= (int) event->x) && (key_location[keypressed][1] <= (int) event->y) && (key_location[keypressed][3] >= (int) event->y))
+            break;
+
+#ifdef DEBUG
+    std::cerr << KBLU << "Key Released: X = " << event->x << "; Y = " << event->y << KRST << std::endl << std::flush;
+#endif
+
+    if (keypressed != 39) {
+        if (event->type == GDK_BUTTON_RELEASE) {
+            hpsignals->sig_key_emit(keypressed);
+            button_release_draw();
+        }
+    }
 }
 
 bool CalcDrawArea::on_key_press_event(GdkEventKey* event) {
@@ -146,7 +160,7 @@ bool CalcDrawArea::on_key_press_event(GdkEventKey* event) {
         for (int keypressed = 0; keypressed < KEY_NUMBER; keypressed++) {
             if (key_codes[keypressed] == event->keyval) {
                 f_key = g_key = false;
-                hpsignals->sig_key_emit(keypressed);
+                //hpsignals->sig_key_emit(keypressed);
                 button_press_draw(keypressed);
             } else if ((event->keyval == GDK_KEY_Control_L || event->keyval == GDK_KEY_Control_R) && !g_key) {
                 hpsignals->sig_key_emit(K_SDF);
@@ -160,6 +174,41 @@ bool CalcDrawArea::on_key_press_event(GdkEventKey* event) {
         }
     }
 
+    return true;
+}
+
+bool CalcDrawArea::on_key_release_event(GdkEventKey* event) {
+    parse_numpad(event);
+
+    if (event->type == GDK_KEY_RELEASE) {
+        for (int keypressed = 0; keypressed < KEY_NUMBER; keypressed++) {
+            if (key_codes[keypressed] == event->keyval) {
+                hpsignals->sig_key_emit(keypressed);
+            } 
+        }
+    }
+    
+    if (f_key) {
+        if (!(event->keyval == GDK_KEY_Alt_L || event->keyval == GDK_KEY_Alt_R)) {
+            hpsignals->sig_key_emit(K_SDF);
+            f_key = false;
+            button_release_draw();
+        }
+    }
+
+    if (g_key) {
+        if (!(event->keyval == GDK_KEY_Control_L || event->keyval == GDK_KEY_Control_R)) {
+            hpsignals->sig_key_emit(K_GDF);
+            g_key = false;
+            button_release_draw();
+        }
+    }
+
+    if (!f_key && !g_key)
+        button_release_draw();
+    
+    button_release_draw();
+    
     return true;
 }
 
@@ -214,31 +263,6 @@ void CalcDrawArea::parse_numpad(GdkEventKey* event) {
             event->keyval = GDK_KEY_period;
             break;
     }
-}
-
-bool CalcDrawArea::on_key_release_event(GdkEventKey* event) {
-    if (f_key) {
-        if (!(event->keyval == GDK_KEY_Alt_L || event->keyval == GDK_KEY_Alt_R)) {
-            hpsignals->sig_key_emit(K_SDF);
-            f_key = false;
-            button_release_draw();
-        }
-    }
-
-    if (g_key) {
-        if (!(event->keyval == GDK_KEY_Control_L || event->keyval == GDK_KEY_Control_R)) {
-            hpsignals->sig_key_emit(K_GDF);
-            g_key = false;
-            button_release_draw();
-        }
-    }
-
-    if (!f_key && !g_key)
-        button_release_draw();
-    
-    button_release_draw();
-    
-    return true;
 }
 
 bool CalcDrawArea::button_release_draw() {
