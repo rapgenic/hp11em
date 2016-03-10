@@ -20,7 +20,7 @@
 #include <gdk/gdkkeysyms.h>
 
 #ifndef HPRESOURCES_H
-#define	HPRESOURCES_H
+#define HPRESOURCES_H
 
 #define KEY_NUMBER 39
 
@@ -58,7 +58,7 @@ typedef enum {
     K_NO8 = 7,
     K_NO9 = 8,
     K_DIV = 9,
-            
+
     K_SST = 10,
     K_GTO = 11,
     K_SIN = 12,
@@ -69,7 +69,7 @@ typedef enum {
     K_NO5 = 17,
     K_NO6 = 18,
     K_PER = 19,
-            
+
     K_R_S = 20,
     K_GSB = 21,
     K_RDW = 22,
@@ -79,7 +79,7 @@ typedef enum {
     K_NO2 = 26,
     K_NO3 = 27,
     K_MEN = 28,
-            
+
     K_ONF = 29,
     K_SDF = 30,
     K_GDF = 31,
@@ -89,15 +89,21 @@ typedef enum {
     K_DOT = 35,
     K_SPL = 36,
     K_PIU = 37,
-            
+
     K_ENT = 38,
+
+    /*
+     * These are special keycodes, which aren't mapped to a function
+     */
+    K_REL = 100
 } hp_keycodes_t;
 
 typedef enum {
     S_IDLE = 1,
     S_INPUT = 2,
     S_WAITDATA = 3,
-    S_ERR = 4
+    S_PREFIX = 4,
+    S_ERR = 5
 } core_states_t;
 
 typedef enum {
@@ -134,7 +140,7 @@ typedef enum {
 typedef enum {
     L_NULL = 0,
     L_TRUE,
-    L_FALS 
+    L_FALS
 } flag_t;
 
 /*
@@ -146,5 +152,5 @@ extern int key_codes[KEY_NUMBER];
 extern int key_location[KEY_NUMBER][4];
 extern int key_stack_lift_flag[KEY_NUMBER][3];
 
-#endif	/* HPRESOURCES_H */
+#endif /* HPRESOURCES_H */
 

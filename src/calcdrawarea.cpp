@@ -52,7 +52,7 @@ mainmenu(hpsignals_r) {
         set_size_request(640, 382);
 
     last_x = last_y = 0;
-    
+
     f_key = g_key = false;
 }
 
@@ -118,7 +118,7 @@ bool CalcDrawArea::on_button_press_event(GdkEventButton *event) {
         }
     } else {
         if (event->type == GDK_BUTTON_PRESS) {
-            hpsignals->sig_key_emit(keypressed);
+            hpsignals->sig_input_emit(keypressed);
             button_press_draw(keypressed);
         }
     }
@@ -129,6 +129,7 @@ bool CalcDrawArea::on_button_press_event(GdkEventButton *event) {
 bool CalcDrawArea::on_button_release_event(GdkEventButton *event) {
     // Updates the window to release buttons
     // We have to update also the display to keep its content
+    hpsignals->sig_input_emit(K_REL);
     button_release_draw();
 
     return true;
@@ -146,14 +147,14 @@ bool CalcDrawArea::on_key_press_event(GdkEventKey* event) {
         for (int keypressed = 0; keypressed < KEY_NUMBER; keypressed++) {
             if (key_codes[keypressed] == event->keyval) {
                 f_key = g_key = false;
-                hpsignals->sig_key_emit(keypressed);
+                hpsignals->sig_input_emit(keypressed);
                 button_press_draw(keypressed);
             } else if ((event->keyval == GDK_KEY_Control_L || event->keyval == GDK_KEY_Control_R) && !g_key) {
-                hpsignals->sig_key_emit(K_SDF);
+                hpsignals->sig_input_emit(K_SDF);
                 f_key = true;
                 button_press_draw(K_SDF);
             } else if ((event->keyval == GDK_KEY_Alt_L || event->keyval == GDK_KEY_Alt_R) && !f_key) {
-                hpsignals->sig_key_emit(K_GDF);
+                hpsignals->sig_input_emit(K_GDF);
                 g_key = true;
                 button_press_draw(K_GDF);
             }
@@ -217,27 +218,32 @@ void CalcDrawArea::parse_numpad(GdkEventKey* event) {
 }
 
 bool CalcDrawArea::on_key_release_event(GdkEventKey* event) {
-    if (f_key) {
-        if (!(event->keyval == GDK_KEY_Alt_L || event->keyval == GDK_KEY_Alt_R)) {
-            hpsignals->sig_key_emit(K_SDF);
-            f_key = false;
-            button_release_draw();
-        }
-    }
+    parse_numpad(event);
 
-    if (g_key) {
-        if (!(event->keyval == GDK_KEY_Control_L || event->keyval == GDK_KEY_Control_R)) {
-            hpsignals->sig_key_emit(K_GDF);
-            g_key = false;
-            button_release_draw();
+    if (event->type == GDK_KEY_RELEASE) {
+        if (f_key) {
+            if (!(event->keyval == GDK_KEY_Alt_L || event->keyval == GDK_KEY_Alt_R)) {
+                hpsignals->sig_input_emit(K_SDF);
+                f_key = false;
+//                button_release_draw();
+            }
         }
-    }
 
-    if (!f_key && !g_key)
+        if (g_key) {
+            if (!(event->keyval == GDK_KEY_Control_L || event->keyval == GDK_KEY_Control_R)) {
+                hpsignals->sig_input_emit(K_GDF);
+                g_key = false;
+//                button_release_draw();
+            }
+        }
+
+//        if (!f_key && !g_key)
+//            button_release_draw();
+
+        hpsignals->sig_input_emit(K_REL);
         button_release_draw();
-    
-    button_release_draw();
-    
+    }
+
     return true;
 }
 

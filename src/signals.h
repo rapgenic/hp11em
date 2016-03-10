@@ -43,7 +43,7 @@ public:
 #endif
 
     // GUI to core
-    typedef sigc::signal<void, int> signal_key_t;
+    typedef sigc::signal<void, int> signal_input_t;
 
     // Core to GUI
     signal_t signal_off();
@@ -66,8 +66,8 @@ public:
 #endif
 
     // GUI to core
-    signal_key_t signal_key();
-    void sig_key_emit(int key);
+    signal_input_t signal_input();
+    void sig_input_emit(int key);
     
     signal_t signal_gui_ready();
     void sig_gui_ready_emit();
@@ -93,7 +93,7 @@ private:
 #endif
 
     // GUI to core
-    signal_key_t sig_key;
+    signal_input_t sig_key;
     signal_t sig_gui_ready;
 
     // GUI to GUI

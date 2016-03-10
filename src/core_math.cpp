@@ -949,9 +949,14 @@ void Core::kcb_del() {
 }
 
 void Core::kcb_prefix() {
+#ifdef DEBUG
+    cerr << KYEL << "PREFIX" << KRST << endl;
+#endif
     switch (status) {
-        case S_IDLE: break;
-        case S_INPUT: break;
+        case S_IDLE: 
+        case S_INPUT: 
+            
+            break;
         case S_ERR: break;
         default: break;
     }

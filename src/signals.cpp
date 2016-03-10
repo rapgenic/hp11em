@@ -49,11 +49,11 @@ void Signals::sig_display_emit(string disp) {
     sig_display.emit(disp);
 }
 
-Signals::signal_key_t Signals::signal_key() {
+Signals::signal_input_t Signals::signal_input() {
     return sig_key;
 }
 
-void Signals::sig_key_emit(int key) {
+void Signals::sig_input_emit(int key) {
     sig_key.emit(key);
 }
 

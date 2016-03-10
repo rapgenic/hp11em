@@ -48,7 +48,7 @@ int key_status[KEY_NUMBER][3] = {
     {S_IDLE, S_IDLE, S_IDLE},
     {S_IDLE, S_IDLE, S_IDLE},
     {S_IDLE, S_IDLE, S_IDLE},
-    {0, S_IDLE, S_IDLE},
+    {0, S_PREFIX, S_IDLE},
     {S_INPUT, S_IDLE, S_IDLE},
     {S_INPUT, S_IDLE, S_IDLE},
     {S_INPUT, S_IDLE, S_IDLE},

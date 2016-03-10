@@ -22,7 +22,7 @@
 Core::Core(Signals *hpSignals_r) {
     // Initializing variables
     hpSignals = hpSignals_r;
-    hpSignals->signal_key().connect(sigc::mem_fun(*this, &Core::input));
+    hpSignals->signal_input().connect(sigc::mem_fun(*this, &Core::input));
     hpSignals->signal_gui_ready().connect(sigc::mem_fun(*this, &Core::gui_init));
 
     status = S_IDLE;
@@ -80,6 +80,20 @@ void Core::input(int _key) {
         case K_ONF:
             hpSignals->sig_off_emit();
             break;
+        case K_REL:
+            switch (status) {
+                case S_PREFIX:
+                    /*
+                     * Resetting INPUT variables
+                     */
+                    reset_input_mode();
+                    status = S_IDLE;
+                    f_key_set(F_NONE);
+                    display();
+                    break;
+            }
+            cerr << KBLU << "CORE SIGNAL - Key released" << KRST << endl;
+            break;
         default:
             switch (status) {
                 case S_IDLE:
@@ -94,6 +108,9 @@ void Core::input(int _key) {
                                 reset_waitdata_mode();
 
                                 status = S_WAITDATA;
+                                break;
+                            case S_PREFIX:
+                                status = S_PREFIX;
                                 break;
                         }
 
@@ -121,6 +138,9 @@ void Core::input(int _key) {
 
                                 status = S_WAITDATA;
                                 break;
+                            case S_PREFIX:
+                                status = S_PREFIX;
+                                break;
                         }
 
                     f_key_set(F_NONE);
@@ -137,6 +157,9 @@ void Core::input(int _key) {
 
                     display();
 
+                    break;
+                case S_PREFIX:
+                    display();
                     break;
                 case S_ERR:
                     error = E_NONE;
@@ -189,8 +212,8 @@ void Core::f_key_toggle(int key) {
 void Core::display() {
     double numb = hpAMS.get_x();
     double pnumb = fabs(numb);
-    int log10_pnumb = (int)floor(log10(pnumb));
-    
+    int log10_pnumb = (int) floor(log10(pnumb));
+
     char display_text[22] = "";
 
     memset(display_text, ' ', 22);
@@ -264,6 +287,19 @@ void Core::display() {
             hpSignals->sig_display_emit(display_text);
             draw_trig_announciator();
             break;
+        case S_PREFIX:
+            if (pnumb != 0) {
+                while ((int) floor(log10(pnumb)) < 9) {
+                    pnumb *= 10.0;
+                }
+
+                double_to_display(pnumb, 0, display_text_ptr, N_FIX, false);
+            } else {
+                sprintf(display_text_ptr, "0000000000");
+            }
+            cerr << display_text << endl;
+            hpSignals->sig_display_emit(display_text);
+            break;
         case S_ERR:
             sprintf(display_text, "+Error %d", error);
             hpSignals->sig_display_emit(display_text);
@@ -286,7 +322,7 @@ void Core::draw_trig_announciator() {
             break;
         case T_DEG:
             hpSignals->sig_alarm_emit(A_GRD, false);
-            hpSignals->sig_alarm_emit(A_RAD, false);            
+            hpSignals->sig_alarm_emit(A_RAD, false);
     }
 }
 
