@@ -17,8 +17,6 @@
     along with HP11em.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtkmm-2.4/gtkmm/drawingarea.h>
-
 #include "calcdrawarea.h"
 
 CalcDrawArea::CalcDrawArea(Signals *hpsignals_r)

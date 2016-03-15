@@ -94,7 +94,7 @@ private:
     core_states_t previous_status;
 
     void (Core::*waitingdata_cb)(void);
-
+    
     void f_key_set(unsigned char value);
     void f_key_toggle(int key);
 
@@ -110,6 +110,8 @@ private:
     void reset_waitdata_mode();
 
     void ignore_waitdata();
+    
+    void shutdown();
 
     void kcb_sqrt();
     void kcb_alpha_a();

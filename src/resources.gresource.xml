@@ -21,6 +21,6 @@
 <gresources>
     <gresource prefix="/com/rapgenic/hp11em/">
         <file>images/hp11em.svg</file>
-        <file>images/icon.png</file>
+        <file>images/icon.svg</file>
     </gresource>
 </gresources>

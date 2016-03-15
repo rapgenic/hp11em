@@ -1,5 +1,8 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
+/* "The directory used to store the configuration" */
+#undef CONFIG_DIR
+
 /* "Debug features enabled" */
 #undef DEBUG
 

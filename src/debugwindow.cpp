@@ -47,7 +47,7 @@ quitBtn("Chiudi") {
 
         GError *error = NULL;
 
-        icon = Gdk::Pixbuf::create_from_stream(Glib::wrap(g_resource_open_stream(resources_get_resource(), "/com/rapgenic/hp11em/images/icon.png", G_RESOURCE_LOOKUP_FLAGS_NONE, &error)));
+        icon = Gdk::Pixbuf::create_from_stream(Glib::wrap(g_resource_open_stream(resources_get_resource(), "/com/rapgenic/hp11em/images/icon.svg", G_RESOURCE_LOOKUP_FLAGS_NONE, &error)));
     } catch (const Gdk::PixbufError& ex) {
         std::cerr << "PixbufError: " << ex.what() << std::endl;
     }

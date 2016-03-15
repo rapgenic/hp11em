@@ -32,11 +32,14 @@ using std::log10;
 using std::fabs;
 
 #include "colors.h"
+#include "coreautosave.h"
 
 #define BIGGEST_REPR 9.999999999e+99
 #define SMALLST_REPR 9.999999999e-99
 
-class AutomaticMemoryStack {
+#define AMS_CLASSNAME "AMS"
+
+class AutomaticMemoryStack : private CoreAutosave<double> {
 public:
     AutomaticMemoryStack();
     virtual ~AutomaticMemoryStack();
@@ -57,6 +60,19 @@ public:
 private:
     double round(double num);
 
+    std::string getClassName() override;
+    void load(std::vector<double> data) override;
+    std::vector<double> save() override;
+
+    enum {
+        AMS_X_VAL = 0,
+        AMS_Y_VAL,
+        AMS_Z_VAL,
+        AMS_T_VAL,
+        AMS_LST_X_VAL,
+        QTY
+    };
+    
     double x, y, z, t, lst_x;
 };
 

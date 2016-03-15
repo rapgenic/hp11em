@@ -27,10 +27,12 @@ using std::cerr;
 using std::endl;
 
 #include "colors.h"
+#include "coreautosave.h"
 
 #define SR_DIMENSION 21
+#define SR_CLASSNAME "SR"
 
-class StorageRegister {
+class StorageRegister : private CoreAutosave<double> {
 public:
     StorageRegister();
     virtual ~StorageRegister();
@@ -42,6 +44,10 @@ public:
 
 private:
     double sr[SR_DIMENSION];
+    
+    std::string getClassName() override;
+    void load(std::vector<double> data) override;
+    std::vector<double> save() override;
 };
 
 #endif	/* STORAGEREGISTER_H */

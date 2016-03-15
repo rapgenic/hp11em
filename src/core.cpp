@@ -43,6 +43,9 @@ Core::Core(Signals *hpSignals_r) {
 
 void Core::gui_init() {
     display();
+#ifdef DEBUG
+    hpSignals->sig_update_register_table_emit(hpAMS.get_x(), hpAMS.get_y(), hpAMS.get_z(), hpAMS.get_t(), hpAMS.get_lst_x());
+#endif
 }
 
 Core::~Core() {
@@ -78,7 +81,7 @@ void Core::input(int _key) {
             f_key_toggle(key);
             break;
         case K_ONF:
-            hpSignals->sig_off_emit();
+            shutdown();
             break;
         case K_REL:
             switch (status) {
@@ -452,4 +455,8 @@ void Core::double_to_display(double value, short _precision, char *_buf, notatio
     }
 
     buf_pointer = '\0';
+}
+
+void Core::shutdown() {
+    hpSignals->sig_off_emit();
 }

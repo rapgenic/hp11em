@@ -21,9 +21,11 @@
 
 StorageRegister::StorageRegister() {
     sr_clear();
+    _load();
 }
 
 StorageRegister::~StorageRegister() {
+    _save();
 }
 
 void StorageRegister::sr_loc_set(int loc, double numb) {
@@ -46,4 +48,22 @@ void StorageRegister::sr_clear_sum() {
     for (int i = 0; i < 6; i++) {
         sr[i] = 0;
     }
+}
+
+std::string StorageRegister::getClassName() {
+    return SR_CLASSNAME;
+}
+
+void StorageRegister::load(std::vector<double> data) {
+    return;
+}
+
+std::vector<double> StorageRegister::save() {
+    std::vector<double> data(SR_DIMENSION);
+    
+    for (int i = 0; i < SR_DIMENSION; i++) {
+        data[i] = sr_loc_get(i);
+    }
+    
+    return data;
 }

@@ -626,6 +626,7 @@ ac_subst_vars='am__EXEEXT_FALSE
 am__EXEEXT_TRUE
 LTLIBOBJS
 LIB@&t@OBJS
+CONFIG_DIR
 EGREP
 GREP
 CPP
@@ -746,7 +747,8 @@ PKG_CONFIG_PATH
 PKG_CONFIG_LIBDIR
 GTKMM_CFLAGS
 GTKMM_LIBS
-CPP'
+CPP
+CONFIG_DIR'
 
 
 # Initialize some variables set by options.
@@ -1392,6 +1394,8 @@ Some influential environment variables:
               C compiler flags for GTKMM, overriding pkg-config
   GTKMM_LIBS  linker flags for GTKMM, overriding pkg-config
   CPP         C preprocessor
+  CONFIG_DIR  "Set the directory used to store the configuration (default:
+              ~/.config/hp11em/)"
 
 Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
@@ -5190,6 +5194,11 @@ if test "${with_debug+set}" = set; then :
 $as_echo "@%:@define DEBUG /**/" >>confdefs.h
 
 fi
+
+
+
+$as_echo "@%:@define CONFIG_DIR \"/.config/hp11em/\"" >>confdefs.h
+
 
 
 ac_config_files="$ac_config_files Makefile"
