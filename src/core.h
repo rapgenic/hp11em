@@ -61,6 +61,7 @@ private:
     trig_mode_t trigonometric_mode;
     core_error_t error;
     function_keys_t fkeys;
+    modifiy_keys_t mkeys;
     int key;
 
     bool stack_nolift_required;

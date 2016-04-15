@@ -28,6 +28,7 @@ Core::Core(Signals *hpSignals_r) {
     status = S_IDLE;
     error = E_NONE;
     fkeys = F_NONE;
+    mkeys = M_NONE;
     key = -1;
 
     stack_nolift_required = false;
@@ -75,9 +76,14 @@ void Core::ignore_waitdata() {
 void Core::input(int _key) {
     key = _key;
 
+#ifdef DEBUG
+    cerr << KYEL << "CORE: received input: " << key << endl;
+#endif
+
     switch (key) {
         case K_SDF:
         case K_GDF:
+            mkeys = M_NONE;
             f_key_toggle(key);
             break;
         case K_ONF:
@@ -117,6 +123,7 @@ void Core::input(int _key) {
                                 break;
                         }
 
+                    if (!(key == K_GTO && fkeys != F_NONE)) mkeys = M_NONE;
                     f_key_set(F_NONE);
 
                     display();
@@ -146,6 +153,7 @@ void Core::input(int _key) {
                                 break;
                         }
 
+                    if (!(key == K_GTO && fkeys != F_NONE)) mkeys = M_NONE;
                     f_key_set(F_NONE);
 
                     display();

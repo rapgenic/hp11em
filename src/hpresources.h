@@ -113,6 +113,12 @@ typedef enum {
 } function_keys_t;
 
 typedef enum {
+    M_NONE = 0,
+    M_NHYP = 1,
+    M_IHYP = 2
+} modifiy_keys_t;
+
+typedef enum {
     E_NONE = -1,
     E_IMO = 0,
     E_SRO,

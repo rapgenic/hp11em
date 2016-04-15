@@ -208,8 +208,10 @@ void Core::kcb_alpha_e() {
 
 void Core::kcb_d_percent() {
     switch (status) {
-        case S_IDLE: break;
-        case S_INPUT: break;
+        case S_IDLE: 
+        case S_INPUT: 
+            hpAMS.set_x((hpAMS.get_x() - hpAMS.get_y()) / hpAMS.get_y() * 100);
+            break;
         case S_ERR: break;
         default: break;
     }
@@ -453,8 +455,13 @@ void Core::kcb_gto() {
 
 void Core::kcb_hyp() {
     switch (status) {
-        case S_IDLE: break;
-        case S_INPUT: break;
+        case S_IDLE:
+        case S_INPUT:
+            mkeys = M_NHYP;
+#ifdef DEBUG
+            cerr << "NHYP" << endl;
+#endif
+            break;
         case S_ERR: break;
         default: break;
     }
@@ -462,8 +469,13 @@ void Core::kcb_hyp() {
 
 void Core::kcb_hyp_neg_1() {
     switch (status) {
-        case S_IDLE: break;
-        case S_INPUT: break;
+        case S_IDLE:
+        case S_INPUT:
+            mkeys = M_IHYP;
+#ifdef DEBUG
+            cerr << "IHYP" << endl;
+#endif
+            break;
         case S_ERR: break;
         default: break;
     }
@@ -473,15 +485,25 @@ void Core::kcb_sin() {
     switch (status) {
         case S_IDLE:
         case S_INPUT:
-            switch (trigonometric_mode) {
-                case T_DEG:
-                    hpAMS.set_x(sin(d2r(hpAMS.get_x())));
+            switch (mkeys) {
+                case M_NONE:
+                    switch (trigonometric_mode) {
+                        case T_DEG:
+                            hpAMS.set_x(sin(d2r(hpAMS.get_x())));
+                            break;
+                        case T_RAD:
+                            hpAMS.set_x(sin(hpAMS.get_x()));
+                            break;
+                        case T_GRD:
+                            hpAMS.set_x(sin(g2r(hpAMS.get_x())));
+                            break;
+                    }
                     break;
-                case T_RAD:
-                    hpAMS.set_x(sin(hpAMS.get_x()));
+                case M_NHYP:
+                    hpAMS.set_x(sinh(hpAMS.get_x()));
                     break;
-                case T_GRD:
-                    hpAMS.set_x(sin(g2r(hpAMS.get_x())));
+                case M_IHYP:
+                    hpAMS.set_x(asinh(hpAMS.get_x()));
                     break;
             }
             break;
@@ -529,15 +551,25 @@ void Core::kcb_cos() {
     switch (status) {
         case S_IDLE:
         case S_INPUT:
-            switch (trigonometric_mode) {
-                case T_DEG:
-                    hpAMS.set_x(cos(d2r(hpAMS.get_x())));
+            switch (mkeys) {
+                case M_NONE:
+                    switch (trigonometric_mode) {
+                        case T_DEG:
+                            hpAMS.set_x(cos(d2r(hpAMS.get_x())));
+                            break;
+                        case T_RAD:
+                            hpAMS.set_x(cos(hpAMS.get_x()));
+                            break;
+                        case T_GRD:
+                            hpAMS.set_x(cos(g2r(hpAMS.get_x())));
+                            break;
+                    }
                     break;
-                case T_RAD:
-                    hpAMS.set_x(cos(hpAMS.get_x()));
+                case M_NHYP:
+                    hpAMS.set_x(cosh(hpAMS.get_x()));
                     break;
-                case T_GRD:
-                    hpAMS.set_x(cos(g2r(hpAMS.get_x())));
+                case M_IHYP:
+                    hpAMS.set_x(acosh(hpAMS.get_x()));
                     break;
             }
             break;
@@ -585,15 +617,25 @@ void Core::kcb_tan() {
     switch (status) {
         case S_IDLE:
         case S_INPUT:
-            switch (trigonometric_mode) {
-                case T_DEG:
-                    hpAMS.set_x(tan(d2r(hpAMS.get_x())));
+            switch (mkeys) {
+                case M_NONE:
+                    switch (trigonometric_mode) {
+                        case T_DEG:
+                            hpAMS.set_x(tan(d2r(hpAMS.get_x())));
+                            break;
+                        case T_RAD:
+                            hpAMS.set_x(tan(hpAMS.get_x()));
+                            break;
+                        case T_GRD:
+                            hpAMS.set_x(tan(g2r(hpAMS.get_x())));
+                            break;
+                    }
                     break;
-                case T_RAD:
-                    hpAMS.set_x(tan(hpAMS.get_x()));
+                case M_NHYP:
+                    hpAMS.set_x(tanh(hpAMS.get_x()));
                     break;
-                case T_GRD:
-                    hpAMS.set_x(tan(g2r(hpAMS.get_x())));
+                case M_IHYP:
+                    hpAMS.set_x(atanh(hpAMS.get_x()));
                     break;
             }
             break;
@@ -932,13 +974,13 @@ void Core::kcb_del() {
                     figures_number--;
                 }
             } else {
-                if (decimal_figures_number == 2) {
+                if (decimal_figures_number == 1) {
                     decimal = false;
+                } else {
+                    hpAMS.set_x(((double) ((long) (hpAMS.get_x() * pow10(decimal_figures_number - 2)))) / pow10(decimal_figures_number - 2), false);
+                    decimal_figures_number--;
+                    figures_number--;
                 }
-
-                hpAMS.set_x(((double) ((long) (hpAMS.get_x() * pow10(decimal_figures_number - 2)))) / pow10(decimal_figures_number - 2), false);
-                decimal_figures_number--;
-                figures_number--;
             }
             break;
         case S_ERR:
@@ -953,9 +995,9 @@ void Core::kcb_prefix() {
     cerr << KYEL << "PREFIX" << KRST << endl;
 #endif
     switch (status) {
-        case S_IDLE: 
-        case S_INPUT: 
-            
+        case S_IDLE:
+        case S_INPUT:
+
             break;
         case S_ERR: break;
         default: break;
@@ -1028,12 +1070,12 @@ void Core::kcb_2() {
 
 void Core::kcb_to_hms() {
     switch (status) {
-        case S_IDLE: 
-        case S_INPUT: 
-            double H,h,s,m;
+        case S_IDLE:
+        case S_INPUT:
+            double H, h, s, m;
             h = modf(hpAMS.get_x(), &H);
             h *= 10000.0;
-            s = round((1800.0 * h) / 5000.0);
+            s = ((1800.0 * h) / 5000.0);
             m = floor(s / 60.0);
             s = s - m * 60.0;
             hpAMS.set_x(H + m / 100.0 + s / 10000.0);
@@ -1044,10 +1086,13 @@ void Core::kcb_to_hms() {
 }
 
 void Core::kcb_to_h() {
+    /*
+     * TODO: check values... it seems that 45.12345678 ->H = 45.20960216 instead of 45.20960217
+     */
     switch (status) {
-        case S_IDLE: 
-        case S_INPUT: 
-            double H,ms,m,s;
+        case S_IDLE:
+        case S_INPUT:
+            double H, ms, m, s;
             ms = modf(hpAMS.get_x(), &H);
             ms *= 100.0;
             s = modf(ms, &m);
