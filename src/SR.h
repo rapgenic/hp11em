@@ -18,7 +18,7 @@
  */
 
 #ifndef STORAGEREGISTER_H
-#define	STORAGEREGISTER_H
+#define STORAGEREGISTER_H
 
 #include "config.h"
 
@@ -32,23 +32,22 @@ using std::endl;
 #define SR_DIMENSION 21
 #define SR_CLASSNAME "SR"
 
-class StorageRegister : private CoreAutosave<double> {
+class StorageRegister: private CoreAutosave<double> {
 public:
-    StorageRegister();
-    virtual ~StorageRegister();
+        StorageRegister();
+        virtual ~StorageRegister();
 
-    void sr_loc_set(int loc, double numb);
-    double sr_loc_get(int loc);
-    void sr_clear();
-    void sr_clear_sum();
+        void sr_loc_set(int loc, double numb);
+        double sr_loc_get(int loc);
+        void sr_clear();
+        void sr_clear_sum();
 
 private:
-    double sr[SR_DIMENSION];
-    
-    std::string getClassName() override;
-    void load(std::vector<double> data) override;
-    std::vector<double> save() override;
+        double sr[SR_DIMENSION];
+
+        std::string getClassName() override;
+        void load(std::vector<double> data) override;
+        std::vector<double> save() override;
 };
 
-#endif	/* STORAGEREGISTER_H */
-
+#endif  /* STORAGEREGISTER_H */

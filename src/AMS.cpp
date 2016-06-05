@@ -20,102 +20,102 @@
 #include "AMS.h"
 
 AutomaticMemoryStack::AutomaticMemoryStack() {
-    lst_x = x = y = z = t = 0;
-    _load();
+        lst_x = x = y = z = t = 0;
+        _load();
 }
 
 AutomaticMemoryStack::~AutomaticMemoryStack() {
-    _save();
+        _save();
 }
 
 void AutomaticMemoryStack::stack_add(double number) {
-    t = z;
-    z = y;
-    y = x;
-    x = round(number);
+        t = z;
+        z = y;
+        y = x;
+        x = round(number);
 }
 
 double AutomaticMemoryStack::get_x() {
-    return x;
+        return x;
 }
 
 double AutomaticMemoryStack::get_y() {
-    return y;
+        return y;
 }
 
 double AutomaticMemoryStack::get_z() {
-    return z;
+        return z;
 }
 
 double AutomaticMemoryStack::get_t() {
-    return t;
+        return t;
 }
 
 double AutomaticMemoryStack::get_lst_x() {
-    return lst_x;
+        return lst_x;
 }
 
 void AutomaticMemoryStack::set_lst_x(double num) {
-    lst_x = round(num);
+        lst_x = round(num);
 }
 
 void AutomaticMemoryStack::set_x(double num, bool using_lst_x) {
-    num = round(num);
-    if (using_lst_x) {
-        lst_x = x;
-        x = num;
-    } else {
-        x = num;
-    }
+        num = round(num);
+        if (using_lst_x) {
+                lst_x = x;
+                x = num;
+        } else {
+                x = num;
+        }
 }
 
 void AutomaticMemoryStack::set_y(double num) {
-    y = round(num);
+        y = round(num);
 }
 
 void AutomaticMemoryStack::set_z(double num) {
-    z = round(num);
+        z = round(num);
 }
 
 void AutomaticMemoryStack::set_t(double num) {
-    t = round(num);
+        t = round(num);
 }
 
 double AutomaticMemoryStack::round(double num) {
-    double numb;
-    double log10_pnumb = floor(log10(fabs(num)));
+        double numb;
+        double log10_pnumb = floor(log10(fabs(num)));
 
-    numb = std::round(num * pow10(10)) / pow10(10);
+        numb = std::round(num * pow10(10)) / pow10(10);
 
-    if (log10_pnumb >= floor(log10(BIGGEST_REPR))) {
-        numb = BIGGEST_REPR * (numb >= 0 ? 1 : -1);
-    } else if (log10_pnumb <= floor(log10(SMALLST_REPR))) {
-        numb = 0;
-    }
+        if (log10_pnumb >= floor(log10(BIGGEST_REPR))) {
+                numb = BIGGEST_REPR * (numb >= 0 ? 1 : -1);
+        } else if (log10_pnumb <= floor(log10(SMALLST_REPR))) {
+                numb = 0;
+        }
 
-    return numb;
+        return numb;
 }
 
 std::string AutomaticMemoryStack::getClassName() {
-    return AMS_CLASSNAME;
+        return AMS_CLASSNAME;
 }
 
 void AutomaticMemoryStack::load(std::vector<double> data) {
-    set_x(data[AMS_X_VAL], false);
-    set_y(data[AMS_Y_VAL]);
-    set_z(data[AMS_Z_VAL]);
-    set_t(data[AMS_T_VAL]);
-    set_lst_x(data[AMS_LST_X_VAL]);
+        set_x(data[AMS_X_VAL], false);
+        set_y(data[AMS_Y_VAL]);
+        set_z(data[AMS_Z_VAL]);
+        set_t(data[AMS_T_VAL]);
+        set_lst_x(data[AMS_LST_X_VAL]);
 }
 
 std::vector<double> AutomaticMemoryStack::save() {
-    std::vector<double> data(QTY);
-    
-    data[AMS_X_VAL] = get_x();
-    data[AMS_Y_VAL] = get_y();
-    data[AMS_Z_VAL] = get_z();
-    data[AMS_T_VAL] = get_t();
-    data[AMS_LST_X_VAL] = get_lst_x();
-    
-    return data;
+        std::vector<double> data(QTY);
+
+        data[AMS_X_VAL] = get_x();
+        data[AMS_Y_VAL] = get_y();
+        data[AMS_Z_VAL] = get_z();
+        data[AMS_T_VAL] = get_t();
+        data[AMS_LST_X_VAL] = get_lst_x();
+
+        return data;
 }

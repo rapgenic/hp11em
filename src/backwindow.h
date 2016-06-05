@@ -1,4 +1,4 @@
-<!--
+/*
     Copyright (C) 2015 Giulio Girardi.
 
     This file is part of HP11em.
@@ -15,13 +15,33 @@
 
     You should have received a copy of the GNU General Public License
     along with HP11em.  If not, see <http://www.gnu.org/licenses/>.
--->
+ */
 
-<?xml version="1.0" encoding="UTF-8"?>
-<gresources>
-    <gresource prefix="/com/rapgenic/hp11em/">
-        <file>images/hp11em.svg</file>
-        <file>images/icon.svg</file>
-        <file>images/back.png</file>
-    </gresource>
-</gresources>
+#include "config.h"
+
+#ifndef BACKWINDOW_H_
+#define BACKWINDOW_H_
+
+#include <gtkmm.h>
+
+#include <iostream>
+
+#include "hpresources_external.h"
+#include "signals.h"
+
+class BackWindow: public Gtk::Window {
+public:
+        BackWindow(Signals *hpsignals_r);
+        virtual ~BackWindow();
+
+protected:
+        bool draw_back(const Cairo::RefPtr<Cairo::Context>& cr);
+
+        Glib::RefPtr<Gdk::Pixbuf> icon;
+        Glib::RefPtr<Gdk::Pixbuf> back;
+        Gtk::Image back_area;
+
+        Signals *hpSignals;
+};
+
+#endif /* BACKWINDOW_H_ */

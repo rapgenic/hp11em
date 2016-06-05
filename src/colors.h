@@ -18,7 +18,7 @@
  */
 
 #ifndef COLORS_H
-#define	COLORS_H
+#define COLORS_H
 
 #define KNRM  "\x1B[0m"
 #define KRED  "\x1B[31m"
@@ -30,5 +30,4 @@
 #define KWHT  "\x1B[37m"
 #define KRST  "\033[0m"
 
-#endif	/* COLORS_H */
-
+#endif  /* COLORS_H */

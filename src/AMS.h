@@ -39,41 +39,41 @@ using std::fabs;
 
 #define AMS_CLASSNAME "AMS"
 
-class AutomaticMemoryStack : private CoreAutosave<double> {
+class AutomaticMemoryStack: private CoreAutosave<double> {
 public:
-    AutomaticMemoryStack();
-    virtual ~AutomaticMemoryStack();
+        AutomaticMemoryStack();
+        virtual ~AutomaticMemoryStack();
 
-    double get_x();
-    double get_y();
-    double get_z();
-    double get_t();
-    double get_lst_x();
+        double get_x();
+        double get_y();
+        double get_z();
+        double get_t();
+        double get_lst_x();
 
-    void stack_add(double number);
-    void set_x(double num, bool using_lst_x = true);
-    void set_y(double num);
-    void set_z(double num);
-    void set_t(double num);
-    void set_lst_x(double num);
+        void stack_add(double number);
+        void set_x(double num, bool using_lst_x = true);
+        void set_y(double num);
+        void set_z(double num);
+        void set_t(double num);
+        void set_lst_x(double num);
 
 private:
-    double round(double num);
+        double round(double num);
 
-    std::string getClassName() override;
-    void load(std::vector<double> data) override;
-    std::vector<double> save() override;
+        std::string getClassName() override;
+        void load(std::vector<double> data) override;
+        std::vector<double> save() override;
 
-    enum {
-        AMS_X_VAL = 0,
-        AMS_Y_VAL,
-        AMS_Z_VAL,
-        AMS_T_VAL,
-        AMS_LST_X_VAL,
-        QTY
-    };
-    
-    double x, y, z, t, lst_x;
+        enum {
+                AMS_X_VAL = 0,
+                AMS_Y_VAL,
+                AMS_Z_VAL,
+                AMS_T_VAL,
+                AMS_LST_X_VAL,
+                QTY
+        };
+
+        double x, y, z, t, lst_x;
 };
 
 #endif // AUTOMATICMEMORYSTACK_H

@@ -20,67 +20,76 @@
 #include "mainwindow.h"
 
 MainWindow::MainWindow(Signals *hpsignals_r)
-: calc(hpsignals_r)
+        : calc(hpsignals_r)
 #ifdef DEBUG
-, hpDebug(hpsignals_r)
+        , hpDebug(hpsignals_r)
 #endif
+        , hpBack(hpsignals_r)
 {
-    // Register resources
-    resources_register_resource();
-    
-    // creates the user interface
-    hpsignals = hpsignals_r;
-    
-    try {
-        /*
-         * Sadly I can't use Gdk::Pixbuf::create_from_resource() because it's
-         * available only in 3.12+ 
-         */
-                
-        GError *error = NULL;
-         
-        icon = Gdk::Pixbuf::create_from_stream(Glib::wrap(g_resource_open_stream(resources_get_resource(), "/com/rapgenic/hp11em/images/icon.svg", G_RESOURCE_LOOKUP_FLAGS_NONE, &error)));
-    } catch (const Gdk::PixbufError& ex) {
-        std::cerr << KRED << "PixbufError: " << ex.what() << KRST << std::endl;
-    }
+        // Register resources
+        resources_register_resource();
 
-    set_icon(icon);
-    set_resizable(false);
-    set_decorated(false);
+        // creates the user interface
+        hpsignals = hpsignals_r;
 
-    hpsignals->signal_off().connect(sigc::mem_fun(*this, &MainWindow::hide));
-    hpsignals->signal_minimize().connect(sigc::mem_fun(*this, &MainWindow::iconify));
+        try {
+                /*
+                 * Sadly I can't use Gdk::Pixbuf::create_from_resource() because it's
+                 * available only in 3.12+
+                 */
+
+                GError *error = NULL;
+
+                icon = Gdk::Pixbuf::create_from_stream(Glib::wrap(g_resource_open_stream(resources_get_resource(), "/com/rapgenic/hp11em/images/icon.svg", G_RESOURCE_LOOKUP_FLAGS_NONE, &error)));
+        } catch (const Gdk::PixbufError& ex) {
+                std::cerr << KRED << "PixbufError: " << ex.what() << KRST << std::endl;
+        }
+
+        set_icon(icon);
+        set_resizable(false);
+        set_decorated(false);
+
+        hpsignals->signal_off().connect(sigc::mem_fun(*this, &MainWindow::hide));
+        hpsignals->signal_minimize().connect(sigc::mem_fun(*this, &MainWindow::iconify));
 #ifdef DEBUG
-    hpsignals->signal_debug_window_toggle().connect(sigc::mem_fun(*this, &MainWindow::debug_window_show));
+        hpsignals->signal_debug_window_toggle().connect(sigc::mem_fun(*this, &MainWindow::debug_window_show));
 #endif
-    hpsignals->signal_window_move().connect(sigc::mem_fun(*this, &MainWindow::move_to));
-    
-    container.put(calc, 0, 0);
-    container.put(calc.display_hp, 119, 23);
-    calc.show();
-    calc.display_hp.show();
-    add(container);
-    container.show();
+        hpsignals->signal_back_window_toggle().connect(sigc::mem_fun(*this, &MainWindow::back_window_show));
+        hpsignals->signal_window_move().connect(sigc::mem_fun(*this, &MainWindow::move_to));
+
+        container.put(calc, 0, 0);
+        container.put(calc.display_hp, 119, 23);
+        calc.show();
+        calc.display_hp.show();
+        add(container);
+        container.show();
 }
 
 MainWindow::~MainWindow() {
-    resources_unregister_resource();
+        resources_unregister_resource();
 }
 
 bool MainWindow::move_to(double x, double y) {
-    move(static_cast<int> (x), static_cast<int> (y));
+        move(static_cast<int> (x), static_cast<int> (y));
 }
 
 bool MainWindow::on_draw(const ::Cairo::RefPtr<::Cairo::Context>& cr) {
-    hpsignals->sig_gui_ready_emit();
-    return Gtk::Window::on_draw(cr);
+        hpsignals->sig_gui_ready_emit();
+        return Gtk::Window::on_draw(cr);
+}
+
+void MainWindow::back_window_show() {
+        if (hpBack.is_visible())
+                hpBack.hide();
+        else
+                hpBack.show();
 }
 
 #ifdef DEBUG
 void MainWindow::debug_window_show() {
-    if (hpDebug.is_visible())
-        hpDebug.hide();
-    else
-        hpDebug.show();
+        if (hpDebug.is_visible())
+                hpDebug.hide();
+        else
+                hpDebug.show();
 }
 #endif

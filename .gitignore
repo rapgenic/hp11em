@@ -3,3 +3,15 @@
 /build/
 
 *~
+*.o
+
+.dirstamp
+Makefile
+config.h
+config.log
+config.status
+.deps
+stamp-h1
+.tags
+
+hp11em

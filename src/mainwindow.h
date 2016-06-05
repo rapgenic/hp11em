@@ -32,29 +32,32 @@
 #include "core.h"
 #include "signals.h"
 #include "hpresources_external.h"
+#include "backwindow.h"
 
 #ifdef DEBUG
 #include "debugwindow.h"
 #endif
 
-class MainWindow : public Gtk::Window {
+class MainWindow: public Gtk::Window {
 public:
-    MainWindow(Signals *hpsignals_r);
-    virtual ~MainWindow();
+        MainWindow(Signals *hpsignals_r);
+        virtual ~MainWindow();
 
 protected:
-    void debug_window_show();
-    bool move_to(double x, double y);
-    bool on_draw(const ::Cairo::RefPtr<::Cairo::Context>& cr) override;
+        void debug_window_show();
+        void back_window_show();
+        bool move_to(double x, double y);
+        bool on_draw(const ::Cairo::RefPtr<::Cairo::Context>& cr) override;
 
-    Glib::RefPtr<Gdk::Pixbuf> icon;
+        Glib::RefPtr<Gdk::Pixbuf> icon;
 
-    CalcDrawArea calc;
-    Gtk::Fixed container;
-    Signals *hpsignals;
-  
+        CalcDrawArea calc;
+        Gtk::Fixed container;
+        Signals *hpsignals;
+
+        BackWindow hpBack;
 #ifdef DEBUG
-    DebugWindow hpDebug;
+        DebugWindow hpDebug;
 #endif
 };
 

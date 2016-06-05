@@ -12,8 +12,9 @@ hp11em_SOURCES = src/hpresources_external.c \
 	src/mainwindow.cpp \
 	src/signals.cpp \
 	src/SR.cpp \
-	src/mainmenu.cpp
+	src/mainmenu.cpp \
+	src/backwindow.cpp
 
 LDADD = $(GTKMM_LIBS) $(CLN_LIBS)
-	
+
 AM_CPPFLAGS = $(GTKMM_CFLAGS) $(CLN_CFLAGS) -I$(top_srcdir)/images -Wno-write-strings

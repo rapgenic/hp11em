@@ -37,61 +37,64 @@ template <class T>
 class CoreAutosave {
 public:
 
-    CoreAutosave() {
-        char *homedir;
+        CoreAutosave() {
+                char *homedir;
 
-        if ((homedir = getenv("HOME")) == NULL) {
-            homedir = getpwuid(getuid())->pw_dir;
-        }
+                if ((homedir = getenv("HOME")) == NULL) {
+                        homedir = getpwuid(getuid())->pw_dir;
+                }
 
-        this->homedir = std::string(homedir);
-        
-        if (stat((this->homedir + CONFIG_DIR).data(), new struct stat) == -1) {
-            mkdir((this->homedir + CONFIG_DIR).data(), 0700);
-        }
-    };
+                this->homedir = std::string(homedir);
 
-    virtual ~CoreAutosave() {
-    };
+                if (stat((this->homedir + CONFIG_DIR).data(), new struct stat) == -1) {
+                        mkdir((this->homedir + CONFIG_DIR).data(), 0700);
+                }
+        };
+
+        virtual ~CoreAutosave() {
+        };
 
 protected:
 
-    int _load() {
-        std::vector<T> data;
-        std::ifstream file(homedir + CONFIG_DIR + getClassName());
-        T val;
+        int _load() {
+                std::vector<T> data;
+                std::ifstream file(homedir + CONFIG_DIR + getClassName());
+                T val;
 
-        if (file.is_open()) {
-            for (int i = 0; file >> val; i++) {
-                data.push_back(val);
-            }
-        }
+                if (file.is_open()) {
+                        for (int i = 0; file >> val; i++) {
+                                data.push_back(val);
+                        }
+                }
 
-        if (data.size() != 0) {
-            load(data);
-        }
-    };
+                if (data.size() != 0) {
+                        load(data);
+                }
 
-    int _save() {
-        std::ofstream file(homedir + CONFIG_DIR + getClassName(), std::ios::trunc);
-        std::vector<T> data = save();
+                return 1;
+        };
 
-        if (file.is_open()) {
-            for (int i = 0; i < data.size(); i++) {
-                file << std::scientific << std::setprecision(10) << data[i] << " ";
-            }
-        }
+        int _save() {
+                std::ofstream file(homedir + CONFIG_DIR + getClassName(), std::ios::trunc);
+                std::vector<T> data = save();
 
-        file.close();
-    };
+                if (file.is_open()) {
+                        for (unsigned int i = 0; i < data.size(); i++) {
+                                file << std::scientific << std::setprecision(10) << data[i] << " ";
+                        }
+                }
+
+                file.close();
+
+                return 1;
+        };
 
 private:
-    virtual std::string getClassName() = 0;
-    virtual void load(std::vector<T> data) = 0;
-    virtual std::vector<T> save() = 0;
+        virtual std::string getClassName() = 0;
+        virtual void load(std::vector<T> data) = 0;
+        virtual std::vector<T> save() = 0;
 
-    std::string homedir = "";
+        std::string homedir = "";
 };
 
 #endif /* COREAUTOSAVE_H */
-

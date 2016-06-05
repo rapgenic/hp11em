@@ -57,7 +57,7 @@ protected:
     virtual bool on_key_release_event(GdkEventKey* event) override;
 
     void parse_numpad(GdkEventKey *event);
-    
+
     bool button_press_draw(int keypressed);
     bool button_release_draw();
 
@@ -66,7 +66,7 @@ protected:
 
     double last_x, last_y;
     bool f_key, g_key;
-    
+
     MainMenu mainmenu;
     Signals *hpsignals;
 };

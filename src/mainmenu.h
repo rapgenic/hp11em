@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   mainmenu.h
  * Author: giulio
  *
@@ -17,29 +17,31 @@ using Gtk::Action;
 
 #include "signals.h"
 
-class MainMenu : Gtk::Menu {
+class MainMenu: Gtk::Menu {
 public:
-    MainMenu(Signals *hpsignals_r);
-    Gtk::Menu* GetMenu();
+        MainMenu(Signals *hpsignals_r);
+        Gtk::Menu* GetMenu();
 
-    virtual ~MainMenu();
+        virtual ~MainMenu();
 private:
-    Signals *hpsignals;
+        Signals *hpsignals;
 
-    Glib::RefPtr<Gtk::UIManager> uimanager;
-    Glib::RefPtr<ActionGroup> actions;
+        Glib::RefPtr<Gtk::UIManager> uimanager;
+        Glib::RefPtr<ActionGroup> actions;
 
-    Glib::ustring menu_main =
-            "<ui>"
-            "   <popup name='MainMenu'>"
+        Glib::ustring menu_main =
+                "<ui>"
+                "   <popup name='MainMenu'>"
 #ifdef DEBUG
-            "       <menuitem action='ToggleDebugWindow' />"
-            "       <separator />"
+                "       <menuitem action='ToggleDebugWindow' />"
 #endif
-            "       <menuitem action='Quit' />"
-            "   </popup>"
-            "</ui>";
+                "       <menuitem action='ToggleBackWindow' />"
+                "       <separator />"
+                "       <menuitem action='Reset' />"
+                "       <separator />"
+                "       <menuitem action='Quit' />"
+                "   </popup>"
+                "</ui>";
 };
 
 #endif /* MAINMENU_H */
-

@@ -109,7 +109,8 @@ am_hp11em_OBJECTS = src/hpresources_external.$(OBJEXT) \
 	src/core_math.$(OBJEXT) src/debugwindow.$(OBJEXT) \
 	src/dispdrawarea.$(OBJEXT) src/main.$(OBJEXT) \
 	src/mainwindow.$(OBJEXT) src/signals.$(OBJEXT) \
-	src/SR.$(OBJEXT) src/mainmenu.$(OBJEXT)
+	src/SR.$(OBJEXT) src/mainmenu.$(OBJEXT) \
+	src/backwindow.$(OBJEXT)
 hp11em_OBJECTS = $(am_hp11em_OBJECTS)
 hp11em_LDADD = $(LDADD)
 am__DEPENDENCIES_1 =
@@ -314,7 +315,8 @@ hp11em_SOURCES = src/hpresources_external.c \
 	src/mainwindow.cpp \
 	src/signals.cpp \
 	src/SR.cpp \
-	src/mainmenu.cpp
+	src/mainmenu.cpp \
+	src/backwindow.cpp
 
 LDADD = $(GTKMM_LIBS) $(CLN_LIBS)
 AM_CPPFLAGS = $(GTKMM_CFLAGS) $(CLN_CFLAGS) -I$(top_srcdir)/images -Wno-write-strings
@@ -441,6 +443,8 @@ src/signals.$(OBJEXT): src/$(am__dirstamp) \
 src/SR.$(OBJEXT): src/$(am__dirstamp) src/$(DEPDIR)/$(am__dirstamp)
 src/mainmenu.$(OBJEXT): src/$(am__dirstamp) \
 	src/$(DEPDIR)/$(am__dirstamp)
+src/backwindow.$(OBJEXT): src/$(am__dirstamp) \
+	src/$(DEPDIR)/$(am__dirstamp)
 
 hp11em$(EXEEXT): $(hp11em_OBJECTS) $(hp11em_DEPENDENCIES) $(EXTRA_hp11em_DEPENDENCIES) 
 	@rm -f hp11em$(EXEEXT)
@@ -455,6 +459,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/AMS.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/SR.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/backwindow.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/calcdrawarea.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/core.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@src/$(DEPDIR)/core_math.Po@am__quote@
