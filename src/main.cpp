@@ -24,41 +24,42 @@ using std::cerr;
 using std::endl;
 using std::flush;
 
+#include "colors.h"
 #include "config.h"
-#include "signals.h"
 #include "core.h"
 #include "mainwindow.h"
-#include "colors.h"
+#include "signals.h"
 
 // <<TBD>> create a new hp11c image and check the buttons' position
 
 int main(int argc, char *argv[]) {
 #ifdef DEBUG
-        cerr << KGRN << "Creating GTKMM application..." << KRST << endl << flush;
+  cerr << KGRN << "Creating GTKMM application..." << KRST << endl << flush;
 #endif
-        Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "com.rapgenic.hp11em");
+  Glib::RefPtr<Gtk::Application> app =
+      Gtk::Application::create(argc, argv, "com.rapgenic.hp11em");
 
-        // creates a signal handler to exchange data from the core to the GUI
+// creates a signal handler to exchange data from the core to the GUI
 #ifdef DEBUG
-        cerr << KGRN << "Starting the signal handler..." << KRST << endl << flush;
+  cerr << KGRN << "Starting the signal handler..." << KRST << endl << flush;
 #endif
-        Signals hpSignals;
+  Signals hpSignals;
 
-        // creates the core
+// creates the core
 #ifdef DEBUG
-        cerr << KGRN << "Starting the core..." << KRST << endl << flush;
+  cerr << KGRN << "Starting the core..." << KRST << endl << flush;
 #endif
-        Core hpCore(&hpSignals);
+  Core hpCore(&hpSignals);
 
-        // creates the user interface
+// creates the user interface
 #ifdef DEBUG
-        cerr << KGRN << "Starting the GUI..." << KRST << endl << flush;
+  cerr << KGRN << "Starting the GUI..." << KRST << endl << flush;
 #endif
-        MainWindow hpMainWindow(&hpSignals);
+  MainWindow hpMainWindow(&hpSignals);
 
-        //Shows the window and returns when it is closed.
+// Shows the window and returns when it is closed.
 #ifdef DEBUG
-        cerr << KGRN << "Starting GTKMM application..." << KRST << endl << flush;
+  cerr << KGRN << "Starting GTKMM application..." << KRST << endl << flush;
 #endif
-        return app->run(hpMainWindow);
+  return app->run(hpMainWindow);
 }

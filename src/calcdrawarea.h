@@ -26,13 +26,13 @@
 
 #include <gtkmm.h>
 
-#include "core.h"
-#include "signals.h"
-#include "dispdrawarea.h"
 #include "colors.h"
+#include "core.h"
+#include "dispdrawarea.h"
 #include "hpresources.h"
 #include "hpresources_external.h"
 #include "mainmenu.h"
+#include "signals.h"
 
 #define MENU_XS 562
 #define MENU_YS 22
@@ -41,34 +41,34 @@
 
 class CalcDrawArea : public Gtk::DrawingArea {
 public:
-    CalcDrawArea(Signals *hpsignals_r);
-    virtual ~CalcDrawArea();
+  CalcDrawArea(Signals *hpsignals_r);
+  virtual ~CalcDrawArea();
 
-    DispDrawArea display_hp;
+  DispDrawArea display_hp;
 
-    void calc_update();
+  void calc_update();
 
 protected:
-    virtual bool on_draw(const Cairo::RefPtr<Cairo::Context>& cr) override;
-    virtual bool on_motion_notify_event(GdkEventMotion *event) override;
-    virtual bool on_button_press_event(GdkEventButton *event) override;
-    virtual bool on_button_release_event(GdkEventButton *event) override;
-    virtual bool on_key_press_event(GdkEventKey* event) override;
-    virtual bool on_key_release_event(GdkEventKey* event) override;
+  virtual bool on_draw(const Cairo::RefPtr<Cairo::Context> &cr) override;
+  virtual bool on_motion_notify_event(GdkEventMotion *event) override;
+  virtual bool on_button_press_event(GdkEventButton *event) override;
+  virtual bool on_button_release_event(GdkEventButton *event) override;
+  virtual bool on_key_press_event(GdkEventKey *event) override;
+  virtual bool on_key_release_event(GdkEventKey *event) override;
 
-    void parse_numpad(GdkEventKey *event);
+  void parse_numpad(GdkEventKey *event);
 
-    bool button_press_draw(int keypressed);
-    bool button_release_draw();
+  bool button_press_draw(int keypressed);
+  bool button_release_draw();
 
-    Glib::RefPtr<Gdk::Pixbuf> calc_image;
-    Cairo::RefPtr<Cairo::Context> drawing_context;
+  Glib::RefPtr<Gdk::Pixbuf> calc_image;
+  Cairo::RefPtr<Cairo::Context> drawing_context;
 
-    double last_x, last_y;
-    bool f_key, g_key;
+  double last_x, last_y;
+  bool f_key, g_key;
 
-    MainMenu mainmenu;
-    Signals *hpsignals;
+  MainMenu mainmenu;
+  Signals *hpsignals;
 };
 
 #endif // GTKMM_CALCDRAWAREA_H

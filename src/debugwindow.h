@@ -32,31 +32,32 @@ using std::ostringstream;
 using std::setprecision;
 using std::scientific;
 
-#include <string>
 #include <gtkmm.h>
+#include <string>
 
 #include "hpresources_external.h"
 #include "signals.h"
 
-class DebugWindow: public Gtk::Window {
+class DebugWindow : public Gtk::Window {
 public:
-        DebugWindow(Signals *hpsignals_r);
-        virtual ~DebugWindow();
+  DebugWindow(Signals *hpsignals_r);
+  virtual ~DebugWindow();
 
 protected:
-        Signals *hpsignals;
+  Signals *hpsignals;
 
-        Gtk::Grid windowGrid;
-        Gtk::Frame boxReg;
-        Gtk::Grid tableReg;
-        Gtk::Label lab_reg, lab_val;
-        Gtk::Label lab_x, lab_y, lab_z, lab_t, lab_lst_x;
-        Gtk::Label lab_x_val, lab_y_val, lab_z_val, lab_t_val, lab_lst_x_val;
-        Gtk::Button quitBtn;
+  Gtk::Grid windowGrid;
+  Gtk::Frame boxReg;
+  Gtk::Grid tableReg;
+  Gtk::Label lab_reg, lab_val;
+  Gtk::Label lab_x, lab_y, lab_z, lab_t, lab_lst_x;
+  Gtk::Label lab_x_val, lab_y_val, lab_z_val, lab_t_val, lab_lst_x_val;
+  Gtk::Button quitBtn;
 
-        Glib::RefPtr<Gdk::Pixbuf> icon;
+  Glib::RefPtr<Gdk::Pixbuf> icon;
 
-        bool update_table_registers(double x, double y, double z, double t, double lstx);
+  bool update_table_registers(double x, double y, double z, double t,
+                              double lstx);
 };
 
 #endif /* DEBUGWINDOW_H_ */

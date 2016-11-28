@@ -20,39 +20,41 @@
 #include "backwindow.h"
 
 BackWindow::BackWindow(Signals *hpsignals_r) {
-        try {
-                /*
-                 * Sadly I can't use Gdk::Pixbuf::create_from_resource() because it's
-                 * available only in 3.12+
-                 */
+  try {
+    /*
+     * Sadly I can't use Gdk::Pixbuf::create_from_resource() because it's
+     * available only in 3.12+
+     */
 
-                GError *error = NULL;
+    GError *error = NULL;
 
-                icon = Gdk::Pixbuf::create_from_stream(Glib::wrap(g_resource_open_stream(resources_get_resource(), "/com/rapgenic/hp11em/images/icon.svg", G_RESOURCE_LOOKUP_FLAGS_NONE, &error)));
-                back = Gdk::Pixbuf::create_from_stream(Glib::wrap(g_resource_open_stream(resources_get_resource(), "/com/rapgenic/hp11em/images/back.png", G_RESOURCE_LOOKUP_FLAGS_NONE, &error)));
-        } catch (const Gdk::PixbufError& ex) {
-                std::cerr << "PixbufError: " << ex.what() << std::endl;
-        }
+    icon = Gdk::Pixbuf::create_from_stream(Glib::wrap(g_resource_open_stream(
+        resources_get_resource(), "/com/rapgenic/hp11em/images/icon.svg",
+        G_RESOURCE_LOOKUP_FLAGS_NONE, &error)));
+    back = Gdk::Pixbuf::create_from_stream(Glib::wrap(g_resource_open_stream(
+        resources_get_resource(), "/com/rapgenic/hp11em/images/back.png",
+        G_RESOURCE_LOOKUP_FLAGS_NONE, &error)));
+  } catch (const Gdk::PixbufError &ex) {
+    std::cerr << "PixbufError: " << ex.what() << std::endl;
+  }
 
-        set_icon(icon);
-        set_resizable(false);
-        set_can_focus(true);
-        set_title("Back view");
-        grab_focus();
+  set_icon(icon);
+  set_resizable(false);
+  set_can_focus(true);
+  set_title("Back view");
+  grab_focus();
 
-        hpSignals = hpsignals_r;
+  hpSignals = hpsignals_r;
 
-        hpSignals->signal_off().connect(sigc::mem_fun(*this, &BackWindow::hide));
+  hpSignals->signal_off().connect(sigc::mem_fun(*this, &BackWindow::hide));
 
-        if (back)
-                back_area.set_size_request(640, 382);
+  if (back)
+    back_area.set_size_request(640, 382);
 
-        back_area.set(back);
-        back_area.show();
+  back_area.set(back);
+  back_area.show();
 
-        add(back_area);
+  add(back_area);
 }
 
-BackWindow::~BackWindow() {
-
-}
+BackWindow::~BackWindow() {}

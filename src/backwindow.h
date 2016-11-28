@@ -29,19 +29,19 @@
 #include "hpresources_external.h"
 #include "signals.h"
 
-class BackWindow: public Gtk::Window {
+class BackWindow : public Gtk::Window {
 public:
-        BackWindow(Signals *hpsignals_r);
-        virtual ~BackWindow();
+  BackWindow(Signals *hpsignals_r);
+  virtual ~BackWindow();
 
 protected:
-        bool draw_back(const Cairo::RefPtr<Cairo::Context>& cr);
+  bool draw_back(const Cairo::RefPtr<Cairo::Context> &cr);
 
-        Glib::RefPtr<Gdk::Pixbuf> icon;
-        Glib::RefPtr<Gdk::Pixbuf> back;
-        Gtk::Image back_area;
+  Glib::RefPtr<Gdk::Pixbuf> icon;
+  Glib::RefPtr<Gdk::Pixbuf> back;
+  Gtk::Image back_area;
 
-        Signals *hpSignals;
+  Signals *hpSignals;
 };
 
 #endif /* BACKWINDOW_H_ */

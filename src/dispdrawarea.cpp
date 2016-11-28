@@ -22,243 +22,257 @@
 #include "dispdrawarea.h"
 
 DispDrawArea::DispDrawArea(Signals *hpsignals_r) {
-        resources_register_resource();
+  resources_register_resource();
 
-        hpsignals = hpsignals_r;
+  hpsignals = hpsignals_r;
 
-        set_events(Gdk::KEY_PRESS_MASK);
-        add_events(Gdk::KEY_RELEASE_MASK);
+  set_events(Gdk::KEY_PRESS_MASK);
+  add_events(Gdk::KEY_RELEASE_MASK);
 
-        hpsignals->signal_alarm().connect(sigc::mem_fun(*this, &DispDrawArea::switch_alarm));
-        hpsignals->signal_display().connect(sigc::mem_fun(*this, &DispDrawArea::display_write));
+  hpsignals->signal_alarm().connect(
+      sigc::mem_fun(*this, &DispDrawArea::switch_alarm));
+  hpsignals->signal_display().connect(
+      sigc::mem_fun(*this, &DispDrawArea::display_write));
 
-        try {
-                /*
-                 * Sadly I can't use Gdk::Pixbuf::create_from_resource() because it's
-                 * available only in 3.12+
-                 */
+  try {
+    /*
+     * Sadly I can't use Gdk::Pixbuf::create_from_resource() because it's
+     * available only in 3.12+
+     */
 
-                GError *error = NULL;
+    GError *error = NULL;
 
-                hp_image = Gdk::Pixbuf::create_from_stream(Glib::wrap(g_resource_open_stream(resources_get_resource(), "/com/rapgenic/hp11em/images/hp11em.svg", G_RESOURCE_LOOKUP_FLAGS_NONE, &error)));
-        } catch (const Gdk::PixbufError& ex) {
-                std::cerr << KRED << "PixbufError: " << ex.what() << KRST << std::endl;
-        }
+    hp_image =
+        Gdk::Pixbuf::create_from_stream(Glib::wrap(g_resource_open_stream(
+            resources_get_resource(), "/com/rapgenic/hp11em/images/hp11em.svg",
+            G_RESOURCE_LOOKUP_FLAGS_NONE, &error)));
+  } catch (const Gdk::PixbufError &ex) {
+    std::cerr << KRED << "PixbufError: " << ex.what() << KRST << std::endl;
+  }
 
-        // Maybe we don't have to do it, just create a rectangle with cairo
-        // and fill it with DISP_BG; needs further check -> replaced with a
-        // RECTANGLE
-        //
-        // display_hp = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB,false,8,300,40+15);
-        // display_hp->fill(0?DISP_BG:0xFFFFFFFF);
+  // Maybe we don't have to do it, just create a rectangle with cairo
+  // and fill it with DISP_BG; needs further check -> replaced with a
+  // RECTANGLE
+  //
+  // display_hp = Gdk::Pixbuf::create(Gdk::COLORSPACE_RGB,false,8,300,40+15);
+  // display_hp->fill(0?DISP_BG:0xFFFFFFFF);
 
-        // Preparing the alarms' PixBufs
-        alarms[A_USR] = Gdk::Pixbuf::create_subpixbuf(hp_image, 0,   382, 37, 13);
-        alarms[A_SDF] = Gdk::Pixbuf::create_subpixbuf(hp_image, 38,  382, 15, 13);
-        alarms[A_GDF] = Gdk::Pixbuf::create_subpixbuf(hp_image, 54,  382, 15, 13);
-        alarms[A_BGN] = Gdk::Pixbuf::create_subpixbuf(hp_image, 70,  382, 47, 13);
-        alarms[A_GRD] = Gdk::Pixbuf::create_subpixbuf(hp_image, 118, 382, 39, 13);
-        alarms[A_RAD] = Gdk::Pixbuf::create_subpixbuf(hp_image, 130, 382, 28, 13);
-        alarms[A_DMY] = Gdk::Pixbuf::create_subpixbuf(hp_image, 159, 382, 39, 13);
-        alarms[A_CCC] = Gdk::Pixbuf::create_subpixbuf(hp_image, 199, 382, 15, 13);
-        alarms[A_PRG] = Gdk::Pixbuf::create_subpixbuf(hp_image, 215, 382, 14, 13);
+  // Preparing the alarms' PixBufs
+  alarms[A_USR] = Gdk::Pixbuf::create_subpixbuf(hp_image, 0, 382, 37, 13);
+  alarms[A_SDF] = Gdk::Pixbuf::create_subpixbuf(hp_image, 38, 382, 15, 13);
+  alarms[A_GDF] = Gdk::Pixbuf::create_subpixbuf(hp_image, 54, 382, 15, 13);
+  alarms[A_BGN] = Gdk::Pixbuf::create_subpixbuf(hp_image, 70, 382, 47, 13);
+  alarms[A_GRD] = Gdk::Pixbuf::create_subpixbuf(hp_image, 118, 382, 39, 13);
+  alarms[A_RAD] = Gdk::Pixbuf::create_subpixbuf(hp_image, 130, 382, 28, 13);
+  alarms[A_DMY] = Gdk::Pixbuf::create_subpixbuf(hp_image, 159, 382, 39, 13);
+  alarms[A_CCC] = Gdk::Pixbuf::create_subpixbuf(hp_image, 199, 382, 15, 13);
+  alarms[A_PRG] = Gdk::Pixbuf::create_subpixbuf(hp_image, 215, 382, 14, 13);
 
-        set_size_request(300, 40 + 15);
+  set_size_request(300, 40 + 15);
 }
 
-DispDrawArea::~DispDrawArea() {
-        resources_unregister_resource();
+DispDrawArea::~DispDrawArea() { resources_unregister_resource(); }
+
+bool DispDrawArea::on_draw(const Cairo::RefPtr<Cairo::Context> &cr) {
+  // IMPORTANT
+  // decided to use this callback to write the display, so call this
+  // whenever there is something to draw and implement here all the
+  // drawing system
+  // IMPORTANT
+
+  // Paints the display
+  // Gdk::Cairo::set_source_pixbuf(cr, display_hp, 0, 0);
+  cr->set_source_rgb(static_cast<double>((DISP_BG & 0xFF000000) >> 24) / 255,
+                     static_cast<double>((DISP_BG & 0x00FF0000) >> 16) / 255,
+                     static_cast<double>((DISP_BG & 0x0000FF00) >> 8) / 255);
+  cr->rectangle(0.0, 0.0, 300.0, 40.0 + 15.0);
+  cr->fill();
+  cr->paint();
+
+  // Draws the alarms
+  for (int i = 0; i < 7; i++) {
+    if (alarms_state[i]) {
+      Gdk::Cairo::set_source_pixbuf(cr, alarms[i], alarm_pos[i][0],
+                                    alarm_pos[i][1]);
+      cr->paint();
+    }
+  }
+
+  // Draws the display
+  draw_display(cr);
+
+  return Gtk::DrawingArea::on_draw(cr);
 }
 
-bool DispDrawArea::on_draw(const Cairo::RefPtr<Cairo::Context>& cr) {
-        // IMPORTANT
-        // decided to use this callback to write the display, so call this
-        // whenever there is something to draw and implement here all the
-        // drawing system
-        // IMPORTANT
+bool DispDrawArea::draw_figure(const Cairo::RefPtr<Cairo::Context> &cr, int x,
+                               int y, int segs) {
+  // Limit the drawing position
+  x += 28;
 
-        // Paints the display
-        // Gdk::Cairo::set_source_pixbuf(cr, display_hp, 0, 0);
-        cr->set_source_rgb(static_cast<double> ((DISP_BG & 0xFF000000) >> 24) / 255, static_cast<double> ((DISP_BG & 0x00FF0000) >> 16) / 255, static_cast<double> ((DISP_BG & 0x0000FF00) >> 8) / 255);
-        cr->rectangle(0.0, 0.0, 300.0, 40.0 + 15.0);
-        cr->fill();
-        cr->paint();
+  // Setting up the context
+  // TBD correct color
+  cr->set_source_rgb(0, 0, 0);
+  cr->set_line_width(3);
+  cr->set_line_cap(Cairo::LINE_CAP_ROUND);
 
-        // Draws the alarms
-        for (int i = 0; i < 7; i++) {
-                if (alarms_state[i]) {
-                        Gdk::Cairo::set_source_pixbuf(cr, alarms[i], alarm_pos[i][0], alarm_pos[i][1]);
-                        cr->paint();
-                }
-        }
+  // Drawing 1st segment
+  if ((segs & 0x0F000000) >> 24) {
+    cr->move_to(x, y);
+    cr->line_to(x - 1, y + 8);
+    cr->stroke();
+  }
 
-        // Draws the display
-        draw_display(cr);
+  // drawing 2nd segment
+  if ((segs & 0x00F00000) >> 20) {
+    cr->move_to(x - 1, y + 11);
+    cr->line_to(x - 2, y + 19);
+    cr->stroke();
+  }
 
-        return Gtk::DrawingArea::on_draw(cr);
+  // drawing 3rd segment
+  if ((segs & 0x000F0000) >> 16) {
+    cr->move_to(x + 11, y);
+    cr->line_to(x + 11 - 1, y + 8);
+    cr->stroke();
+  }
+
+  // drawing 4th segment
+  if ((segs & 0x0000F000) >> 12) {
+    cr->move_to(x + 11 - 1, y + 11);
+    cr->line_to(x + 11 - 2, y + 19);
+    cr->stroke();
+  }
+
+  // drawing 5th segment
+  if ((segs & 0x00000F00) >> 8) {
+    cr->move_to(x + 3, y - 2);
+    cr->line_to(x + 3 + 5, y - 2);
+    cr->stroke();
+  }
+
+  // drawing 6th segment
+  if ((segs & 0x000000F0) >> 4) {
+    cr->move_to(x + 3 - 1, y - 2 + 12);
+    cr->line_to(x + 3 + 5 - 1, y - 2 + 12);
+    cr->stroke();
+  }
+
+  // drawing 7th segment
+  if ((segs & 0x0000000F)) {
+    cr->move_to(x + 3 - 2, y - 2 + 23);
+    cr->line_to(x + 3 + 5 - 2, y - 2 + 23);
+    cr->stroke();
+  }
+
+  // drawing the comma / dot
+  if (((segs & 0xF0000000) >> 28) > 0x9) {
+    cr->rectangle(x + 14, y + 20, 1, 1);
+    cr->stroke();
+    if (((segs & 0xF0000000) >> 28) == 0xF) {
+      cr->rectangle(x + 14, y + 24, 0.5, 1);
+      cr->stroke();
+    }
+  }
+
+  return true;
 }
 
-bool DispDrawArea::draw_figure(const Cairo::RefPtr<Cairo::Context>& cr, int x, int y, int segs) {
-        // Limit the drawing position
-        x += 28;
+bool DispDrawArea::draw_display(const Cairo::RefPtr<Cairo::Context> &cr) {
+  int i = 1, z = 0;
 
-        // Setting up the context
-        // TBD correct color
-        cr->set_source_rgb(0, 0, 0);
-        cr->set_line_width(3);
-        cr->set_line_cap(Cairo::LINE_CAP_ROUND);
+  /* if (display_text[0] == 'E') {
 
-        // Drawing 1st segment
-        if ((segs & 0x0F000000) >> 24) {
-                cr->move_to(x, y);
-                cr->line_to(x - 1, y + 8);
-                cr->stroke();
-        }
+       // printing error message
+       draw_figure(cr, (DISP_FIG_WIDTH * 1 + DISP_FIG_DIST * 1), DISP_FIG_Y,
+     figures['E']);
+       draw_figure(cr, (DISP_FIG_WIDTH * 2 + DISP_FIG_DIST * 2), DISP_FIG_Y,
+     figures['r']);
+       draw_figure(cr, (DISP_FIG_WIDTH * 3 + DISP_FIG_DIST * 3), DISP_FIG_Y,
+     figures['r']);
+       draw_figure(cr, (DISP_FIG_WIDTH * 4 + DISP_FIG_DIST * 4), DISP_FIG_Y,
+     figures['o']);
+       draw_figure(cr, (DISP_FIG_WIDTH * 5 + DISP_FIG_DIST * 5), DISP_FIG_Y,
+     figures['r']);
+       draw_figure(cr, (DISP_FIG_WIDTH * 7 + DISP_FIG_DIST * 7), DISP_FIG_Y,
+     figures[display_text[5]]);
 
-        // drawing 2nd segment
-        if ((segs & 0x00F00000) >> 20) {
-                cr->move_to(x - 1, y + 11);
-                cr->line_to(x - 2, y + 19);
-                cr->stroke();
-        }
+       return true;
+     }*/
 
-        // drawing 3rd segment
-        if ((segs & 0x000F0000) >> 16) {
-                cr->move_to(x + 11, y);
-                cr->line_to(x + 11 - 1, y + 8);
-                cr->stroke();
-        }
+  if (display_text[0] == '-')
+    draw_negative(cr);
 
-        // drawing 4th segment
-        if ((segs & 0x0000F000) >> 12) {
-                cr->move_to(x + 11 - 1, y + 11);
-                cr->line_to(x + 11 - 2, y + 19);
-                cr->stroke();
-        }
+  while (i < 22) {
+    int figure = 0;
 
-        // drawing 5th segment
-        if ((segs & 0x00000F00) >> 8) {
-                cr->move_to(x + 3, y - 2);
-                cr->line_to(x + 3 + 5, y - 2);
-                cr->stroke();
-        }
+    if (display_text[i] == '\0')
+      break;
 
-        // drawing 6th segment
-        if ((segs & 0x000000F0) >> 4) {
-                cr->move_to(x + 3 - 1, y - 2 + 12);
-                cr->line_to(x + 3 + 5 - 1, y - 2 + 12);
-                cr->stroke();
-        }
+    figure = figures[display_text[i]];
 
-        // drawing 7th segment
-        if ((segs & 0x0000000F)) {
-                cr->move_to(x + 3 - 2, y - 2 + 23);
-                cr->line_to(x + 3 + 5 - 2, y - 2 + 23);
-                cr->stroke();
-        }
+    if (display_text[i + 1] == '.')
+      figure |= 0xA0000000;
+    else if (display_text[i + 1] == ',')
+      figure |= 0xF0000000;
 
-        // drawing the comma / dot
-        if (((segs & 0xF0000000) >> 28) > 0x9) {
-                cr->rectangle(x + 14, y + 20, 1, 1);
-                cr->stroke();
-                if (((segs & 0xF0000000) >> 28) == 0xF) {
-                        cr->rectangle(x + 14, y + 24, 0.5, 1);
-                        cr->stroke();
-                }
-        }
+    draw_figure(cr, (DISP_FIG_WIDTH * z + DISP_FIG_DIST * z), DISP_FIG_Y,
+                figure);
 
-        return true;
+    if (display_text[i + 1] == '.' || display_text[i + 1] == ',')
+      i++;
+
+    z++;
+
+    i++;
+
+    if (z > 9)
+      break;
+  }
+
+  return true;
 }
 
-bool DispDrawArea::draw_display(const Cairo::RefPtr<Cairo::Context>& cr) {
-        int i = 1, z = 0;
+bool DispDrawArea::draw_negative(const Cairo::RefPtr<Cairo::Context> &cr) {
+  // Setting up the context
+  // TBD correct color
+  cr->set_source_rgb(0, 0, 0);
+  cr->set_line_width(3);
+  cr->set_line_cap(Cairo::LINE_CAP_ROUND);
 
-        /* if (display_text[0] == 'E') {
+  // drawing the negative sign
+  cr->move_to(5, DISP_FIG_Y + 10);
+  cr->line_to(12, DISP_FIG_Y + 10);
+  cr->stroke();
 
-             // printing error message
-             draw_figure(cr, (DISP_FIG_WIDTH * 1 + DISP_FIG_DIST * 1), DISP_FIG_Y, figures['E']);
-             draw_figure(cr, (DISP_FIG_WIDTH * 2 + DISP_FIG_DIST * 2), DISP_FIG_Y, figures['r']);
-             draw_figure(cr, (DISP_FIG_WIDTH * 3 + DISP_FIG_DIST * 3), DISP_FIG_Y, figures['r']);
-             draw_figure(cr, (DISP_FIG_WIDTH * 4 + DISP_FIG_DIST * 4), DISP_FIG_Y, figures['o']);
-             draw_figure(cr, (DISP_FIG_WIDTH * 5 + DISP_FIG_DIST * 5), DISP_FIG_Y, figures['r']);
-             draw_figure(cr, (DISP_FIG_WIDTH * 7 + DISP_FIG_DIST * 7), DISP_FIG_Y, figures[display_text[5]]);
-
-             return true;
-           }*/
-
-        if (display_text[0] == '-')
-                draw_negative(cr);
-
-        while (i < 22) {
-                int figure = 0;
-
-                if (display_text[i] == '\0')
-                        break;
-
-                figure = figures[display_text[i]];
-
-                if (display_text[i + 1] == '.')
-                        figure |= 0xA0000000;
-                else if (display_text[i + 1] == ',')
-                        figure |= 0xF0000000;
-
-                draw_figure(cr, (DISP_FIG_WIDTH * z + DISP_FIG_DIST * z), DISP_FIG_Y, figure);
-
-                if (display_text[i + 1] == '.' || display_text[i + 1] == ',')
-                        i++;
-
-                z++;
-
-                i++;
-
-                if (z > 9)
-                        break;
-        }
-
-        return true;
-}
-
-bool DispDrawArea::draw_negative(const Cairo::RefPtr<Cairo::Context>& cr) {
-        // Setting up the context
-        // TBD correct color
-        cr->set_source_rgb(0, 0, 0);
-        cr->set_line_width(3);
-        cr->set_line_cap(Cairo::LINE_CAP_ROUND);
-
-        // drawing the negative sign
-        cr->move_to(5, DISP_FIG_Y + 10);
-        cr->line_to(12, DISP_FIG_Y + 10);
-        cr->stroke();
-
-        return true;
+  return true;
 }
 
 bool DispDrawArea::display_update() {
-        Cairo::RefPtr<Cairo::Context> cr = get_window()->create_cairo_context();
+  Cairo::RefPtr<Cairo::Context> cr = get_window()->create_cairo_context();
 
-        if (!on_draw(cr))
-                return false;
+  if (!on_draw(cr))
+    return false;
 
-        return true;
+  return true;
 }
 
 bool DispDrawArea::switch_alarm(unsigned char alarm, bool state) {
-        // Activates or deactivates the alarm passed by the signal
-        alarms_state[alarm] = state;
+  // Activates or deactivates the alarm passed by the signal
+  alarms_state[alarm] = state;
 
-        // Writes the changes
-        if (!display_update())
-                return false;
+  // Writes the changes
+  if (!display_update())
+    return false;
 
-        return true;
+  return true;
 }
 
 bool DispDrawArea::display_write(string r_text) {
-        r_text.resize(22);
-        display_text = r_text;
+  r_text.resize(22);
+  display_text = r_text;
 
-        if (!display_update())
-                return false;
+  if (!display_update())
+    return false;
 
-        return true;
+  return true;
 }

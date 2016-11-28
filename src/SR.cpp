@@ -20,50 +20,43 @@
 #include "SR.h"
 
 StorageRegister::StorageRegister() {
-        sr_clear();
-        _load();
+  sr_clear();
+  _load();
 }
 
-StorageRegister::~StorageRegister() {
-        _save();
-}
+StorageRegister::~StorageRegister() { _save(); }
 
 void StorageRegister::sr_loc_set(int loc, double numb) {
-        sr[loc] = numb;
+  sr[loc] = numb;
 #ifdef DEBUG
-        cerr << KBLU << "STORAGE REGISTER - loc " << loc << " numb " << numb << KRST << endl;
+  cerr << KBLU << "STORAGE REGISTER - loc " << loc << " numb " << numb << KRST
+       << endl;
 #endif
 }
 
-double StorageRegister::sr_loc_get(int loc) {
-        return sr[loc];
-}
+double StorageRegister::sr_loc_get(int loc) { return sr[loc]; }
 
 void StorageRegister::sr_clear() {
-        for (int i = 0; i < SR_DIMENSION; i++)
-                sr[i] = 0;
+  for (int i = 0; i < SR_DIMENSION; i++)
+    sr[i] = 0;
 }
 
 void StorageRegister::sr_clear_sum() {
-        for (int i = 0; i < 6; i++) {
-                sr[i] = 0;
-        }
+  for (int i = 0; i < 6; i++) {
+    sr[i] = 0;
+  }
 }
 
-std::string StorageRegister::getClassName() {
-        return SR_CLASSNAME;
-}
+std::string StorageRegister::getClassName() { return SR_CLASSNAME; }
 
-void StorageRegister::load(std::vector<double> data) {
-        return;
-}
+void StorageRegister::load(std::vector<double> data) { return; }
 
 std::vector<double> StorageRegister::save() {
-        std::vector<double> data(SR_DIMENSION);
+  std::vector<double> data(SR_DIMENSION);
 
-        for (int i = 0; i < SR_DIMENSION; i++) {
-                data[i] = sr_loc_get(i);
-        }
+  for (int i = 0; i < SR_DIMENSION; i++) {
+    data[i] = sr_loc_get(i);
+  }
 
-        return data;
+  return data;
 }
