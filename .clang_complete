@@ -40,3 +40,4 @@
 -I/usr/include/libpng16
 -I/usr/include/glib-2.0
 -I/usr/lib/glib-2.0/include
+-Isrc/

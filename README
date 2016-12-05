@@ -9,7 +9,8 @@ To compile it you need to install
 	*libgtkmm-3.0-dev
 	*autoconf-archive
 
-then you have to run aclocal and autoreconf in the project root
+then you have to run in the project root
+	$ ./autogen.sh
 
 to rebuild the image resources run generate_resources.sh in the project root
 
