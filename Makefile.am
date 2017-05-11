@@ -1,8 +1,3 @@
-MAINTAINERCLEANFILES = \
-	$(GITIGNORE_MAINTAINERCLEANFILES_TOPLEVEL) \
-	$(GITIGNORE_MAINTAINERCLEANFILES_MAKEFILE_IN) \
-	$(GITIGNORE_MAINTAINERCLEANFILES_M4_LIBTOOL)
-
 bin_PROGRAMS = hp11em
 
 hp11em_SOURCES = src/hpresources_external.c \
@@ -23,5 +18,3 @@ hp11em_SOURCES = src/hpresources_external.c \
 LDADD = $(GTKMM_LIBS) $(CLN_LIBS)
 
 AM_CPPFLAGS = $(GTKMM_CFLAGS) $(CLN_CFLAGS) -I$(top_srcdir)/images -Wno-write-strings
-
--include $(top_srcdir)/git.mk
