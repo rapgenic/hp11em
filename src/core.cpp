@@ -477,7 +477,7 @@ void Core::double_to_display(double value, short _precision, char *_buf,
     break;
   }
 
-  buf_pointer = '\0';
+  *buf_pointer = '\0';
 }
 
 void Core::shutdown() { hpSignals->sig_off_emit(); }

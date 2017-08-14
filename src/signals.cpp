@@ -82,6 +82,14 @@ Signals::signal_window_move_t Signals::signal_window_move() {
   return sig_window_move;
 }
 
-void Signals::sig_window_move_emit(double x, double y) {
+void Signals::sig_window_move_emit(int x, int y) {
   sig_window_move.emit(x, y);
+}
+
+Signals::signal_window_begin_move_drag_t Signals::signal_window_begin_move_drag() {
+  return sig_window_begin_move_drag;
+}
+
+void Signals::sig_window_begin_move_drag_emit(int button, int root_x, int root_y, guint32 timestamp) {
+  sig_window_begin_move_drag.emit(button, root_x, root_y, timestamp);
 }

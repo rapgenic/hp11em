@@ -70,16 +70,9 @@ bool CalcDrawArea::on_draw(const Cairo::RefPtr<Cairo::Context> &cr) {
 }
 
 bool CalcDrawArea::on_motion_notify_event(GdkEventMotion *event) {
-  //    if (0 <= event->x && event->x <= 640 && 0 <= event->y && event->y <= 100
-  //    && event->x < MENU_XS && event->x > MENU_XE && event->y < MENU_YS &&
-  //    event->y > MENU_YE) {
-  if (((event->x >= 0 && event->x < MENU_XS) ||
-       (event->x > MENU_XE && event->x <= 640)) &&
-      ((event->y >= 0 && event->y < MENU_YS) ||
-       (event->y > MENU_YE && event->y <= 100))) {
-    hpsignals->sig_window_move_emit(
-        event->x_root - event->x + (event->x_root - last_x),
-        event->y_root - event->y + (event->y_root - last_y));
+  if (moving) {
+    hpsignals->sig_window_move_emit(static_cast<int>(event->x_root - event->x + (event->x_root - last_x)), static_cast<int>(event->y_root - event->y + (event->y_root - last_y)));
+    
     last_x = event->x_root;
     last_y = event->y_root;
   }
@@ -93,9 +86,6 @@ bool CalcDrawArea::on_button_press_event(GdkEventButton *event) {
 #endif
 
   int keypressed;
-
-  last_x = event->x_root;
-  last_y = event->y_root;
 
   for (keypressed = 0; keypressed < KEY_NUMBER; keypressed++)
     if ((key_location[keypressed][0] <= (int)event->x) &&
@@ -124,7 +114,17 @@ bool CalcDrawArea::on_button_press_event(GdkEventButton *event) {
         return true;
       }
     } else {
-      if (event->type == GDK_2BUTTON_PRESS) {
+      if (event->type == GDK_BUTTON_PRESS) {
+#ifdef DEBUG
+          std::cerr << KBLU << "Initiating window movement" << KRST << std::endl;
+#endif
+          moving = true;
+
+          last_x = event->x_root;
+          last_y = event->y_root;
+
+          hpsignals->sig_window_begin_move_drag_emit(event->button, event->x_root, event->y_root, event->time);
+      } else if (event->type == GDK_2BUTTON_PRESS) {
 #ifdef DEBUG
         std::cerr << KBLU << "Pressed Minimize Key" << KRST << std::endl
                   << std::flush;
@@ -143,6 +143,9 @@ bool CalcDrawArea::on_button_press_event(GdkEventButton *event) {
 }
 
 bool CalcDrawArea::on_button_release_event(GdkEventButton *event) {
+  // Ends window movement
+  moving = false;
+
   // Updates the window to release buttons
   // We have to update also the display to keep its content
   hpsignals->sig_input_emit(K_REL);

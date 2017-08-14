@@ -38,9 +38,9 @@ using namespace std;
 #define C_PI 3.141592654
 
 #define d2r(x) (x * C_PI / 180.0)
-#define d2g(x) (x)
+#define d2g(x) (x * 10.0 / 9.0)
 #define r2d(x) (x * 180.0 / C_PI)
-#define r2g(x) (x)
+#define r2g(x) (x * 200.0 / C_PI)
 #define g2d(x) (x * 9.0 / 10.0)
 #define g2r(x) (x * C_PI / 200.0)
 

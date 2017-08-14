@@ -65,6 +65,7 @@ protected:
   Cairo::RefPtr<Cairo::Context> drawing_context;
 
   double last_x, last_y;
+  bool moving;
   bool f_key, g_key;
 
   MainMenu mainmenu;

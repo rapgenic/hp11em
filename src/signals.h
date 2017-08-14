@@ -22,6 +22,7 @@
 
 #include "config.h"
 
+#include <glibmm.h>
 #include <sigc++/sigc++.h>
 #include <string>
 
@@ -35,7 +36,8 @@ public:
   // Core to GUI
   typedef sigc::signal<bool, char, bool> signal_alarm_t;
   typedef sigc::signal<bool, std::string> signal_display_t;
-  typedef sigc::signal<bool, double, double> signal_window_move_t;
+  typedef sigc::signal<void, int, int> signal_window_move_t;
+  typedef sigc::signal<void, int, int, int, guint32> signal_window_begin_move_drag_t;
 #ifdef DEBUG
   typedef sigc::signal<bool, double, double, double, double, double>
       d_signal_register_table_t;
@@ -87,7 +89,10 @@ public:
   void sig_back_window_toggle_emit();
 
   signal_window_move_t signal_window_move();
-  void sig_window_move_emit(double x, double y);
+  void sig_window_move_emit(int x, int y);
+
+  signal_window_begin_move_drag_t signal_window_begin_move_drag();
+  void sig_window_begin_move_drag_emit(int button, int root_x, int root_y, guint32 timestamp);
 
 private:
   // Core to GUI
@@ -109,6 +114,7 @@ private:
   signal_t sig_back_window_toggle;
   signal_t sig_minimize;
   signal_window_move_t sig_window_move;
+  signal_window_begin_move_drag_t sig_window_begin_move_drag;
 };
 
 #endif // SIGNALS_H

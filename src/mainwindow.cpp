@@ -53,16 +53,13 @@ MainWindow::MainWindow(Signals *hpsignals_r)
   set_decorated(false);
 
   hpsignals->signal_off().connect(sigc::mem_fun(*this, &MainWindow::hide));
-  hpsignals->signal_minimize().connect(
-      sigc::mem_fun(*this, &MainWindow::iconify));
+  hpsignals->signal_minimize().connect(sigc::mem_fun(*this, &MainWindow::iconify));
 #ifdef DEBUG
-  hpsignals->signal_debug_window_toggle().connect(
-      sigc::mem_fun(*this, &MainWindow::debug_window_show));
+  hpsignals->signal_debug_window_toggle().connect(sigc::mem_fun(*this, &MainWindow::debug_window_show));
 #endif
-  hpsignals->signal_back_window_toggle().connect(
-      sigc::mem_fun(*this, &MainWindow::back_window_show));
-  hpsignals->signal_window_move().connect(
-      sigc::mem_fun(*this, &MainWindow::move_to));
+  hpsignals->signal_back_window_toggle().connect(sigc::mem_fun(*this, &MainWindow::back_window_show));
+  hpsignals->signal_window_move().connect(sigc::mem_fun(*this, &MainWindow::move));
+  hpsignals->signal_window_begin_move_drag().connect(sigc::mem_fun(*this, &MainWindow::begin_move_drag));
 
   container.put(calc, 0, 0);
   container.put(calc.display_hp, 119, 23);
@@ -73,10 +70,6 @@ MainWindow::MainWindow(Signals *hpsignals_r)
 }
 
 MainWindow::~MainWindow() { resources_unregister_resource(); }
-
-bool MainWindow::move_to(double x, double y) {
-  move(static_cast<int>(x), static_cast<int>(y));
-}
 
 bool MainWindow::on_draw(const ::Cairo::RefPtr<::Cairo::Context> &cr) {
   hpsignals->sig_gui_ready_emit();
