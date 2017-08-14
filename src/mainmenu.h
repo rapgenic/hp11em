@@ -35,7 +35,7 @@ private:
 #ifdef DEBUG
                             "       <menuitem action='ToggleDebugWindow' />"
 #endif
-                            "       <menuitem action='ToggleBackWindow' />"
+                            "       <menuitem action='ToggleBackWiew' />"
                             "       <separator />"
                             "       <menuitem action='Reset' />"
                             "       <separator />"

@@ -28,7 +28,6 @@
 #include <gtkmm/fixed.h>
 #include <gtkmm/window.h>
 
-#include "backwindow.h"
 #include "calcdrawarea.h"
 #include "core.h"
 #include "hpresources_external.h"
@@ -45,17 +44,19 @@ public:
 
 protected:
   void debug_window_show();
-  void back_window_show();
-  bool move_to(double x, double y);
+  bool on_back_area_button_press_event(GdkEventButton *event);
+  void toggle_front_back();
   bool on_draw(const ::Cairo::RefPtr<::Cairo::Context> &cr) override;
 
   Glib::RefPtr<Gdk::Pixbuf> icon;
-
+  Glib::RefPtr<Gdk::Pixbuf> back;
+  
   CalcDrawArea calc;
+  Gtk::Image backArea;  
+  Gtk::EventBox backAreaEvBox;  
   Gtk::Fixed container;
   Signals *hpsignals;
 
-  BackWindow hpBack;
 #ifdef DEBUG
   DebugWindow hpDebug;
 #endif

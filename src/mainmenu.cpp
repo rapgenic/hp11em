@@ -25,7 +25,7 @@ MainMenu::MainMenu(Signals *hpsignals_r) {
       sigc::mem_fun(*hpsignals, &Signals::sig_debug_window_toggle_emit));
 #endif
   actions->add(
-      Gtk::Action::create("ToggleBackWindow", "Toggle Back Window"),
+      Gtk::Action::create("ToggleBackWiew", "Toggle Back View"),
       sigc::mem_fun(*hpsignals, &Signals::sig_back_window_toggle_emit));
   actions->add(Gtk::Action::create("Reset", "Reset calculator state"),
                sigc::mem_fun(*hpsignals, &Signals::sig_reset_emit));
