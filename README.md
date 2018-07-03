@@ -13,20 +13,28 @@ To compile it you need to install:
 
 Generate compilation files running:
 
-`$ ./autogen.sh`
+```console
+$ ./autogen.sh
+```
 
 Build the image resources running in the project root:
 
-`$ ./generate_resources.sh`
+```console
+$ ./generate_resources.sh
+```
 
 Then compile with:
 
-`$ ./configure		# run with "--with-debug" option for debug`
-`$ make`
+```console
+$ ./configure		# run with "--with-debug" option for debug
+$ make
+```
 
 And optionally install with:
 
-`$ sudo make install`
+```console
+$ sudo make install
+```
 
 ## License
 
