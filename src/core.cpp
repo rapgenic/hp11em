@@ -270,7 +270,7 @@ void Core::display() {
     break;
   case S_INPUT:
     if (exp) {
-      pnumb /= pow10(exp_val);
+      pnumb /= pow(10, exp_val);
     }
 
     if (start_zero_figures_number) {
@@ -363,7 +363,7 @@ void Core::double_to_display(double value, short _precision, char *_buf,
   if (value != 0)
     exp10 = floor(log10(value));
 
-  value /= pow10(exp10);
+  value /= pow(10, exp10);
 
   switch (_notation) {
   case N_ENG:

@@ -29,6 +29,7 @@ using std::endl;
 #include <cmath>
 using std::floor;
 using std::log10;
+using std::pow;
 using std::fabs;
 
 #include "colors.h"

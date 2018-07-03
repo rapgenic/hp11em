@@ -252,7 +252,7 @@ void Core::kcb_chs() {
     if (exp) {
       int old_exp_val = exp_val;
       exp_val *= -1;
-      hpAMS.set_x(hpAMS.get_x() / pow10(old_exp_val) * pow10(exp_val));
+      hpAMS.set_x(hpAMS.get_x() / pow(10, old_exp_val) * pow(10, exp_val));
     } else
       hpAMS.set_x(hpAMS.get_x() * -1, false);
     break;
@@ -1081,7 +1081,7 @@ void Core::kcb_rnd() {
   switch (status) {
   case S_IDLE:
   case S_INPUT:
-    hpAMS.set_x(round(hpAMS.get_x() * pow10(precision)) / pow10(precision));
+    hpAMS.set_x(round(hpAMS.get_x() * pow(10, precision)) / pow(10, precision));
     break;
   case S_ERR:
     break;
@@ -1121,8 +1121,8 @@ void Core::kcb_del() {
         decimal = false;
       } else {
         hpAMS.set_x(((double)((long)(hpAMS.get_x() *
-                                     pow10(decimal_figures_number - 2)))) /
-                        pow10(decimal_figures_number - 2),
+                                     pow(10, decimal_figures_number - 2)))) /
+                        pow(10, decimal_figures_number - 2),
                     false);
         decimal_figures_number--;
         figures_number--;
@@ -1173,7 +1173,7 @@ void Core::kcb_p_y_x() {
   case S_IDLE:
   case S_INPUT:
     if (hpAMS.get_x() < 0 || hpAMS.get_y() < 0 ||
-        hpAMS.get_x() > hpAMS.get_y() || hpAMS.get_x() >= pow10(10) ||
+        hpAMS.get_x() > hpAMS.get_y() || hpAMS.get_x() >= pow(10, 10) ||
         modf(hpAMS.get_x(), new double) != 0 ||
         modf(hpAMS.get_y(), new double) != 0) {
       status = S_ERR;
@@ -1195,7 +1195,7 @@ void Core::kcb_c_y_x() {
   case S_IDLE:
   case S_INPUT:
     if (hpAMS.get_x() < 0 || hpAMS.get_y() < 0 ||
-        hpAMS.get_x() > hpAMS.get_y() || hpAMS.get_x() >= pow10(10) ||
+        hpAMS.get_x() > hpAMS.get_y() || hpAMS.get_x() >= pow(10, 10) ||
         modf(hpAMS.get_x(), new double) != 0 ||
         modf(hpAMS.get_y(), new double) != 0) {
       status = S_ERR;
@@ -1725,12 +1725,12 @@ void Core::kcb_common_number(int x) {
       exp_val %= 10;
       exp_val *= 10;
       exp_val += x;
-      hpAMS.set_x(hpAMS.get_x() / pow10(old_exp_val) * pow10(exp_val), false);
+      hpAMS.set_x(hpAMS.get_x() / pow(10, old_exp_val) * pow(10, exp_val), false);
     } else if (figures_number < 10) {
       if (!decimal) {
         hpAMS.set_x(hpAMS.get_x() * 10 + x, false);
       } else {
-        hpAMS.set_x(hpAMS.get_x() + (x / pow10(decimal_figures_number++)),
+        hpAMS.set_x(hpAMS.get_x() + (x / pow(10, decimal_figures_number++)),
                     false);
       }
     }

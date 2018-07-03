@@ -65,7 +65,7 @@ double AutomaticMemoryStack::round(double num) {
   double numb;
   double log10_pnumb = floor(log10(fabs(num)));
 
-  numb = std::round(num * pow10(10)) / pow10(10);
+  numb = std::round(num * pow(10, 10)) / pow(10, 10);
 
   if (log10_pnumb >= floor(log10(BIGGEST_REPR))) {
     numb = BIGGEST_REPR * (numb >= 0 ? 1 : -1);
