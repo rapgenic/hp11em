@@ -1,0 +1,47 @@
+key .button-f {
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+	min-height: 0px;
+	font-size: 90%;
+	color: @orange_3;
+}
+
+key .button-g {
+	padding-top: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+	min-height: 0px;
+	font-size: 90%;
+	color: @blue_2;
+}
+
+key .button-m {
+	padding-top: 2px;
+	padding-bottom: 2px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+key.button-function button.button-m {
+	background-color: @orange_3;
+}
+
+key.button-function button.button-g {
+	background-color: @orange_4;
+}
+
+key.button-general button.button-m {
+	background-color: @blue_3;
+}
+
+key.button-general button.button-g {
+	background-color: @blue_4;
+}
+
+.display-figure {
+	font-family: 'HP Voyager Character Set';
+	font-size: 30px;
+}

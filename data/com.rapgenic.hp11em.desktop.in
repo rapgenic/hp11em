@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=HP11em
+Exec=hp11em
+Icon=com.rapgenic.hp11em
+Terminal=false
+Type=Application
+Categories=GTK;
+StartupNotify=true

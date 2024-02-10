@@ -1,0 +1,7 @@
+data/com.rapgenic.hp11em.desktop.in
+data/com.rapgenic.hp11em.appdata.xml.in
+data/com.rapgenic.hp11em.gschema.xml
+src/hp11em-window.ui
+src/main.c
+src/hp11em-window.c
+

@@ -1,0 +1,17 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "meson",
+			"mode": "build",
+			"group": "build",
+			"problemMatcher": [
+				{
+					"base": "$gcc",
+					"fileLocation": ["relative", "${workspaceFolder}/build"]
+				}
+			],
+			"label": "Meson: Build all targets"
+		}
+	]
+}

@@ -1,0 +1,698 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 0.8.2 -->
+<interface>
+  <!-- interface-name hp11em-window.ui -->
+  <requires lib="gtk" version="4.0"/>
+  <template class="Window" parent="GtkApplicationWindow">
+    <property name="default-height">10</property>
+    <property name="default-width">10</property>
+    <child type="titlebar">
+      <object class="GtkHeaderBar" id="header_bar">
+        <style>
+          <class name="flat"/>
+        </style>
+      </object>
+    </child>
+    <child>
+      <object class="GtkGrid" id="keypad">
+        <property name="column-homogeneous">True</property>
+        <property name="column-spacing">20</property>
+        <property name="margin-bottom">10</property>
+        <property name="margin-end">20</property>
+        <property name="margin-start">20</property>
+        <property name="row-homogeneous">True</property>
+        <property name="row-spacing">15</property>
+        <child>
+          <object class="GtkBox" id="display">
+            <property name="margin-end">20</property>
+            <property name="margin-start">20</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">2</property>
+            <child>
+              <object class="GtkBox">
+                <property name="homogeneous">True</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label">-</property>
+                    <property name="vexpand">True</property>
+                    <style>
+                      <class name="display-figure"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label">0.</property>
+                    <property name="vexpand">True</property>
+                    <style>
+                      <class name="display-figure"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label">0.</property>
+                    <property name="vexpand">True</property>
+                    <style>
+                      <class name="display-figure"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label">0.</property>
+                    <property name="vexpand">True</property>
+                    <style>
+                      <class name="display-figure"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label">0.</property>
+                    <property name="vexpand">True</property>
+                    <style>
+                      <class name="display-figure"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label">0.</property>
+                    <property name="vexpand">True</property>
+                    <style>
+                      <class name="display-figure"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label">0.</property>
+                    <property name="vexpand">True</property>
+                    <style>
+                      <class name="display-figure"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label">0.</property>
+                    <property name="vexpand">True</property>
+                    <style>
+                      <class name="display-figure"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label">0.</property>
+                    <property name="vexpand">True</property>
+                    <style>
+                      <class name="display-figure"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label">0.</property>
+                    <property name="vexpand">True</property>
+                    <style>
+                      <class name="display-figure"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label">0.</property>
+                    <property name="vexpand">True</property>
+                    <style>
+                      <class name="display-figure"/>
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <style>
+              <class name="display"/>
+            </style>
+            <layout>
+              <property name="column">1</property>
+              <property name="column-span">6</property>
+              <property name="row">-1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">A</property>
+            <property name="m-label">√x</property>
+            <property name="g-label">x²</property>
+            <property name="code">19</property>
+            <signal name="key" handler="key_pressed" />
+            <layout>
+              <property name="column">0</property>
+              <property name="row">0</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">B</property>
+            <property name="m-label">eˣ</property>
+            <property name="g-label">LN</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">1</property>
+              <property name="column-span">1</property>
+              <property name="row">0</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">C</property>
+            <property name="m-label">10ˣ</property>
+            <property name="g-label">LOG</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">2</property>
+              <property name="column-span">1</property>
+              <property name="row">0</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">D</property>
+            <property name="m-label">yˣ</property>
+            <property name="g-label">%</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">3</property>
+              <property name="column-span">1</property>
+              <property name="row">0</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">E</property>
+            <property name="m-label">⅟x</property>
+            <property name="g-label">Δ%</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">4</property>
+              <property name="column-span">1</property>
+              <property name="row">0</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">π</property>
+            <property name="m-label">CHS</property>
+            <property name="g-label">ABS</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">5</property>
+              <property name="column-span">1</property>
+              <property name="row">0</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">FIX</property>
+            <property name="m-label">7</property>
+            <property name="g-label">DEG</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">6</property>
+              <property name="column-span">1</property>
+              <property name="row">0</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">SCI</property>
+            <property name="m-label">8</property>
+            <property name="g-label">RAD</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">7</property>
+              <property name="column-span">1</property>
+              <property name="row">0</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">ENG</property>
+            <property name="m-label">9</property>
+            <property name="g-label">GRD</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">8</property>
+              <property name="column-span">1</property>
+              <property name="row">0</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">x≤y</property>
+            <property name="m-label">÷</property>
+            <property name="g-label">x&lt;0</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">9</property>
+              <property name="column-span">1</property>
+              <property name="row">0</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">LBL</property>
+            <property name="m-label">SST</property>
+            <property name="g-label">BST</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">0</property>
+              <property name="column-span">1</property>
+              <property name="row">1</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">HYP</property>
+            <property name="m-label">GTO</property>
+            <property name="g-label">HYP⁻¹</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">1</property>
+              <property name="column-span">1</property>
+              <property name="row">1</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">x⪥(i)</property>
+            <property name="m-label">SIN</property>
+            <property name="g-label">SIN⁻¹</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">2</property>
+              <property name="column-span">1</property>
+              <property name="row">1</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">(i)</property>
+            <property name="m-label">COS</property>
+            <property name="g-label">COS⁻¹</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">3</property>
+              <property name="column-span">1</property>
+              <property name="row">1</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">I</property>
+            <property name="m-label">TAN</property>
+            <property name="g-label">TAN⁻¹</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">4</property>
+              <property name="column-span">1</property>
+              <property name="row">1</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">→R</property>
+            <property name="m-label">EEX</property>
+            <property name="g-label">→P</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">5</property>
+              <property name="column-span">1</property>
+              <property name="row">1</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">x⪥I</property>
+            <property name="m-label">4</property>
+            <property name="g-label">SF</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">6</property>
+              <property name="column-span">1</property>
+              <property name="row">1</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">DSE</property>
+            <property name="m-label">5</property>
+            <property name="g-label">CF</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">7</property>
+              <property name="column-span">1</property>
+              <property name="row">1</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">ISG</property>
+            <property name="m-label">6</property>
+            <property name="g-label">F?</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">8</property>
+              <property name="column-span">1</property>
+              <property name="row">1</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">x>y</property>
+            <property name="m-label">x</property>
+            <property name="g-label">x>0</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">9</property>
+              <property name="column-span">1</property>
+              <property name="row">1</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">PSE</property>
+            <property name="m-label">R/S</property>
+            <property name="g-label">P/R</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">0</property>
+              <property name="column-span">1</property>
+              <property name="row">2</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">Σ</property>
+            <property name="m-label">GSB</property>
+            <property name="g-label">RTN</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">1</property>
+              <property name="column-span">1</property>
+              <property name="row">2</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">PRGM</property>
+            <property name="m-label">R↓</property>
+            <property name="g-label">R↑</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">2</property>
+              <property name="column-span">1</property>
+              <property name="row">2</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">REG</property>
+            <property name="m-label">x⪥y</property>
+            <property name="g-label">RND</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">3</property>
+              <property name="column-span">1</property>
+              <property name="row">2</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">PREFIX</property>
+            <property name="m-label">←</property>
+            <property name="g-label">CLx</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">4</property>
+              <property name="column-span">1</property>
+              <property name="row">2</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">RAN#</property>
+            <property name="m-label">E&#xA;N&#xA;T&#xA;E&#xA;R</property>
+            <property name="g-label">LSTx</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">5</property>
+              <property name="column-span">1</property>
+              <property name="row">2</property>
+              <property name="row-span">2</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">Py,x</property>
+            <property name="m-label">1</property>
+            <property name="g-label">Cy,x</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">6</property>
+              <property name="column-span">1</property>
+              <property name="row">2</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">→H.MS</property>
+            <property name="m-label">2</property>
+            <property name="g-label">→H</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">7</property>
+              <property name="column-span">1</property>
+              <property name="row">2</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">→RAD</property>
+            <property name="m-label">3</property>
+            <property name="g-label">→DEG</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">8</property>
+              <property name="column-span">1</property>
+              <property name="row">2</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">x≠y</property>
+            <property name="m-label">−</property>
+            <property name="g-label">x&gt;0</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">9</property>
+              <property name="column-span">1</property>
+              <property name="row">2</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label"></property>
+            <property name="m-label">ON</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">0</property>
+              <property name="column-span">1</property>
+              <property name="row">3</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label"></property>
+            <property name="m-label">f</property>
+            <property name="g-label"></property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">1</property>
+              <property name="column-span">1</property>
+              <property name="row">3</property>
+              <property name="row-span">1</property>
+            </layout>
+            <style>
+              <class name="button-function"/>
+            </style>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label"></property>
+            <property name="m-label">g</property>
+            <property name="g-label"></property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">2</property>
+              <property name="column-span">1</property>
+              <property name="row">3</property>
+              <property name="row-span">1</property>
+            </layout>
+            <style>
+              <class name="button-general"/>
+            </style>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">FRAC</property>
+            <property name="m-label">STO</property>
+            <property name="g-label">INT</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">3</property>
+              <property name="column-span">1</property>
+              <property name="row">3</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">USER</property>
+            <property name="m-label">RCL</property>
+            <property name="g-label">MEM</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">4</property>
+              <property name="column-span">1</property>
+              <property name="row">3</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">x!</property>
+            <property name="m-label">0</property>
+            <property name="g-label">x̅</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">6</property>
+              <property name="column-span">1</property>
+              <property name="row">3</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">Ŷ,r</property>
+            <property name="m-label">.</property>
+            <property name="g-label">s</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">7</property>
+              <property name="column-span">1</property>
+              <property name="row">3</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">L.R.</property>
+            <property name="m-label">Σ+</property>
+            <property name="g-label">Σ-</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">8</property>
+              <property name="column-span">1</property>
+              <property name="row">3</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="Key">
+            <property name="f-label">x=y</property>
+            <property name="m-label">+</property>
+            <property name="g-label">x=0</property>
+            <property name="code">51</property>
+            <layout>
+              <property name="column">9</property>
+              <property name="column-span">1</property>
+              <property name="row">3</property>
+              <property name="row-span">1</property>
+            </layout>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

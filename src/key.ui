@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Created with Cambalache 0.8.2 -->
+<interface>
+  <!-- interface-name hp11em-key.ui -->
+  <requires lib="gtk" version="4.0"/>
+  <template class="Key" parent="GtkBox">
+    <property name="orientation">vertical</property>
+    <property name="spacing">2</property>
+    <child>
+      <object class="GtkButton" id="f_button">
+        <style>
+          <class name="button-f"/>
+          <class name="flat"/>
+        </style>
+      </object>
+    </child>
+    <child>
+      <object class="GtkBox" id="b_button">
+        <property name="orientation">vertical</property>
+        <property name="vexpand">True</property>
+        <child>
+          <object class="GtkButton" id="m_button">
+            <property name="vexpand">True</property>
+            <style>
+              <class name="button-m"/>
+            </style>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="g_button">
+            <style>
+              <class name="button-g"/>
+            </style>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>
